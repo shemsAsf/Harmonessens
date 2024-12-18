@@ -5,7 +5,7 @@ function Presentation() {
         <br />
         <br />
         <h1>LA NATUROPATHIE</h1>
-        <div class="golden-line"></div>
+        <div className="golden-line"></div>
         <p>
         <br />
         C'est une médecine holistique qui prend en considération tous les aspects de la personne et vise à maintenir un équilibre sur différents plans : physique, énergétique, émotionnel...
@@ -39,7 +39,7 @@ function Presentation() {
         <br />
         </p>
         <h2>LE SOIN ENERGETIQUE</h2>
-        <div class="golden-line"></div>
+        <div className="golden-line"></div>
         <p>
         <br />
         Nous ne sommes pas qu'un corps.
@@ -70,7 +70,7 @@ function Presentation() {
         <br />
         </p>
         <h2>LES RUNES</h2>
-        <div class="golden-line"></div>
+        <div className="golden-line"></div>
         <p>
         <br />
         les runes sont un alphabet d'origine germanique apparu au IIe siècle après Jésus Christ.
@@ -123,7 +123,7 @@ function Presentation() {
         <br />
         </p>
         <h2>LA NUMEROLOGIE</h2>
-        <div class="golden-line"></div>
+        <div className="golden-line"></div>
         <p>
         <br />
         « Dans la nature tout a toujours une raison.
@@ -186,7 +186,7 @@ function Presentation() {
         <br />
         </p>
         <h2>LE MASSAGE</h2>
-        <div class="golden-line"></div>
+        <div className="golden-line"></div>
         <p>
         <br />
         Le massage énergétique est une approche holistique, un langage qui utilise le toucher, le magnétisme, la réflexologie, les huiles essentielles, , pour libérer les blocages physiques et énergétiques qui empêchent la vitalité, la détente et le bienêtre de s'installer.
