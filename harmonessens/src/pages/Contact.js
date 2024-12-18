@@ -9,7 +9,7 @@ function Contact() {
         {/* Form Section */}
         <div className="form-div">
           <h2>Formulaire de Contact</h2>
-          <form action="mailto:example@harmonessens.fr" method="POST" encType="text/plain">
+          <form action="mailto:contact@harmonessens.fr" method="POST" encType="text/plain">
             <div className="form-field">
               <input type="text" id="first-name" name="first-name" placeholder="Nom:" required />
             </div>
@@ -39,12 +39,12 @@ function Contact() {
           <div className="info-element">
             <h2><i className="fas fa-phone-alt"></i> Telephone :</h2>
             <div className="golden-line"></div>
-            <p className="info">+33 1 23 45 67 89</p>
+            <a href="tel:+33123456789" className="info">+33 7 88 76 50 16 </a>
           </div>
           <div className="info-element">
             <h2><i className="fas fa-envelope"></i> Mail :</h2>
             <div className="golden-line"></div>
-            <p className="info">example@email.com</p>
+            <a href="mailto:contact@harmonessens.fr" className="info">contact@harmonessens.fr</a>
           </div>
         </div>
       </div>

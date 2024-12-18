@@ -16,6 +16,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 20px; /* Add space between form and contact info */
+    align-items: center;
   }
   
   .form-div,
@@ -75,7 +76,7 @@
   }
   
   button:hover {
-    background-color: #e68900;
+    background-color: #d4af37;
   }
   
   .map-container {
@@ -108,4 +109,18 @@
       font-size: 12px;
     }
   }
+
+  
+
+.contact-info a {
+  color: #333; 
+  text-decoration: none; 
+  font-weight: bold; 
+  transition: color 0.3s ease;
+  margin-top: 20px;
+}
+
+.contact-info a:hover {
+  color: rgb(223, 194, 27);
+}
   

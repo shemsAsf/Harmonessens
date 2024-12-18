@@ -11,8 +11,8 @@ p {
 }
 
 .main-div {
-  max-width: 80%; 
-  width: clamp(300px, 80%, 1200px);
+  max-width: 90%; 
+  width: clamp(300px, 90%, 1200px);
   margin: 0 auto; 
 }
 

@@ -1,0 +1,22 @@
+h1 {
+    margin-top: 50px;
+}
+
+.text-columns {
+    column-count: 2; /* Number of columns */
+    column-gap: 40px; /* Space between columns */
+    text-align: justify; /* Justify text for better alignment */
+  }
+  
+  .text-columns p {
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (max-width: 768px) {
+    .text-columns {
+      column-count: 1; /* Single column on smaller screens */
+    }
+  }
+  
+  
