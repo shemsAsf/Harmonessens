@@ -1,9 +1,12 @@
 function Presentation() {
     return (
       <div className="main-div">
-        <h1>LA NATUROPATHIE</h1>
-        <p>
         <br />
+        <br />
+        <br />
+        <h1>LA NATUROPATHIE</h1>
+        <div class="golden-line"></div>
+        <p>
         <br />
         C'est une médecine holistique qui prend en considération tous les aspects de la personne et vise à maintenir un équilibre sur différents plans : physique, énergétique, émotionnel...
         Elle agit non sur le symptôme mais sur la cause.
@@ -32,13 +35,12 @@ function Presentation() {
         Elle repose sur l'application des bienfaits des pierres pour la santé.
         C'est une approche holistique du corps humain, inspirée de la régulation des énergies.
         <br />
-
+        <br />
         <br />
         </p>
         <h2>LE SOIN ENERGETIQUE</h2>
+        <div class="golden-line"></div>
         <p>
-        <br />
-
         <br />
         Nous ne sommes pas qu'un corps.
         Nous sommes constitués de notre âme, de nos pensées, de nos émotions, de nos croyances, de notre histoire, de notre héritage, de nos failles, de nos souffrances ...
@@ -64,13 +66,12 @@ function Presentation() {
         <br />
         La naturopathie et le soin énergétique accompagnent toute personne durant toutes les étapes de sa vie et ne représentent aucune contre-indication.
         <br />
-
+        <br />
         <br />
         </p>
         <h2>LES RUNES</h2>
+        <div class="golden-line"></div>
         <p>
-        <br />
-
         <br />
         les runes sont un alphabet d'origine germanique apparu au IIe siècle après Jésus Christ.
         <br />
@@ -118,13 +119,12 @@ function Presentation() {
         <br />
         Enfin je vous accompagnerai à mettre en place les outils nécessaires à l'atteinte de vos objectifs.
         <br />
-
+        <br />
         <br />
         </p>
         <h2>LA NUMEROLOGIE</h2>
+        <div class="golden-line"></div>
         <p>
-        <br />
-
         <br />
         « Dans la nature tout a toujours une raison.
         Si tu comprends cette raison, tu n'as plus besoin de l'expérience »
@@ -182,12 +182,12 @@ function Presentation() {
         <br />
         La numérologie peut être une lumière qui éclaire le chemin,
         <br />
-
+        <br />
         <br />
         </p>
         <h2>LE MASSAGE</h2>
+        <div class="golden-line"></div>
         <p>
-        <br />
         <br />
         Le massage énergétique est une approche holistique, un langage qui utilise le toucher, le magnétisme, la réflexologie, les huiles essentielles, , pour libérer les blocages physiques et énergétiques qui empêchent la vitalité, la détente et le bienêtre de s'installer.
         <br />
@@ -207,7 +207,7 @@ function Presentation() {
         <br />
         Nous échangeons ensemble pour définir votre besoin et je vous accompagne avec différents outils pour vous apporter tout le bien être que vous méritez.
         <br />
-
+        <br />
         <br />
         <strong>LE MASSAGE ENERGETIQUE</strong>
         <br />
@@ -243,7 +243,7 @@ function Presentation() {
         <br />
         Vous accueillez votre bien être qui s'installe,
         <br />
-
+        <br />
         <br />
         <strong>LE MASSAGE DE SOIN CHAMANIQUE D'INTéGRATION AVEC LES 4 ELEMENTS</strong>
         <br />

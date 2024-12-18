@@ -15,3 +15,10 @@ p {
   width: clamp(300px, 80%, 1200px);
   margin: 0 auto; 
 }
+
+.golden-line {
+  height: 4px;
+  width: 50%; 
+  background-color: rgb(223, 194, 27); 
+  margin: 8px 0 0;
+}
