@@ -1,0 +1,17 @@
+body {
+  font-family: Helvetica,Arial,sans-serif;
+}
+
+h1, h2 {
+  font-weight: 700;
+}
+
+p {
+  font-weight: 400;
+}
+
+.main-div {
+  max-width: 80%; 
+  width: clamp(300px, 80%, 1200px);
+  margin: 0 auto; 
+}
