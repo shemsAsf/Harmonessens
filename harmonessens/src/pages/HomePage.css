@@ -1,0 +1,55 @@
+/* General styling */
+.home {
+    color: #333;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  .home-page-title {
+    margin-top: 0;
+  }
+  
+  /* Hero Section */
+  .hero {
+    background-image: url("https://img.freepik.com/photos-premium/prise-vue-au-grand-angle-seul-arbre-poussant-sous-ciel-assombri-pendant-coucher-soleil-entoure-herbe_181624-22807.jpg"); /* Replace with your image */
+    background-size: cover;
+    background-position: center;
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .practitioner-name {
+    font-size: 3rem;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
+  
+  /* Activities Section */
+  .activities {
+    margin: 20px 0;
+  }
+  
+  .activities-text p {
+    font-size: 0.75rem; /* Adjust size as needed */
+    line-height: 1.
+  }
+  
+  
+  /* Description Section */
+  .description {
+    margin: 20px auto;
+    max-width: 800px;
+    line-height: 1.6;
+    padding: 0 15px;
+  }
+  
+  .description p {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+  

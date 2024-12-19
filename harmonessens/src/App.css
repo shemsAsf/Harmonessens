@@ -1,9 +1,19 @@
+* {
+  box-sizing: border-box; /* Apply box-sizing globally */
+}
+
 body {
   font-family: Helvetica,Arial,sans-serif;
 }
 
-h1, h2 {
+h1 {
   font-weight: 700;
+  margin-top: 50px;
+  margin-bottom: 0px;
+}
+
+.main-title {
+  text-align: center;
 }
 
 p {
@@ -17,8 +27,31 @@ p {
 }
 
 .golden-line {
-  height: 4px;
-  width: 50%; 
-  background-color: rgb(223, 194, 27); 
-  margin: 8px 0 0;
+  border-top: 2px dashed rgb(223, 194, 27);
+  width: 50%;
+  margin: 4px auto 0 auto;
+}
+
+.golden-line.left-aligned-line {
+  margin-left: 4px;
+  margin-bottom: 20px;
+}
+
+.text-columns {
+  column-count: 2;
+  column-gap: 40px;
+  text-align: justify;
+}
+
+.form-div input::placeholder,
+.form-div textarea::placeholder {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+@media (max-width: 768px) {
+  .text-columns {
+    column-count: 1;
+  }
 }

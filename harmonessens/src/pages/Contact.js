@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Contact.css";
 
 function Contact() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <div className="contactDiv main-div">
-      <h1 className="title">Me Contacter</h1>
+    <div className="main-div">
+      <h1 className="main-title">Me Contacter</h1>
       <div className="info-container">
         {/* Form Section */}
         <div className="form-div">
@@ -29,7 +42,7 @@ function Contact() {
               <textarea id="message" name="message" placeholder="Texte:" required></textarea>
             </div>
             <div className="form-field">
-              <button type="submit">Envoyer</button>
+              <button className="submit-button" type="submit">Envoyer</button>
             </div>
           </form>
         </div>
@@ -38,12 +51,12 @@ function Contact() {
         <div className="contact-info">
           <div className="info-element">
             <h2><i className="fas fa-phone-alt"></i> Telephone :</h2>
-            <div className="golden-line"></div>
+            <div className={`golden-line ${isMobile ? "" : "left-aligned-line"}`}></div>
             <a href="tel:+33123456789" className="info">+33 7 88 76 50 16 </a>
           </div>
           <div className="info-element">
             <h2><i className="fas fa-envelope"></i> Mail :</h2>
-            <div className="golden-line"></div>
+            <div className={`golden-line ${isMobile ? "" : "left-aligned-line"}`}></div>
             <a href="mailto:contact@harmonessens.fr" className="info">contact@harmonessens.fr</a>
           </div>
         </div>

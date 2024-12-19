@@ -1,17 +1,28 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navigation.css";
 import logo from "../ressources/logo.png";
 
 function Navbar() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+  
   return (
     <nav className="navbar">
       <div className="navbar-logo">
         <img src={logo} alt="Logo" className="logo" />
-        <h1 className="website-name">Harmonessens</h1>
+        <Link to="/" className="nav-link">
+          <h1 className="website-name nav-link">Harmonessens</h1>
+        </Link>
       </div>
-      <ul className="nav-list">
+        <button className="hamburger" onClick={toggleMobileMenu}>
+        &#9776;
+      </button>
+      <ul className={`nav-list ${isMobileMenuOpen ? "open" : ""}`}>
         <li className="nav-item dropdown">
-          <Link to="/" className="nav-link">
+          <Link to="/information" className="nav-link">
             Information
           </Link>
         </li>
