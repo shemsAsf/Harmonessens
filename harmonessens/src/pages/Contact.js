@@ -1,8 +1,61 @@
 import React, { useState, useEffect } from "react";
 import "./Contact.css";
+import Swal from "sweetalert2";
 
 function Contact() {
   const [isMobile, setIsMobile] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    console.log(JSON.stringify(formData))
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/send-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        Swal.fire({
+          icon: "success",
+          title: "Succès",
+          text: "Message envoyé avec succès !",
+          confirmButtonColor: "#4CAF50",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Erreur",
+          text: `Une erreur est survenue : ${data.message || "Erreur inconnue"}`,
+          confirmButtonColor: "#F44336",
+        });
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'envoi du message", error);
+      alert("Une erreur est survenue. Veuillez réessayer.");
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -22,27 +75,69 @@ function Contact() {
         {/* Form Section */}
         <div className="form-div">
           <h2>Formulaire de Contact</h2>
-          <form action="mailto:contact@harmonessens.fr" method="POST" encType="text/plain">
+          <form onSubmit={handleSubmit}>
             <div className="form-field">
-              <input type="text" id="first-name" name="first-name" placeholder="Nom:" required />
+              <input
+                type="text"
+                name="firstName"
+                placeholder="Nom:"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="form-field">
-              <input type="text" id="last-name" name="last-name" placeholder="Prénom:" required />
+              <input
+                type="text"
+                name="lastName"
+                placeholder="Prénom:"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="form-field">
-              <input type="email" id="email" name="email" placeholder="Adresse mail:" required />
+              <input
+                type="email"
+                name="email"
+                placeholder="Adresse mail:"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="form-field">
-              <input type="tel" id="phone" name="phone" placeholder="Numéro de téléphone:" />
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Numéro de téléphone:"
+                value={formData.phone}
+                onChange={handleChange}
+              />
             </div>
             <div className="form-field">
-              <input type="text" id="subject" name="subject" placeholder="Sujet:" required />
+              <input
+                type="text"
+                name="subject"
+                placeholder="Sujet:"
+                value={formData.subject}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="form-field">
-              <textarea id="message" name="message" placeholder="Texte:" required></textarea>
+              <textarea
+                name="message"
+                placeholder="Texte:"
+                value={formData.message}
+                onChange={handleChange}
+                required
+              ></textarea>
             </div>
             <div className="form-field">
-              <button className="submit-button" type="submit">Envoyer</button>
+              <button className="submit-button" type="submit">
+                Envoyer
+              </button>
             </div>
           </form>
         </div>
