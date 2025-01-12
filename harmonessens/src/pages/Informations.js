@@ -74,20 +74,13 @@ const content = {
       </div>
     </div>
   ),
-  cercle_mixte: (
-    <div>
-      <h2>Testimonials</h2>
-      <p>"I had an amazing experience!" - Jane Doe</p>
-      <p>"Truly life-changing." - John Smith</p>
-    </div>
-  ),
 };
 
 function Presentation() {
   const { section } = useParams();
 
   // Fallback content for unknown sections
-  const sectionContent = content[section] || content["cercle_mixte"]
+  const sectionContent = content[section] || content["naturopathie"]
     return (
       <div className="main-div">
         <h1 className="main-title">PRESENTATION</h1>

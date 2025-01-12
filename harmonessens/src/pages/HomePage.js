@@ -20,17 +20,34 @@ function Home() {
       {/* Description Section */}
       <div className="description">
         <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-            sed do eiusmod tempor incididunt ut labore et dolore magna 
-            aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
-            ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-            Duis aute irure dolor in reprehenderit in voluptate velit 
-            esse cillum dolore eu fugiat nulla pariatur. 
+          Je suis Khadija Asfouri, naturopathe et thérapeute holistique.
           <br />
           <br />
-          Excepteur sint 
-					occaecat cupidatat non proident, sunt in culpa qui officia 
-					deserunt mollit anim id est laborum.
+          Je vous invite à un voyage intérieur, un espace où il est possible de se reconnecter à soi, en douceur, sans
+          jugement. Mon rôle, c'est de vous accompagner à retrouver votre essence profonde, cette part de vous qui
+          sait déjà comment avancer, même au milieu des tempêtes.
+          <br />
+          <br />
+          À travers la naturopathie, les soins chamaniques, les massages énergétiques ou encore la guidance avec les
+          runes, je propose des outils simples mais puissants pour vous aider à voir les choses différemment, à
+          apaiser les tensions et à retrouver une forme de sérénité. Chaque personne est unique, et chaque
+          accompagnement l'est aussi.
+          <br />
+          <br />
+          Ce qui m'importe, c'est que vous puissiez trouver en vous les ressources pour traverser la vie avec plus de
+          douceur. Parfois, il suffit juste d'un nouveau regard, d'un moment pour soi, pour sentir que tout peut être plus
+          léger.
+          <br />
+          <br />
+          Si vous ressentez l'élan de faire ce chemin, je suis là, avec toute ma sincérité et ma présence. Ensemble,
+          nous explorerons les sentiers de votre transformation, dans le respect de votre rythme et de vos besoins.
+          <br />
+          <br />
+          Avec tout mon amour et ma tendresse
+          <br />
+          Swin
+          <br />
+          Harmonessens
         </p>
       </div>
     </div>

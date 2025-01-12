@@ -3,13 +3,17 @@
 }
 
 body {
-  font-family: Helvetica,Arial,sans-serif;
+  font-family: 'Lora', Helvetica, Arial, sans-serif;
 }
 
 h1 {
   font-weight: 700;
   margin-top: 50px;
   margin-bottom: 0px;
+}
+
+h1, h2, h3, .nav-link {
+  font-family: 'Playfair Display', serif;
 }
 
 .main-title {
@@ -27,7 +31,7 @@ p {
 }
 
 .golden-line {
-  border-top: 2px dashed rgb(223, 194, 27);
+  border-top: 2px dashed var(--accent-color);
   width: 50%;
   margin: 4px auto 0 auto;
 }

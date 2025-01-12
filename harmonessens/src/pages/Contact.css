@@ -70,7 +70,7 @@
   
   .submit-button {
     padding: 12px;
-    background-color: rgb(223, 194, 27);
+    background-color: var(--accent-color);
     border: none;
     color: white;
     font-size: 14px;
@@ -82,7 +82,7 @@
   
   
   .submit-button:hover {
-    background-color: #d4af37;
+    background-color: var(--accent-color);
   }
   
   .map-container {
@@ -131,6 +131,6 @@
   } 
 
 .contact-info a:hover {
-  color: rgb(223, 194, 27);
+  color: var(--accent-color);
 }
   
