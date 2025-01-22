@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/HomePage"
+import Home from "./pages/HomePage";
 import Navbar from "./components/Navigation";
 import Information from "./pages/Informations";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
-import Appointment from "./pages/Appointment";
+import AppointmentList from "./pages/Appointments/AppointmentList";
+import AppointmentDetail from "./pages/Appointments/AppointmentDetail";
+import Summary from "./pages/Summary";
 import Footer from "./components/FooterComp";
 import "./App.css";
 
@@ -18,7 +20,9 @@ function App() {
         <Route path="/information/:section" element={<Information />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/appointment" element={<Appointment />} />
+        <Route path="/appointment" element={<AppointmentList />} />
+        <Route path="/appointment/:id" element={<AppointmentDetail />} />
+        <Route path="/summary" element={<Summary />} />
       </Routes>
       <Footer />
     </Router>

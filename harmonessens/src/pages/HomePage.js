@@ -12,7 +12,7 @@ function Home() {
       <div className="activities">
         <h1 className="home-page-title">SWIN</h1>
 				<div className="golden-line" id="centered-gl"></div>
-        <div class="activities-text">
+        <div className="activities-text">
 					<p>Naturopathie, Soins Chamaniques, Relaxation et Méditation...</p>
 				</div>
       </div>

@@ -11,17 +11,17 @@ function Footer() {
           <div className="golden-line"></div>
           <div className="footer-column-info">
             <p>
-              <i class="fas fa-clock"></i>
+              <i className="fas fa-clock"></i>
               <strong>Lundi : </strong>
             </p>
             <p className="p-wm">13:00 à 17:00</p>
             <p>
-              <i class="fas fa-clock"></i>
+              <i className="fas fa-clock"></i>
               <strong>Mardi au Vendredi : </strong>
             </p>
             <p className="p-wm">9:30 à 13:00 | 14:00 à 18:00</p>
             <p>
-              <i class="fas fa-clock"></i>
+              <i className="fas fa-clock"></i>
               <strong>Samedi : </strong>
             </p>
             <p className="p-wm">9:30 à 13:00</p>
@@ -48,21 +48,21 @@ function Footer() {
           <div className="golden-line"></div>
           <div className="footer-column-info">
             <p>
-              <i class="fas fa-envelope"></i>
+              <i className="fas fa-envelope"></i>
               <strong>Email :</strong> 
             </p>
             <p className="p-wm">
               <a href="mailto:contact@harmonessens.fr" className="contact-link">contact@harmonessens.fr</a>
             </p>
             <p>
-              <i class="fas fa-phone-alt"></i>
+              <i className="fas fa-phone-alt"></i>
               <strong>Téléphone :</strong>
             </p>
             <p className="p-wm">
               <a href="tel:+33788765016" className="contact-link">+33 7 88 76 50 16</a>
             </p>
             <p>
-              <i class="fas fa-map-marker-alt"></i>
+              <i className="fas fa-map-marker-alt"></i>
               <strong>Adresse :</strong> 
             </p>
             <p className="p-wm">

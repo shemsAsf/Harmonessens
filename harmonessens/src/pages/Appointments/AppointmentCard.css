@@ -1,0 +1,95 @@
+.appointment-card {
+    display: flex;
+    flex-direction: row;
+    padding: 25px;
+    margin: 16px 50px;
+    border-radius: 8px;
+    background-color: #fff;
+    position: relative;
+    
+    /* Shadow starts from the right with more spread */
+    box-shadow: 1px 10px 20px 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+
+  @media (max-width: 768px) {
+    .appointment-card  {
+        margin: 16px 0;
+    }
+  
+    .circle-image {
+      width: 30vw; /* Adjust size for smaller screens */
+      max-width: 120px; /* Slightly reduce max size */
+      height: 30vw;
+      max-height: 120px;
+    }
+  }
+  
+  .appointment-card:hover {
+    /* Shadow spreads further to the right on hover */
+    box-shadow: 1px 15px 25px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  
+  .appointment-image {
+    width: 100px;
+    height: 100px;
+    margin-right: 16px; /* Space between image and text */
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .appointment-content {
+    flex: 1;
+    position: relative;
+  }
+  
+  .appointment-content h3 {
+    margin: 0 0 8px;
+  }
+  
+  .appointment-content p {
+    margin: 0 0 8px;
+    color: #666;
+  }
+  
+  .appointment-button {
+    background-color: var(--accent-color-dark);
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+  }
+  
+  .appointment-button:focus {
+    outline: none;
+  }
+  
+  .appointment-button:hover {
+    background-color: var(--accent-color);
+  }
+  
+  /* Styling for the "En savoir plus" clickable text */
+  .toggle-text {
+    color: var(--accent-color-dark);
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 8px;
+    display: inline-block;
+  }
+  
+  .toggle-text:hover {
+    color: var(--accent-color);
+  }
+  
+  /* Optional styling for description to control space usage */
+  .description {
+    margin-bottom: 10px;
+  }
+  

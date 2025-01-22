@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Contact.css";
+import "./Form.css";
 import Swal from "sweetalert2";
 
 function Contact() {
@@ -26,7 +27,7 @@ function Contact() {
     
     console.log(JSON.stringify(formData))
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/send-email`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/email/send-email`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

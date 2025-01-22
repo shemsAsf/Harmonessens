@@ -18,6 +18,7 @@ h1, h2, h3, .nav-link {
 
 .main-title {
   text-align: center;
+  margin-bottom: 20px;
 }
 
 p {
@@ -31,14 +32,15 @@ p {
 }
 
 .golden-line {
-  border-top: 2px dashed var(--accent-color);
+  border-top: 2px solid var(--accent-color);
   width: 50%;
-  margin: 4px auto 0 auto;
+  margin: 8px auto 0 auto;
 }
 
 .golden-line.left-aligned-line {
-  margin-left: 4px;
+  margin-left: 0px;
   margin-bottom: 20px;
+  margin-top: 15px;
 }
 
 .text-columns {

@@ -27,11 +27,6 @@ function Navbar() {
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/blog" className="nav-link">
-            Blog
-          </Link>
-        </li>
-        <li className="nav-item">
           <Link to="/appointment" className="nav-link">
             Prendre RDV
           </Link>
