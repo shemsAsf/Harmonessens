@@ -1,7 +1,7 @@
-const crypto = require("crypto");
-
 const generateRandomId = () => {
-  return crypto.randomInt(100000, 1000000);
-};
+	return Math.floor(Math.random() * (1000000 - 100000) + 100000);
+  };
 
-module.exports = { generateRandomId };
+export {
+	generateRandomId,
+};

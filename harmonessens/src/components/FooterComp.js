@@ -12,14 +12,9 @@ function Footer() {
           <div className="footer-column-info">
             <p>
               <i className="fas fa-clock"></i>
-              <strong>Lundi : </strong>
-            </p>
-            <p className="p-wm">13:00 à 17:00</p>
-            <p>
-              <i className="fas fa-clock"></i>
               <strong>Mardi au Vendredi : </strong>
             </p>
-            <p className="p-wm">9:30 à 13:00 | 14:00 à 18:00</p>
+            <p className="p-wm">9:30 à 13:00 | 14:00 à 18:30</p>
             <p>
               <i className="fas fa-clock"></i>
               <strong>Samedi : </strong>

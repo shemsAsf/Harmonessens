@@ -27,7 +27,7 @@ function Contact() {
     
     console.log(JSON.stringify(formData))
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/email/send-email`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/email/send-contact-email`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -48,7 +48,7 @@ function Contact() {
         Swal.fire({
           icon: "error",
           title: "Erreur",
-          text: `Une erreur est survenue : ${data.message || "Erreur inconnue"}`,
+          text: `Une erreur est survenue : ${data.error || "Erreur inconnue"}`,
           confirmButtonColor: "#F44336",
         });
       }

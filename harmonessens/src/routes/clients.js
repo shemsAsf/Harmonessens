@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const controller = require("../controllers/clientController");
 
+// Endpoint creating a new client
 router.post("/create-client", async (req, res) => controller.createClient(req, res));
 
 // Endpoint checking if client is already in database
