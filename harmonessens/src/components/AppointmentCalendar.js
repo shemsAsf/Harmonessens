@@ -141,12 +141,12 @@ const AppointmentCalendar = ({ appointmentId, onAppointmentSubmit }) => {
 	// Handle appointment submission
 	const handleSubmit = () => {
 		if (selectedDate && selectedTime) {
-			const appointmentDetails = {
+			const reservationDetails = {
 				id: appointment.id,
 				date: selectedDate,
 				time: selectedTime,
 			};
-			navigate("/summary", { state: appointmentDetails });
+			navigate("/summary", { state: reservationDetails });
 		} else {
 			alert("Please select a date and time for your appointment.");
 		}

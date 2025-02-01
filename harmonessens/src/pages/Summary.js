@@ -1,17 +1,21 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { appointments } from "../Data/Appointments";
 import "./Form.css";
 import ClientValueModal from '../components/ClientValueModal';
-import Swal from 'sweetalert2';
+import { ClientCheck, UpdateClient } from '../utils/ClientUtil';
+import { AddAppointmentToDB, RemoveAppointmentFromDB } from '../utils/AppointmentUtils';
+import { AddAppointmentToCalendar, RemoveCalendarEvent } from '../utils/CalendarUtil';
+import { SendAppointmentEmail } from '../utils/EmailUtils';
+import { NotifyError, NotifySuccess } from '../utils/NotifyUtil';
 
 const Summary = () => {
-	const { state: appointmentDetails } = useLocation();
-	const appointment = appointments.find((appt) => appt.id === appointmentDetails.id);
+	const { state: reservationDetails } = useLocation();
+	const appointmentInfo = appointments.find((appt) => appt.id === reservationDetails.id);
 	const navigate = useNavigate();
 	const [showModal, setShowModal] = useState(false);
 	const [differences, setDifferences] = useState([]);
-	const [payNow, setPayNow] = useState(false);
+	const [modalPromise, setModalPromise] = useState(null);
 	const [formData, setFormData] = useState({
 		firstName: '',
 		lastName: '',
@@ -19,347 +23,114 @@ const Summary = () => {
 		phone: '',
 		message: '',
 	});
-	const [clientId, setClientId] = useState(-1);
+	const [clientId, setClientIdAndShowModal] = useState(null);
 
-	const getValidDateTime = (date, time) => {
-		const [hour, minute] = time.split(" - ")[0].split(":").map(num => num.padStart(2, "0"));
-		return `${getLocalDate(date).toISOString().split('T')[0]}T${hour}:${minute}:00`;
-	};
-	
-	const getLocalDate = (date) => {
-		return new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-	};
+	useEffect(() => {
+		if (clientId !== null) {
+			setShowModal(true);;
+		}
+	}, [clientId]);
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
 		setFormData({ ...formData, [name]: value });
 	};
 
-	// --- Client checking phase ---
-
-	const ClientCheckForConfirmation = async (payNow) => {
+	const OnConfirmation = async (payNow) => {
+		// --- Check client information ---
 		if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim()) {
-			notifyError(null, "Veuillez remplir tous les champs obligatoires : Nom, Prénom, et Adresse mail.");
+			NotifyError(navigate, null, "Veuillez remplir tous les champs obligatoires : Nom, Prénom, et Adresse mail.");
 			return;
 		}
-	
-		setPayNow(payNow);
-	
-		try {
-			const queryParams = new URLSearchParams({ email: formData.email }).toString();
-			const clientResponse = await fetch(`${process.env.REACT_APP_API_URL}/clients/client-exist?${queryParams}`);
-			const clientData = await clientResponse.json();
-	
-			if (!clientResponse.ok || !clientData.success) {
-				throw new Error(clientData.message || "Unknown error checking client existence.");
-			}
-	
-			const newClientId = clientData.found ? clientData.client.id : await createNewClient();
 
-			if (newClientId === null) {
-				throw new Error(clientData.message || "Unknown error creating new client.");
-			}
-			
-			setClientId(newClientId);
-			clientData.found ? checkForDifferences(clientData.client) : AddAppointmentToDB();
-			
-		} catch (error) {
-			console.error("Error in ClientCheckForConfirmation:", error.message);
-			notifyError();
+		const clientId = await ClientCheck(formData, setupModal, setClientIdAndShowModal);
+		if (clientId === null) {
+			NotifyError();
+			return;
 		}
-	};
-	
-	const createNewClient = async () => {
-		const createClientRequestData = {
-			firstName: formData.firstName,
-			lastName: formData.lastName,
-			email: formData.email,
-			phone: formData.phone,
-		};
 
-		try {
-			const createClientResponse = await fetch(`${process.env.REACT_APP_API_URL}/clients/create-client`, {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(createClientRequestData),
-			});
-
-			const createClientData = await createClientResponse.json();
-			if (!createClientResponse.ok) {
-				throw new Error(`Error: ${createClientData.message || "Failed to create client"}`);
-			}
-
-			return createClientData.success ? createClientData.clientId : null;
-
-		} catch (error) {
-			console.error("Error creating client:", error.message);
-			return null;
-		}
-	};
-
-	const checkForDifferences = (client) => {
-		const fields = [
-			{ field: 'Prénom', oldValue: client.first_name, newValue: formData.firstName },
-			{ field: 'Nom', oldValue: client.last_name, newValue: formData.lastName },
-			{ field: 'Numéro de Téléphone', oldValue: client.phone, newValue: formData.phone }
-		];
-		const diffs = fields.filter(f => f.oldValue?.trim() !== f.newValue?.trim());
-		console.log("diff client id:", clientId);
-		if (diffs.length > 0) {
-			setDifferences(diffs);
-			setShowModal(true);
-		} else {
-			AddAppointmentToDB();
-		}
-	};
-
-	const updateClient = async () => {
-		
-		console.log("clientId:", clientId);
-		const updateClientRequestData = {
-			id: clientId,
-			firstName: formData.firstName,
-			lastName: formData.lastName,
-			email: formData.email,
-			phone: formData.phone,
-		};
-		
-		try{
-			const response = await fetch(`${process.env.REACT_APP_API_URL}/clients/update-client`, {
-				method: 'PUT',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(updateClientRequestData),
-			});
-
-			const data = await response.json();
-
-			if (!response.ok) {
-				throw new Error(`Error: ${data.message || "Failed to update client information."}`);
-			}
-			
-			return data.success ? data.clientId : null
-
-		} catch (error) {
-			console.error("Error updating client information:", error.message);
-			return null;
-		}
-	};
-	
-	// --- Appointment database phase ---
-
-	const AddAppointmentToDB = async () => {
-		const createAppointmentRequestData = {
-			appointmentId: appointment.id,
-			startDateTime: getValidDateTime(appointmentDetails.date, appointmentDetails.time),
-			durationInMinutes: appointment.length,
-			message: formData.message,
-			hasPaid: payNow,
-			clientId,
-		};
-	
-		try {
-			const response = await fetch(`${process.env.REACT_APP_API_URL}/appointments/create-appointment`, {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(createAppointmentRequestData),
-			});
-	
-			const data = await response.json();
-	
-			if (!response.ok) {
-				throw new Error(`Error ${response.status}: ${data.message || "Failed to create appointment"}`);
-			}
-	
-			// Successfully created appointment
-			AddAppointmentToCalendar(data.uniqueAppointmentId);
-			return data.uniqueAppointmentId;
-	
-		} catch (error) {
-			console.error("Error adding appointment to database:", error.message);
-	
-			// Specific handling for appointment conflicts (HTTP 409)
-			if (error.message.includes("Error 409")) {
-				notifyError(
-					appointment.id ? `/appointment/${appointment.id}` : "/appointment",
+		// --- Add appointment to database ---
+		const appointmentResponse = await AddAppointmentToDB(appointmentInfo, formData, reservationDetails, payNow, clientId);
+		if (!appointmentResponse.success){
+			if (appointmentResponse.error === 409){
+				NotifyError(
+					navigate,
+					appointmentInfo.id ? `/appointment/${appointmentInfo.id}` : "/appointment",
 					"L'horaire du rendez-vous chevauche un autre rendez-vous existant."
 				);
-			} else {
-				notifyError();
+			}else{
+				NotifyError();
 			}
-	
-			return null;
+			return;
 		}
-	};
-	
-	const removeAppointmentFromDB = async (appointmentId) => {
-		try {
-			const response = await fetch(`${process.env.REACT_APP_API_URL}/appointments/remove-appointment`, {
-				method: "DELETE",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ id: appointmentId }),
-			});
-	
-			const data = await response.json();
-	
-			if (!response.ok || !data.success) {
-				throw new Error(data.message || "Failed to remove appointment");
-			}
-	
-			console.log("Appointment successfully removed from database.");
-		} catch (error) {
-			console.error("Error removing appointment:", error.message);
+
+		const calendarResponse = await AddAppointmentToCalendar(appointmentResponse.id, reservationDetails, appointmentInfo);
+		if (!calendarResponse.success){
+			NotifyError();
+			RemoveAppointmentFromDB(appointmentResponse.id);
+			return;
 		}
-	};
-	
-	// --- Calendar phase ---
 
-	const AddAppointmentToCalendar = async (appointmentId) => {
-		const createCalendarRequestData = {
-			summary: `Harmonessens: ${appointment.title}`,
-			description: `Id du rendez-vous: ${appointmentId}`,
-			startDateTime: getValidDateTime(appointmentDetails.date, appointmentDetails.time),
-			durationInMinutes: appointment.length,
-		};
-	
-		try {
-			const response = await fetch(`${process.env.REACT_APP_API_URL}/calendar/create-event`, {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(createCalendarRequestData),
-			});
-	
-			const data = await response.json();
-	
-			if (!response.ok || !data.success) {
-				throw new Error(data.message || "Failed to create calendar event");
-			}
-	
-			console.log("Calendar event successfully created:", data);
-	
-			// Send appointment email with event details
-			sendAppointmentEmail(
-				appointmentId,
-				data.inviteLink,
-				data.eventId,
-				formData,
-				appointmentDetails
-			);
-	
-		} catch (error) {
-			console.error("Error adding calendar event:", error.message);
-			notifyError();
-	
-			// Ensure appointment removal from DB if calendar event creation fails
-			removeAppointmentFromDB(appointmentId);
+		// --- Send Comfirmation Email ---
+		const emailResponse = await SendAppointmentEmail(
+			appointmentResponse.id,
+			calendarResponse.inviteLink,
+			formData,
+			reservationDetails,
+		)
+		if (!emailResponse){
+			NotifyError();
+			RemoveCalendarEvent(calendarResponse.eventId);
+			RemoveAppointmentFromDB(appointmentResponse.id);
+			return;
 		}
-	};
-
-	const removeCalendarEvent = async (eventId) => {
-		try {
-			const response = await fetch(`${process.env.REACT_APP_API_URL}/remove-event`, {
-				method: "DELETE",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ eventId }),
-			});
-			const data = await response.json();
-	
-			if (!response.ok || !data.success) {
-				throw new Error(data.message || "Failed to remove event from calendar.");
-			}
-	
-			console.log("Event successfully removed from calendar.");
-		} catch (error) {
-			console.error("Error while removing event from calendar:", error.message);
-		}
-	};
-
-	// --- Sending Email phase ---
-
-	const sendAppointmentEmail = async (appointmentId, inviteLink, eventId, formData, appointmentDetails) => {
-		try {
-			const response = await fetch(`${process.env.REACT_APP_API_URL}/email/send-appointment-email`, {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					...formData,
-					title: appointmentDetails.title,
-					day: getLocalDate(appointmentDetails.date).toLocaleDateString(),
-					time: appointmentDetails.time,
-					appointmentId,
-					inviteLink,
-				}),
-			});
-	
-			const data = await response.json();
-	
-			if (!response.ok || !data.success) {
-				throw new Error(data.error || "Failed to send email.");
-			}
-	
-			console.log("Email sent successfully");
-
-			Swal.fire({
-				icon: 'success',
-				title: 'Réservation Confirmée',
-				text: 'La réservation a été effectuée avec succès.',
-				confirmButtonColor: '#4CAF50',
-			  }).then(() => {
-				navigate("/appointment"); 
-			  });
-
-		} catch (error) {
-			console.error("Error sending email:", error.message);
-			notifyError()
-			removeCalendarEvent(eventId);
-			removeAppointmentFromDB(appointmentId);
-		}
+		NotifySuccess(navigate);
 	};
 
 	const handleSubmit = (event, payNow) => {
 		event.preventDefault();
-		ClientCheckForConfirmation(payNow);
+		OnConfirmation(payNow);
 	};
 
-	const handleModalConfirm = useCallback(async (useNewData) => {
+	const handleModalConfirm = async (useNewData) => {
 		setShowModal(false);
 		if (useNewData) {
 			console.log("clientId Modal conf:", clientId);
-			const updatedClientId = await updateClient();
-			if (updatedClientId  === null){
-				console.error('notifyError: Failed updating client info')
-				notifyError();
+			const updatedClientId = await UpdateClient(clientId);
+			if (updatedClientId === null) {
+				modalPromise?.resolve({ error: true, message: 'Failed updating client info' });
+				NotifyError();
+				modalPromise?.resolve();
 				return;
 			}
 		}
-		AddAppointmentToDB();
-	}, [clientId]);
-
-	const handleModalCancel = () => setShowModal(false);
-
-	const notifyError = (navigate, redirect, errorMessage) => {
-		Swal.fire({
-			icon: 'error',
-			title: 'Erreur',
-			text: `Une erreur est survenue, ${errorMessage ? errorMessage : "Veuillez réessayer plus tard."}`,
-			confirmButtonColor: '#F44336',
-		}).then(() => {
-			if (redirect) {
-				navigate(redirect);
-			}
-		});
+		modalPromise?.resolve({ error: false });
 	};
+
+	const handleModalCancel = () => {
+		setShowModal(false);
+		modalPromise?.resolve();
+	};
+
+	const setupModal = async (differences, resolve, id) => {
+		setDifferences(differences);
+		setModalPromise({ resolve });
+		setClientIdAndShowModal(id);
+	}
+
+	
 
 	return (
 		<div className="main-div">
 			<h1 className="main-title">Récapitulatif</h1>
-			<h3>{appointment.title}</h3>
+			<h3>{appointmentInfo.title}</h3>
 
 			{/* Appointment Information */}
-			<img src={appointment.image} alt={appointment.title} />
-			<p>Date: {new Date(appointmentDetails.date).toLocaleDateString()}</p>
-			<p>Heure: {appointmentDetails.time}</p>
-			<p>Durée: {appointment.length}</p>
-			<p>Prix: {appointment.price}€</p>
+			<img src={appointmentInfo.image} alt={appointmentInfo.title} />
+			<p>Date: {new Date(reservationDetails.date).toLocaleDateString()}</p>
+			<p>Heure: {reservationDetails.time}</p>
+			<p>Durée: {appointmentInfo.length}</p>
+			<p>Prix: {appointmentInfo.price}€</p>
 
 			{showModal && (
 				<ClientValueModal

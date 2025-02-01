@@ -1,7 +1,6 @@
-const { generateRandomId } = require("../utils/utils");
-const { db } = require("../config/db");
+import { db } from "../config/db.js";
 
-const addAppointmentToDb = async (req, res) => {
+export const addAppointmentToDb = async (req, res) => {
 	const { appointmentId, startDateTime, durationInMinutes, message, hasPaid, clientId } = req.body;
 	// Validate if the client exists in the database
 	console.log(req.body);
@@ -64,7 +63,7 @@ const addAppointmentToDb = async (req, res) => {
 	}
 };
 
-const removeAppointment = async (req, res) => {
+export const removeAppointment = async (req, res) => {
 	const { id } = req.body;
 
 	if (!id) {
@@ -85,8 +84,32 @@ const removeAppointment = async (req, res) => {
 	}
 };
 
+export const getAppointmentsByDate = async (req, res) => {
+	const { date } = req.query;
+
+	if (!date) {
+		return res.status(400).json({ success: false, message: "A valid date is required." });
+	}
+
+	try {
+		const [appointments] = await db.query(
+			`SELECT 
+			  TIME(start_time) AS start_time, 
+			  TIME(end_time) AS end_time 
+			FROM appointments 
+			WHERE DATE(start_time) = ?`,
+			[date]
+		);
+
+		return res.status(200).json({ success: true, appointments });
+	} catch (error) {
+		console.error("Error fetching appointments for the given date:", error);
+		return res.status(500).json({ success: false, message: "Internal server error" });
+	}
+};
+
 const checkForOverlaps = async (startTime, endTime) => {
-	console.log("start:",startTime,"end:",endTime); 
+	console.log("start:", startTime, "end:", endTime);
 	// Query to check if there is an overlap with any existing appointment
 	const query = `
     SELECT * FROM appointments
@@ -101,32 +124,3 @@ const checkForOverlaps = async (startTime, endTime) => {
 
 	return existingAppointments.length > 0;
 };
-
-const getAppointmentsByDate = async (req, res) => {
-	const { date } = req.query;
-	console.log("date:", date);
-  
-	if (!date) {
-	  return res.status(400).json({ success: false, message: "Date is required" });
-	}
-  
-	try {
-	  const [appointments] = await db.query(
-		`SELECT
-			DATE_FORMAT(start_time, '%H:%i:%s') AS start_time,
-			DATE_FORMAT(end_time, '%H:%i:%s') AS end_time
-		 FROM appointments 
-		 WHERE DATE(start_time) = ?`,
-		[date]
-	  );
-
-	  console.log(appointments);
-  
-	  return res.status(200).json({ success: true, appointments });
-	} catch (error) {
-	  console.error("Error fetching appointments of the day:", error);
-	  return res.status(500).json({ success: false, message: "Internal server error" });
-	}
-  };  
-
-module.exports = { addAppointmentToDb, removeAppointment, getAppointmentsByDate };
