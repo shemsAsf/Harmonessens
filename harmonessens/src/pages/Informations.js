@@ -7,7 +7,7 @@ const content = {
   naturopathie: (
   <div>
     <h1>LA NATUROPATHIE</h1>
-    <div className="golden-line left-aligned-line"></div>
+    <div className="colored-line left-aligned-line"></div>
     <div className="text-columns">
       <p>
         La naturopathie, c’est bien plus qu’une simple approche de la santé : c’est une invitation à reconnecter le corps et l’esprit dans une harmonie profonde. Elle s’appuie sur les ressources naturelles qui nous entourent pour nous aider à retrouver un équilibre, à régénérer notre énergie, et à soutenir notre bien-être global.
@@ -27,7 +27,7 @@ const content = {
   approche_chamanique: (
     <div>
       <h1>L'APPROCHE CHAMANIQUE</h1>
-      <div className="golden-line left-aligned-line"></div>
+      <div className="colored-line left-aligned-line"></div>
       <div className="text-columns">
         <p>Se reconnecter à l’essentiel</p>
         <p>Depuis toujours, l’humanité a cherché à comprendre ce qui l’unit au monde, ce qui l’éloigne de son essence et ce qui la ramène à elle-même. Le chamanisme, dans sa sagesse ancestrale, nous invite à explorer ce lien invisible qui relie le corps, l’âme, et l’univers. Il nous rappelle que la vie est un voyage fait de passages, d’équilibres à trouver, de blessures à guérir et de liens à tisser</p>
@@ -42,7 +42,7 @@ const content = {
   rituels: (
     <div>
       <h1>À LA LUMIÈRE DE LA LUNE :</h1>
-      <div className="golden-line left-aligned-line"></div>
+      <div className="colored-line left-aligned-line"></div>
       <div className="text-columns">
         <p>Une invitation à se reconnecter à soi, aux autres et au grand tout</p>
         <p>Depuis toujours, la Lune nous guide, avec sa douce lumière et son cycle éternel. Chaque Nouvelle Lune et chaque Pleine Lune sont des rendez-vous puissants pour ralentir, écouter nos besoins profonds et poser nos intentions dans la matière.</p>
@@ -60,7 +60,7 @@ const content = {
       </div>
       
       <h1>UN CERCLE MIXTE :</h1>
-      <div className="golden-line left-aligned-line"></div>
+      <div className="colored-line left-aligned-line"></div>
       <div className="text-columns">
         <p>À la rencontre du féminin et du masculin en nous</p>
         <p>Et si je te proposais un moment rien que pour toi ? Un espace sacré, où tu peux déposer ce qui t’habite, explorer ce qui t’inspire et te connecter à des ressources parfois insoupçonnées.</p>

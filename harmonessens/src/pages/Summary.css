@@ -1,0 +1,38 @@
+.summary-details {
+    flex: 2;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .summary-details p {
+    font-size: 16px;
+    color: #444;
+    margin: 8px 0;
+  }
+
+  .summary-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px; 
+  }
+
+  @media (max-width: 768px) {
+    .summary-container {
+      flex-direction: column-reverse;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .summary-details {
+        padding: 0 10px;
+    }
+  
+    .button-group {
+      flex-direction: column;
+    }
+  
+    .submit-button {
+      width: 100%;
+    }
+  }

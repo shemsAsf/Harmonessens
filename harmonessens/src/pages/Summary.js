@@ -2,11 +2,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { appointments } from "../Data/Appointments";
 import "./Form.css";
+import "./Summary.css";
 import ClientValueModal from '../components/ClientValueModal';
 import { ClientCheck, UpdateClient } from '../utils/ClientUtil';
 import { AddAppointmentToDB, RemoveAppointmentFromDB } from '../utils/AppointmentUtils';
 import { AddAppointmentToCalendar, RemoveCalendarEvent } from '../utils/CalendarUtil';
 import { SendAppointmentEmail } from '../utils/EmailUtils';
+import { FormatDuration } from '../utils/DateTimeUtil';
 import { NotifyError, NotifySuccess } from '../utils/NotifyUtil';
 
 const Summary = () => {
@@ -51,21 +53,21 @@ const Summary = () => {
 
 		// --- Add appointment to database ---
 		const appointmentResponse = await AddAppointmentToDB(appointmentInfo, formData, reservationDetails, payNow, clientId);
-		if (!appointmentResponse.success){
-			if (appointmentResponse.error === 409){
+		if (!appointmentResponse.success) {
+			if (appointmentResponse.error === 409) {
 				NotifyError(
 					navigate,
 					appointmentInfo.id ? `/appointment/${appointmentInfo.id}` : "/appointment",
 					"L'horaire du rendez-vous chevauche un autre rendez-vous existant."
 				);
-			}else{
+			} else {
 				NotifyError();
 			}
 			return;
 		}
 
 		const calendarResponse = await AddAppointmentToCalendar(appointmentResponse.id, reservationDetails, appointmentInfo);
-		if (!calendarResponse.success){
+		if (!calendarResponse.success) {
 			NotifyError();
 			RemoveAppointmentFromDB(appointmentResponse.id);
 			return;
@@ -78,7 +80,7 @@ const Summary = () => {
 			formData,
 			reservationDetails,
 		)
-		if (!emailResponse){
+		if (!emailResponse) {
 			NotifyError();
 			RemoveCalendarEvent(calendarResponse.eventId);
 			RemoveAppointmentFromDB(appointmentResponse.id);
@@ -96,7 +98,7 @@ const Summary = () => {
 		setShowModal(false);
 		if (useNewData) {
 			console.log("clientId Modal conf:", clientId);
-			const updatedClientId = await UpdateClient(clientId);
+			const updatedClientId = await UpdateClient(clientId, formData);
 			if (updatedClientId === null) {
 				modalPromise?.resolve({ error: true, message: 'Failed updating client info' });
 				NotifyError();
@@ -118,19 +120,92 @@ const Summary = () => {
 		setClientIdAndShowModal(id);
 	}
 
-	
+
 
 	return (
 		<div className="main-div">
-			<h1 className="main-title">Récapitulatif</h1>
-			<h3>{appointmentInfo.title}</h3>
+			<h1 className="main-title">Réserver</h1>
+			<div className="summary-container">
+				
 
-			{/* Appointment Information */}
-			<img src={appointmentInfo.image} alt={appointmentInfo.title} />
-			<p>Date: {new Date(reservationDetails.date).toLocaleDateString()}</p>
-			<p>Heure: {reservationDetails.time}</p>
-			<p>Durée: {appointmentInfo.length}</p>
-			<p>Prix: {appointmentInfo.price}€</p>
+				{/* Form Section */}
+				<div className="form-div">
+					<form>
+						<div className="form-field">
+							<input
+								type="text"
+								name="firstName"
+								placeholder="Nom:"
+								value={formData.firstName}
+								onChange={handleChange}
+								required
+							/>
+						</div>
+						<div className="form-field">
+							<input
+								type="text"
+								name="lastName"
+								placeholder="Prénom:"
+								value={formData.lastName}
+								onChange={handleChange}
+								required
+							/>
+						</div>
+						<div className="form-field">
+							<input
+								type="email"
+								name="email"
+								placeholder="Adresse mail:"
+								value={formData.email}
+								onChange={handleChange}
+								required
+							/>
+						</div>
+						<div className="form-field">
+							<input
+								type="tel"
+								name="phone"
+								placeholder="Numéro de téléphone:"
+								value={formData.phone}
+								onChange={handleChange}
+							/>
+						</div>
+						<div className="form-field">
+							<textarea
+								name="message"
+								placeholder="Commentaire (facultatif):"
+								value={formData.message}
+								onChange={handleChange}
+							></textarea>
+						</div>
+						<div className="form-field button-group">
+							<button
+								className="submit-button"
+								type="button"
+								onClick={(e) => handleSubmit(e, true)}
+							>
+								Payer Maintenant
+							</button>
+							<button
+								className="submit-button"
+								type="button"
+								onClick={(e) => handleSubmit(e, false)}
+							>
+								Payer Plus Tard
+							</button>
+						</div>
+					</form>
+				</div>
+				<div className="summary-details">
+					<h2>{appointmentInfo.title}</h2>
+					<div className="colored-line left-aligned-line"></div>
+					<p>Date: {new Date(reservationDetails.date).toLocaleDateString()}</p>
+					<p>Heure: {reservationDetails.time}</p>
+					<p>Durée: {FormatDuration(appointmentInfo.length)}</p>
+					<p>Prix: {appointmentInfo.price}€</p>
+				</div>
+			</div>
+			
 
 			{showModal && (
 				<ClientValueModal
@@ -140,79 +215,6 @@ const Summary = () => {
 					clientId={clientId}
 				/>
 			)}
-
-			{/* Form Section */}
-			<div className="form-div">
-				<form>
-					<div className="form-field">
-						<input
-							type="text"
-							name="firstName"
-							placeholder="Nom:"
-							value={formData.firstName}
-							onChange={handleChange}
-							required
-						/>
-					</div>
-					<div className="form-field">
-						<input
-							type="text"
-							name="lastName"
-							placeholder="Prénom:"
-							value={formData.lastName}
-							onChange={handleChange}
-							required
-						/>
-					</div>
-					<div className="form-field">
-						<input
-							type="email"
-							name="email"
-							placeholder="Adresse mail:"
-							value={formData.email}
-							onChange={handleChange}
-							required
-						/>
-					</div>
-					<div className="form-field">
-						<input
-							type="tel"
-							name="phone"
-							placeholder="Numéro de téléphone:"
-							value={formData.phone}
-							onChange={handleChange}
-						/>
-					</div>
-					<div className="form-field">
-						<textarea
-							name="message"
-							placeholder="Commentaire (facultatif):"
-							value={formData.message}
-							onChange={handleChange}
-						></textarea>
-					</div>
-					<div className="form-field button-group">
-						<button
-							className="submit-button"
-							type="button"
-							onClick={(e) => handleSubmit(e, true)}
-						>
-							Payer Maintenant
-						</button>
-						<button
-							className="submit-button"
-							type="button"
-							onClick={(e) => handleSubmit(e, false)}
-						>
-							Payer Plus Tard
-						</button>
-					</div>
-				</form>
-			</div>
-
-
-			{/* Back Button */}
-			<button className="back-button" onClick={() => navigate(-1)}>Retour</button>
 		</div>
 	);
 };

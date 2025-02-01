@@ -6,23 +6,22 @@
     border-radius: 8px;
     background-color: #fff;
     position: relative;
-    
-    /* Shadow starts from the right with more spread */
     box-shadow: 1px 10px 20px 5px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
   }
 
-  @media (max-width: 768px) {
-    .appointment-card  {
-        margin: 16px 0;
-    }
-  
-    .circle-image {
-      width: 30vw; /* Adjust size for smaller screens */
-      max-width: 120px; /* Slightly reduce max size */
-      height: 30vw;
-      max-height: 120px;
-    }
+  .appointment-content {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
   }
   
   .appointment-card:hover {
@@ -30,18 +29,12 @@
     box-shadow: 1px 15px 25px 10px rgba(0, 0, 0, 0.15);
   }
   
-  
   .appointment-image {
     width: 100px;
     height: 100px;
     margin-right: 16px; /* Space between image and text */
     object-fit: cover;
     border-radius: 8px;
-  }
-  
-  .appointment-content {
-    flex: 1;
-    position: relative;
   }
   
   .appointment-content h3 {
@@ -74,7 +67,6 @@
     background-color: var(--accent-color);
   }
   
-  /* Styling for the "En savoir plus" clickable text */
   .toggle-text {
     color: var(--accent-color-dark);
     font-size: 16px;
@@ -88,8 +80,31 @@
     color: var(--accent-color);
   }
   
-  /* Optional styling for description to control space usage */
   .description {
     margin-bottom: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .appointment-card  {
+        margin: 16px 0;
+    }
+  
+    .circle-image {
+      width: 30vw; /* Adjust size for smaller screens */
+      max-width: 120px; /* Slightly reduce max size */
+      height: 30vw;
+      max-height: 120px;
+    }
+
+    .button-container {
+      justify-content: center;
+      margin-top: 10px;
+    }
+  
+    .appointment-button {
+      position: static;
+      width: 100%;
+      text-align: center;
+    }
   }
   

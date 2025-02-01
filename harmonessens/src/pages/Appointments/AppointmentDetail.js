@@ -1,45 +1,45 @@
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import AppointmentCalendar from "../../components/AppointmentCalendar";
 import { appointments } from "../../Data/Appointments";
-
-const formatDuration = (minutes) => {
-  const hours = Math.floor(minutes / 60);
-  const mins = minutes % 60;
-  return `${hours > 0 ? hours + 'h' : ''} ${mins > 0 ? mins + 'min' : ''}`;
-};
+import { FormatDuration } from "../../utils/DateTimeUtil";
+import "./Appointment.css"
 
 const AppointmentDetail = () => {
-  const { id } = useParams();
-  const appointment = appointments.find((appt) => appt.id === parseInt(id));
-  const [appointmentDetails, setAppointmentDetails] = useState(null);
+	const { id } = useParams();
+	const appointment = appointments.find((appt) => appt.id === parseInt(id));
 
-  if (!appointment) return <p>Appointment not found</p>;
+	if (!appointment) return <p className="error-message">Appointment not found</p>;
 
-  return (
-    <div className="main-div">
-      <h1 className="main-title">{appointment.title}</h1>
-      <div className="golden-line" id="centered-gl"></div>
-      <br />
+	return (
+		<div className="main-div">
+			<h1 className="main-title">{appointment.title}</h1>
+			<div className="colored-line centered-line"></div>
+			<br />
 
-      <div className="text-columns">
-        {appointment.description.map((paragraph, index) => (
-          <p key={index}>{paragraph}</p>
-        ))}
-      </div>
-        
-      {/* Display Duration and Price */}
-      <div className="appointment-info">
-        <p><strong>Durée:</strong> {formatDuration(appointment.length)}</p>
-        <p><strong>Prix:</strong> {appointment.price}€</p>
-      </div>
+			<div className="text-columns">
+				{appointment.description.map((paragraph, index) => (
+					<p key={index}>{paragraph}</p>
+				))}
+			</div>
 
-      <br></br>
-      <AppointmentCalendar
-        appointmentId={appointment.id}
-      />
-    </div>
-  );
+			<div className="info-card">
+				<i className="fas fa-clock info-icon"></i>
+				<div className="info-content">
+					<p>Durée: <span>{FormatDuration(appointment.length)}</span></p>
+				</div>
+			</div>
+
+			<div className="info-card">
+				<i className="fas fa-euro-sign info-icon"></i>
+				<div className="info-content">
+					<p>Prix: <span>{appointment.price}€</span></p>
+				</div>
+			</div>
+			<br />
+			<AppointmentCalendar appointmentId={appointment.id} />
+		</div>
+	);
 };
 
 export default AppointmentDetail;

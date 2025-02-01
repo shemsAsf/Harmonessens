@@ -8,7 +8,7 @@ function Footer() {
         {/* Colonne 1 : Horaires d'ouverture */}
         <div className="footer-column">
           <h3>Horaires d'ouverture</h3>
-          <div className="golden-line"></div>
+          <div className="colored-line"></div>
           <div className="footer-column-info">
             <p>
               <i className="fas fa-clock"></i>
@@ -26,7 +26,7 @@ function Footer() {
         {/* Colonne 2 : Réseaux sociaux */}
         <div className="footer-column">
           <h3>Réseaux sociaux</h3>
-          <div className="golden-line"></div>
+          <div className="colored-line"></div>
           <div className="social-links footer-column-info">
             <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="social-icon">
               <i className="fab fa-facebook-f"></i> Facebook
@@ -40,7 +40,7 @@ function Footer() {
         {/* Colonne 3 : Contact */}
         <div className="footer-column">
           <h3>Contact</h3>
-          <div className="golden-line"></div>
+          <div className="colored-line"></div>
           <div className="footer-column-info">
             <p>
               <i className="fas fa-envelope"></i>

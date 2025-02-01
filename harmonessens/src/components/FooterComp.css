@@ -56,7 +56,7 @@
 
 .contact-link:hover,
 .social-icon:hover {
-  color: var(--accent-color); /* Golden hover effect */
+  color: var(--accent-color);
 }
 
 .social-links {

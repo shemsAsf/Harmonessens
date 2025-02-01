@@ -71,7 +71,7 @@ function Contact() {
 
   return (
     <div className="main-div">
-      <h1 className="main-title">Me Contacter</h1>
+      <h1 className="main-title">ME CONTACTER</h1>
       <div className="info-container">
         {/* Form Section */}
         <div className="form-div">
@@ -147,12 +147,12 @@ function Contact() {
         <div className="contact-info">
           <div className="info-element">
             <h2><i className="fas fa-phone-alt"></i> Telephone :</h2>
-            <div className={`golden-line ${isMobile ? "" : "left-aligned-line"}`}></div>
+            <div className={`colored-line ${isMobile ? "" : "left-aligned-line"}`}></div>
             <a href="tel:+33123456789" className="info">+33 7 88 76 50 16 </a>
           </div>
           <div className="info-element">
             <h2><i className="fas fa-envelope"></i> Mail :</h2>
-            <div className={`golden-line ${isMobile ? "" : "left-aligned-line"}`}></div>
+            <div className={`colored-line ${isMobile ? "" : "left-aligned-line"}`}></div>
             <a href="mailto:contact@harmonessens.fr" className="info">contact@harmonessens.fr</a>
           </div>
         </div>
