@@ -1,14 +1,22 @@
 .summary-details {
-    flex: 2;
-    text-align: left;
-    width: 100%;
-  }
-  
-  .summary-details p {
-    font-size: 16px;
-    color: #444;
-    margin: 8px 0;
-  }
+	flex: 1;
+	padding: 20px;
+	background: white;
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.summary-details h2 {
+	font-size: 22px;
+	color: #333;
+	margin-bottom: 10px;
+}
+
+.summary-details p {
+	font-size: 16px;
+	margin-bottom: 8px;
+	color: #555;
+}
 
   .summary-container {
     display: flex;

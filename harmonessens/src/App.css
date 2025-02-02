@@ -43,6 +43,11 @@ p {
   margin-top: 15px;
 }
 
+.colored-line.full-width-lign {
+  width: 100%;
+  margin: 0;
+}
+
 .text-columns {
   column-count: 2;
   column-gap: 40px;
@@ -51,9 +56,41 @@ p {
 
 .form-div input::placeholder,
 .form-div textarea::placeholder {
-  font-family: inherit;
+  font-family: 'Lora', Helvetica, Arial, sans-serif;
   font-size: inherit;
   color: inherit;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #555;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-top-color: var(--accent-color-dark);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 20px;
+  color: #333;
 }
 
 @media (max-width: 768px) {

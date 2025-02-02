@@ -8,4 +8,6 @@ router.delete("/remove-appointment", async (req, res) => controller.removeAppoin
 
 router.get("/get-appointments-of-day", async (req, res) => controller.getAppointmentsByDate(req, res));
 
+router.get("/get-appointment", async (req, res) => controller.getAppointment(req, res));
+
 module.exports = router;

@@ -58,3 +58,24 @@ export const RemoveAppointmentFromDB = async (appointmentId) => {
         console.error("Error removing appointment:", error.message);
     }
 };
+
+export const GetAppointment = async (appointmentId) => {
+    const queryParams = new URLSearchParams({ id: appointmentId }).toString();
+    try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/appointments/get-appointment?${queryParams}`);
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Unknown error fetching appointment.");
+        }
+
+        if (!data.appointment) {
+            return { success: false, error: 404, message: "Appointment not found." };
+        }
+
+        return { success: true, appointment: data.appointment };
+    } catch (error) {
+        console.error("Error fetching appointment:", error.message);
+        return { success: false, error: 400, message: error.message };
+    }
+};

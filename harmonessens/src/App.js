@@ -7,6 +7,7 @@ import Contact from "./pages/Contact";
 import AppointmentList from "./pages/Appointments/AppointmentList";
 import AppointmentDetail from "./pages/Appointments/AppointmentDetail";
 import Summary from "./pages/Summary";
+import SeeAppointment from "./pages/SeeAppointment";
 import Footer from "./components/FooterComp";
 import "./App.css";
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/appointment" element={<AppointmentList />} />
         <Route path="/appointment/:id" element={<AppointmentDetail />} />
         <Route path="/summary" element={<Summary />} />
+        <Route path="/SeeAppointment/:appointmentId?" element={<SeeAppointment />} />
       </Routes>
       <Footer />
     </Router>

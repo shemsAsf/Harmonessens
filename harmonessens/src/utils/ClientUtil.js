@@ -98,3 +98,24 @@ export const UpdateClient = async (clientId, formData) => {
         return null;
     }
 };
+
+export const GetClient = async (clientId) => {
+    const queryParams = new URLSearchParams({ id: clientId }).toString();
+    try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/clients/get-client?${queryParams}`);
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Unknown error fetching client.");
+        }
+
+        if (!data.client) {
+            return { success: false, error: 404, message: "Client not found." };
+        }
+
+        return { success: true, client: data.client };
+    } catch (error) {
+        console.error("Error fetching client:", error.message);
+        return { success: false, error: 400, message: error.message };
+    }
+};

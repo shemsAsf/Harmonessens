@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { appointments } from "../Data/Appointments";
 import "./Form.css";
@@ -120,13 +120,11 @@ const Summary = () => {
 		setClientIdAndShowModal(id);
 	}
 
-
-
 	return (
 		<div className="main-div">
 			<h1 className="main-title">Réserver</h1>
 			<div className="summary-container">
-				
+
 
 				{/* Form Section */}
 				<div className="form-div">
@@ -196,16 +194,16 @@ const Summary = () => {
 						</div>
 					</form>
 				</div>
+				
 				<div className="summary-details">
 					<h2>{appointmentInfo.title}</h2>
 					<div className="colored-line left-aligned-line"></div>
-					<p>Date: {new Date(reservationDetails.date).toLocaleDateString()}</p>
-					<p>Heure: {reservationDetails.time}</p>
-					<p>Durée: {FormatDuration(appointmentInfo.length)}</p>
-					<p>Prix: {appointmentInfo.price}€</p>
+					<p><strong>Date:</strong> {new Date(reservationDetails.date).toLocaleDateString()}</p>
+					<p><strong>Heure:</strong> {reservationDetails.time}</p>
+					<p><strong>Durée:</strong> {FormatDuration(appointmentInfo.length)}</p>
+					<p><strong>Prix:</strong> {appointmentInfo.price}€</p>
 				</div>
 			</div>
-			
 
 			{showModal && (
 				<ClientValueModal

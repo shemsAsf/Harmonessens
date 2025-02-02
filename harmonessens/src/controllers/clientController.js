@@ -1,6 +1,6 @@
-const { db } = require("../config/db");
+import { db } from "../config/db.js";
 
-const createClient = async (req, res) => {
+export const CreateClient = async (req, res) => {
 	const { firstName, lastName, email, phone } = req.body;
 	if (!firstName || !lastName || !email) {
 		return res.status(400).json({ message: "Required fields missing." });
@@ -16,7 +16,7 @@ const createClient = async (req, res) => {
 	}
 };
 
-const checkClientExistence = async (req, res) => {
+export const CheckClientExistence = async (req, res) => {
 	const { email } = req.query;
 	try {
 		const [result] = await db.query("SELECT * FROM clients WHERE email = ?", [email]);
@@ -30,7 +30,7 @@ const checkClientExistence = async (req, res) => {
 	}
 };
 
-const modifyExistingClient = async (req, res) => {
+export const ModifyExistingClient = async (req, res) => {
 	const { id, firstName, lastName, email, phone } = req.body;
 	console.log( req.body);
 	if (!id) {
@@ -72,4 +72,18 @@ const modifyExistingClient = async (req, res) => {
 	}
 };
 
-module.exports = { createClient, checkClientExistence, modifyExistingClient };
+export const GetClient = async (req, res) => {
+	const { id } = req.query;
+
+	if (!id) {
+		return res.status(400).json({ success: false, message: "A valid id is required." });
+	}
+
+	try {
+		const [result] = await db.query("SELECT * FROM clients WHERE id = ?", [id]);
+		return res.status(200).json({ success: true, client: result[0] });
+	} catch (error) {
+		console.error("Error fetching clients with the given id:", error);
+		return res.status(500).json({ success: false, error });
+	}
+};

@@ -108,6 +108,28 @@ export const getAppointmentsByDate = async (req, res) => {
 	}
 };
 
+export const getAppointment = async (req, res) => {
+	const { id } = req.query;
+
+	if (!id) {
+		return res.status(400).json({ success: false, message: "A valid id is required." });
+	}
+
+	try {
+		const [appointment] = await db.query(
+			`SELECT *
+			FROM appointments 
+			WHERE id = ?`,
+			[id]
+		);
+
+		return res.status(200).json({ success: true, appointment: appointment[0] });
+	} catch (error) {
+		console.error("Error fetching appointments with the given id:", error);
+		return res.status(500).json({ success: false, message: "Internal server error" });
+	}
+}
+
 const checkForOverlaps = async (startTime, endTime) => {
 	console.log("start:", startTime, "end:", endTime);
 	// Query to check if there is an overlap with any existing appointment
