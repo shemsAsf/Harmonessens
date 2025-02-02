@@ -32,7 +32,6 @@ export const CheckClientExistence = async (req, res) => {
 
 export const ModifyExistingClient = async (req, res) => {
 	const { id, firstName, lastName, email, phone } = req.body;
-	console.log( req.body);
 	if (!id) {
 		return res.status(400).json({
 			success: false,

@@ -3,7 +3,6 @@ import { db } from "../config/db.js";
 export const addAppointmentToDb = async (req, res) => {
 	const { appointmentId, startDateTime, durationInMinutes, message, hasPaid, clientId } = req.body;
 	// Validate if the client exists in the database
-	console.log(req.body);
 	try {
 		const [client] = await db.query('SELECT * FROM clients WHERE id = ?', [clientId]);
 		if (client.length === 0) {
@@ -25,7 +24,6 @@ export const addAppointmentToDb = async (req, res) => {
 
 	// Check for overlapping appointments
 	const hasOverlap = await checkForOverlaps(startDateTime, endTime);
-	console.log(hasOverlap);
 	if (hasOverlap) {
 		return res.status(409).json({ success: false, message: 'Appointment time overlaps with an existing appointment' });
 	}
@@ -41,7 +39,6 @@ export const addAppointmentToDb = async (req, res) => {
 
 	// Create the appointment in the database
 	try {
-		console.log(message);
 		await db.query(
 			`INSERT INTO appointments (id, appointmentId, start_time, end_time, comment, has_paid, client_id) 
          VALUES (?, ?, ?, ?, ?, ?, ?)`,
@@ -131,7 +128,6 @@ export const getAppointment = async (req, res) => {
 }
 
 const checkForOverlaps = async (startTime, endTime) => {
-	console.log("start:", startTime, "end:", endTime);
 	// Query to check if there is an overlap with any existing appointment
 	const query = `
     SELECT * FROM appointments
@@ -142,7 +138,5 @@ const checkForOverlaps = async (startTime, endTime) => {
   `;
 
 	const [existingAppointments] = await db.query(query, [startTime, endTime, startTime, endTime, startTime, endTime]);
-	console.log(existingAppointments);
-
 	return existingAppointments.length > 0;
 };

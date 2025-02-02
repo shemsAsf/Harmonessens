@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { GetAppointment } from "../utils/AppointmentUtils";
-import { GetClient } from "../controllers/clientController";
+import { GetClient } from "../utils/ClientUtil";
 import { NotifyError } from "../utils/NotifyUtil";
 import { FormatDuration } from "../utils/DateTimeUtil";
 import { appointments } from "../Data/Appointments";
@@ -17,7 +17,6 @@ const SeeAppointment = () => {
     useEffect(() => {
         const fetchInfo = async () => {
             const appointmentResult = await GetAppointment(appointmentId);
-            console.log(appointmentResult);
     
             if (!appointmentResult.success) {
                 if (appointmentResult.error === 404) {
@@ -27,8 +26,6 @@ const SeeAppointment = () => {
                 }
                 return;
             }
-    
-            console.log(appointmentResult.appointment); // Log appointment data
 
             const clientResult = await GetClient(appointmentResult.appointment.client_id)
 
@@ -67,10 +64,10 @@ const SeeAppointment = () => {
                 <div className="summary-details">
                     <h2>{appointmentInfo.title}</h2>
                     <div className="colored-line left-aligned-line"></div>
-                    <p><strong>Date:</strong> {new Date(reservationDetails.date).toLocaleDateString()}</p>
-                    <p><strong>Heure:</strong> {reservationDetails.time}</p>
+                    <p><strong>Date:</strong> {new Date(reservationDetails.start_time).toLocaleDateString()}</p>
+                    <p><strong>Heure:</strong> {new Date(reservationDetails.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                     <p><strong>Durée:</strong> {FormatDuration(appointmentInfo.length)}</p>
-                    <p><strong>Prix:</strong> {appointmentInfo.price}€</p>
+                    <p><strong>Reste à payer:</strong> {reservationDetails.has_paid ? 0 : appointmentInfo.price}€</p>
                 </div>
 
                 {/* Client Information */}
@@ -78,11 +75,11 @@ const SeeAppointment = () => {
                     <div className="summary-details">
                         <h2>Informations Client</h2>
                         <div className="colored-line left-aligned-line"></div>
-                        <p><strong>Nom:</strong> {clientInfo.lastName}</p>
-                        <p><strong>Prénom:</strong> {clientInfo.firstName}</p>
+                        <p><strong>Nom:</strong> {clientInfo.last_name}</p>
+                        <p><strong>Prénom:</strong> {clientInfo.first_name}</p>
                         <p><strong>Email:</strong> {clientInfo.email}</p>
                         {clientInfo.phone && <p><strong>Téléphone:</strong> {clientInfo.phone}</p>}
-                        <p><strong>Message:</strong> {clientInfo.comment}</p>
+                        {reservationDetails.comment && <p><strong>Message:</strong> {reservationDetails.comment}</p>}
                     </div>
                 )}
             </div>

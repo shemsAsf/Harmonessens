@@ -52,8 +52,6 @@ export const RemoveAppointmentFromDB = async (appointmentId) => {
         if (!response.ok || !data.success) {
             throw new Error(data.message || "Failed to remove appointment");
         }
-
-        console.log("Appointment successfully removed from database.");
     } catch (error) {
         console.error("Error removing appointment:", error.message);
     }

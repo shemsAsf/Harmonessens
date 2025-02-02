@@ -24,8 +24,6 @@ function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    console.log(JSON.stringify(formData))
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/email/send-contact-email`, {
         method: "POST",

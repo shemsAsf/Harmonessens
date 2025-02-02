@@ -2,7 +2,6 @@ const { calendar, oAuth2Client } = require("../config/googleAuth");
 
 const createCalendarEvent = async (req, res) => {
 	const { summary, description, startDateTime, durationInMinutes } = req.body;
-	console.log(startDateTime);
 
 	const startDate = new Date(startDateTime);
 	const endDate = new Date(startDate.getTime() + durationInMinutes * 60000);
@@ -34,8 +33,6 @@ const createCalendarEvent = async (req, res) => {
 			`&details=${encodeURIComponent(description)}` +
 			`&location=${encodeURIComponent(event.location)}` +
 			`&dates=${startDate.toISOString().replace(/[-:.]/g, "").slice(0, -1)}/${endDate.toISOString().replace(/[-:.]/g, "").slice(0, -1)}`;
-
-		console.log("invite:", inviteLink);
 
 		res.status(200).json({
 			success: true,

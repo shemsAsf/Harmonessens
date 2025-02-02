@@ -61,7 +61,6 @@ const AppointmentCalendar = ({ appointmentId, onAppointmentSubmit }) => {
 
 		try {
 			// Fetch existing appointments from the API
-			console.log(formattedDate);
 			const response = await fetch(`${process.env.REACT_APP_API_URL}/appointments/get-appointments-of-day?date=${formattedDate}`);
 			const data = await response.json();
 
@@ -79,8 +78,6 @@ const AppointmentCalendar = ({ appointmentId, onAppointmentSubmit }) => {
 			
 				return { start, end };
 			});			
-
-			console.log("existing app:", existingAppointments);
 			return processAvailableTimes(existingAppointments, hours);
 		} catch (error) {
 			console.error("Failed to fetch appointments:", error);
@@ -92,10 +89,6 @@ const AppointmentCalendar = ({ appointmentId, onAppointmentSubmit }) => {
 		const availableTimes = [];
 
 		const processTimeRange = (range) => {
-			console.log("range:", range);
-			console.log("final i:", range[1] - appointment.length / 60);
-			console.log("length:", appointment.length / 60);
-
 			for (let i = range[0]; i < (range[1] - appointment.length / 60); i += 0.5) {
 				const startHour = Math.floor(i);
 				const startMinutes = (i % 1) * 60;
@@ -113,8 +106,6 @@ const AppointmentCalendar = ({ appointmentId, onAppointmentSubmit }) => {
 					(startTime >= appointment.start && endTime <= appointment.end)
 				);
 
-				console.log("time:", startTime, "overlap ?:", hasOverlap);
-
 				if (!hasOverlap) {
 					const timeString = `${startHour}:${startMinutes === 0 ? "00" : startMinutes} - ${endHour}:${endMinutes === 0 ? "00" : endMinutes}`;
 					availableTimes.push(timeString);
@@ -125,7 +116,6 @@ const AppointmentCalendar = ({ appointmentId, onAppointmentSubmit }) => {
 		// Process both morning and afternoon ranges if they exist
 		if (hours.morning) processTimeRange(hours.morning);
 		if (hours.afternoon) processTimeRange(hours.afternoon);
-		console.log(availableTimes);
 		return availableTimes.length > 0 ? availableTimes : ["Aucun créneau disponible pour cette journée."];
 	};
 

@@ -3,11 +3,11 @@ import { getValidDateTime } from "./DateTimeUtil";
 export const AddAppointmentToCalendar = async (reservationId, reservationDetails, appointmentInfo) => {
     const createCalendarRequestData = {
         summary: `Harmonessens: ${appointmentInfo.title}`,
-        description: `Id du rendez-vous: ${reservationId}`,
+        description: `Voir ma réservation: ${process.env.REACT_APP_WEBSITE_URL}/seeAppointment/${reservationId}`,
         startDateTime: getValidDateTime(reservationDetails.date, reservationDetails.time),
         durationInMinutes: appointmentInfo.length,
     };
-
+    
     try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/calendar/create-event`, {
             method: "POST",

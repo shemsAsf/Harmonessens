@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { appointments } from "../Data/Appointments";
 import "./Form.css";
@@ -86,7 +86,7 @@ const Summary = () => {
 			RemoveAppointmentFromDB(appointmentResponse.id);
 			return;
 		}
-		NotifySuccess(navigate);
+		NotifySuccess(navigate, `/seeAppointment/${appointmentResponse.id}`);
 	};
 
 	const handleSubmit = (event, payNow) => {
@@ -97,7 +97,6 @@ const Summary = () => {
 	const handleModalConfirm = async (useNewData) => {
 		setShowModal(false);
 		if (useNewData) {
-			console.log("clientId Modal conf:", clientId);
 			const updatedClientId = await UpdateClient(clientId, formData);
 			if (updatedClientId === null) {
 				modalPromise?.resolve({ error: true, message: 'Failed updating client info' });
