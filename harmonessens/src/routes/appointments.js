@@ -10,4 +10,6 @@ router.get("/get-appointments-of-day", async (req, res) => controller.getAppoint
 
 router.get("/get-appointment", async (req, res) => controller.getAppointment(req, res));
 
+router.get("/get-appointments", async (req, res) => controller.getAppointments(req, res));
+
 module.exports = router;

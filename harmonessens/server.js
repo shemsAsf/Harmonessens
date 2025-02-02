@@ -7,6 +7,7 @@ const clientRoutes = require("./src/routes/clients");
 const appointmentRoutes = require("./src/routes/appointments");
 const calendarRoutes = require("./src/routes/calendar");
 const emailRoutes = require("./src/routes/email");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 const port = 5000;
@@ -20,6 +21,18 @@ app.use("/clients", clientRoutes);
 app.use("/appointments", appointmentRoutes);
 app.use("/calendar", calendarRoutes);
 app.use("/email", emailRoutes);
+
+// Admin login route
+app.post("/admin/login", (req, res) => {
+  const { password } = req.body;
+  
+  if (password !== process.env.ADMIN_PASSWORD) {
+      return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, { expiresIn: "1h" });
+  res.json({ token });
+});
 
 // Status endpoint
 app.get("/status", (req, res) => {

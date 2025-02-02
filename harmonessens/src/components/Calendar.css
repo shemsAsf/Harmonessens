@@ -14,8 +14,8 @@
   .calendar-flex-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    gap: 40px; /* More space between calendar and time/button section */
+    justify-content: center;
+    gap: 40px;
   }
   
   /* Calendar Title */

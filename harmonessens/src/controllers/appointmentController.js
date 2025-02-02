@@ -1,4 +1,5 @@
 import { db } from "../config/db.js";
+import jwt from "jsonwebtoken";
 
 export const addAppointmentToDb = async (req, res) => {
 	const { appointmentId, startDateTime, durationInMinutes, message, hasPaid, clientId } = req.body;
@@ -122,10 +123,37 @@ export const getAppointment = async (req, res) => {
 
 		return res.status(200).json({ success: true, appointment: appointment[0] });
 	} catch (error) {
-		console.error("Error fetching appointments with the given id:", error);
+		console.error("Error fetching appointment with the given id:", error);
 		return res.status(500).json({ success: false, message: "Internal server error" });
 	}
-}
+};
+
+export const getAppointments = async (req, res) => {
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) {
+        return res.status(401).json({ success: false, message: "Unauthorized: No token provided" });
+    }
+
+    try {
+        // Verify the token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        
+        if (!decoded) {
+            return res.status(403).json({ success: false, message: "Forbidden: Invalid token" });
+        }
+
+        // Fetch all appointments
+        const [appointments] = await db.query(
+            `SELECT * FROM appointments`
+        );
+
+        return res.status(200).json({ success: true, appointments });
+    } catch (error) {
+        console.error("Error fetching appointments:", error);
+        return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+};
 
 const checkForOverlaps = async (startTime, endTime) => {
 	// Query to check if there is an overlap with any existing appointment

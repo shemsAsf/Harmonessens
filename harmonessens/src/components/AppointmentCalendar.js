@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { useNavigate } from "react-router-dom";
 import { appointments } from "../Data/Appointments";
-import "./AppointmentCalendar.css"
+import "./Calendar.css"
 
 // Opening hours
 const openingHours = {
@@ -42,8 +42,42 @@ const AppointmentCalendar = ({ appointmentId, onAppointmentSubmit }) => {
 		return dayOfWeek >= 2 && dayOfWeek <= 6; // Tuesday to Saturday
 	};
 
+	const processAvailableTimes = useCallback((existingAppointments, hours) => {
+		const availableTimes = [];
+
+		const processTimeRange = (range) => {
+			for (let i = range[0]; i < range[1] - appointment.length / 60; i += 0.5) {
+				const startHour = Math.floor(i);
+				const startMinutes = (i % 1) * 60;
+				const startTime = startHour + startMinutes / 60;
+
+				const endTimeInMinutes = startHour * 60 + startMinutes + appointment.length;
+				const endHour = Math.floor(endTimeInMinutes / 60);
+				const endMinutes = endTimeInMinutes % 60;
+				const endTime = endHour + endMinutes / 60;
+
+				// Check if the slot overlaps with any existing appointment
+				const hasOverlap = existingAppointments.some(appointment =>
+					(startTime <= appointment.start && endTime >= appointment.start) ||
+					(startTime <= appointment.end && endTime >= appointment.end) ||
+					(startTime >= appointment.start && endTime <= appointment.end)
+				);
+
+				if (!hasOverlap) {
+					const timeString = `${startHour}:${startMinutes === 0 ? "00" : startMinutes} - ${endHour}:${endMinutes === 0 ? "00" : endMinutes}`;
+					availableTimes.push(timeString);
+				}
+			}
+		};
+
+		if (hours.morning) processTimeRange(hours.morning);
+		if (hours.afternoon) processTimeRange(hours.afternoon);
+
+		return availableTimes.length > 0 ? availableTimes : ["Aucun créneau disponible pour cette journée."];
+	}, [appointment.length]);
+
 	// Get available times for the selected date and ensure that the time doesn't exceed working hours
-	const getAvailableTimes = async (date) => {
+	const getAvailableTimes = useCallback(async (date) => {
 		if (!date) return [];
 
 		date = new Date(date);
@@ -72,61 +106,29 @@ const AppointmentCalendar = ({ appointmentId, onAppointmentSubmit }) => {
 			const existingAppointments = data.appointments.map(app => {
 				const startTime = app.start_time.split(':');
 				const endTime = app.end_time.split(':');
-			  
+
 				const start = parseInt(startTime[0]) + parseInt(startTime[1]) / 60;
 				const end = parseInt(endTime[0]) + parseInt(endTime[1]) / 60;
-			
+
 				return { start, end };
-			});			
+			});
+
 			return processAvailableTimes(existingAppointments, hours);
 		} catch (error) {
 			console.error("Failed to fetch appointments:", error);
 			return [];
 		}
-	};
-
-	const processAvailableTimes = (existingAppointments, hours) => {
-		const availableTimes = [];
-
-		const processTimeRange = (range) => {
-			for (let i = range[0]; i < (range[1] - appointment.length / 60); i += 0.5) {
-				const startHour = Math.floor(i);
-				const startMinutes = (i % 1) * 60;
-				const startTime = startHour + startMinutes / 60;
-
-				const endTimeInMinutes = (startHour * 60 + startMinutes) + appointment.length;
-				const endHour = Math.floor(endTimeInMinutes / 60);
-				const endMinutes = endTimeInMinutes % 60;
-				const endTime = endHour + endMinutes / 60;
-
-				// Check if the slot overlaps with any existing appointment
-				const hasOverlap = existingAppointments.some(appointment =>
-					(startTime <= appointment.start && endTime >= appointment.start) ||
-					(startTime <= appointment.end && endTime >= appointment.end) ||
-					(startTime >= appointment.start && endTime <= appointment.end)
-				);
-
-				if (!hasOverlap) {
-					const timeString = `${startHour}:${startMinutes === 0 ? "00" : startMinutes} - ${endHour}:${endMinutes === 0 ? "00" : endMinutes}`;
-					availableTimes.push(timeString);
-				}
-			}
-		};
-
-		// Process both morning and afternoon ranges if they exist
-		if (hours.morning) processTimeRange(hours.morning);
-		if (hours.afternoon) processTimeRange(hours.afternoon);
-		return availableTimes.length > 0 ? availableTimes : ["Aucun créneau disponible pour cette journée."];
-	};
+	}, [processAvailableTimes]);
 
 	useEffect(() => {
 		const fetchAvailableTimes = async () => {
-		  const times = await getAvailableTimes(selectedDate);
-		  setAvailableTimes(times);
+			const times = await getAvailableTimes(selectedDate);
+			setAvailableTimes(times);
 		};
-	  
+
 		fetchAvailableTimes();
-	  }, [selectedDate]); // Only depend on selectedDate
+	}, [selectedDate, getAvailableTimes]);
+
 
 	// Handle appointment submission
 	const handleSubmit = () => {

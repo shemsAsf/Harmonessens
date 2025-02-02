@@ -25,6 +25,11 @@ p {
   font-weight: 400;
 }
 
+.centered-text {
+  text-align: center;
+  margin-top: 20px;
+}
+
 .main-div {
   max-width: 80%; 
   width: clamp(300px, 90%, 1200px);
