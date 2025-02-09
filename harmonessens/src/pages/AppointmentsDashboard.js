@@ -2,30 +2,50 @@ import { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "../components/Calendar.css";
 import ReservationDetails from "../components/ReservationDetail";
+import { jwtDecode } from "jwt-decode";
+import "./Form.css";
 
 const AppointmentsDashboard = () => {
     const [password, setPassword] = useState("");
-    const [token, setToken] = useState(localStorage.getItem("adminToken"));
-    const [isAuthenticated, setIsAuthenticated] = useState(!!token);
+    const token = localStorage.getItem("token");
     const [appointments, setAppointments] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const today = new Date();
 
+    const isTokenExpired = (token) => {
+        if (!token) return true;
+
+        try {
+            const { exp } = jwtDecode(token);
+            if (!exp) return true;
+
+            const now = Math.floor(Date.now() / 1000);
+            if (exp < now){
+                localStorage.removeItem("token");
+                window.location.reload();
+            }
+            return exp < now;
+        } catch (error) {
+            return true;
+        }
+    };
+
+    const isAuthenticated = token && !isTokenExpired(token);
+
     const handleLogin = async () => {
+        console.log(JSON.stringify({ password }));
         const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/login`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ password }),
+            headers: { "Content-Type": "application/json" },
         });
 
         const data = await response.json();
         if (data.token) {
-            localStorage.setItem("adminToken", data.token);
-            setToken(data.token);
-            setIsAuthenticated(true);
-            fetchAppointments(data.token);
+            localStorage.setItem("token", data.token);
+            window.location.reload(); // Refresh to apply authentication
         } else {
-            alert("Mot de passe incorrect");
+            alert("Invalid credentials");
         }
     };
 
@@ -57,15 +77,19 @@ const AppointmentsDashboard = () => {
 
     if (!isAuthenticated) {
         return (
-            <div className="admin-login">
-                <h2>Connexion Admin</h2>
-                <input
-                    type="password"
-                    placeholder="Mot de passe"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <button onClick={handleLogin}>Se connecter</button>
+            <div className="main-div">
+                <div className="form-div centered-form">
+                    <h2 className="main-title">Connexion Admin</h2>
+                    <div className="form-field">
+                        <input
+                            type="password"
+                            placeholder="Mot de passe"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
+                    <button className="submit-button" onClick={handleLogin}>Se connecter</button>
+                </div>
             </div>
         );
     }

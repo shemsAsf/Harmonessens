@@ -23,7 +23,7 @@ function Navbar() {
 			<ul className={`nav-list ${isMobileMenuOpen ? "open" : ""}`}>
 				<li className="nav-item dropdown">
 					<Link to="/information" className="nav-link">
-						Information
+						Présentation
 					</Link>
 				</li>
 				<li className="nav-item">

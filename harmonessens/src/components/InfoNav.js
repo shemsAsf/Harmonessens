@@ -13,7 +13,7 @@ function InfoNav() {
 				<a href="/information/approche_chamanique">
 					<img src="https://www.terre-d-eveil.fr/wp-content/uploads/2023/05/Chamanisme.jpg" alt="Item 2" className="circle-image" />
 				</a>
-				<h3 className="circle-title">L'approche chamanique</h3>
+				<h3 className="circle-title">Le soin chamanique</h3>
 			</div>
 			<div className="circle-item">
 				<a href="/information/rituels">

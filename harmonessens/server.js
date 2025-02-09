@@ -30,7 +30,7 @@ app.post("/admin/login", (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, { expiresIn: "1h" });
+  const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, { expiresIn: "24h" });
   res.json({ token });
 });
 

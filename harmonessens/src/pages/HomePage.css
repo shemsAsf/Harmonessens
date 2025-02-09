@@ -12,7 +12,7 @@
   
   /* Hero Section */
   .hero {
-    background-image: url("https://img.freepik.com/photos-premium/prise-vue-au-grand-angle-seul-arbre-poussant-sous-ciel-assombri-pendant-coucher-soleil-entoure-herbe_181624-22807.jpg"); /* Replace with your image */
+    background-image: url("../ressources/hero.jpg");
     background-size: cover;
     background-position: center;
     height: 60vh;

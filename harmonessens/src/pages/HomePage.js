@@ -1,5 +1,6 @@
 import React from "react";
 import "./HomePage.css";
+import eagle from "../ressources/eagle-icon.svg";
 
 function Home() {
   return (
@@ -10,17 +11,18 @@ function Home() {
 
       {/* Activities Section */}
       <div className="activities">
-        <h1 className="home-page-title">SWIN</h1>
+        <h1 className="home-page-title">SWIN 
+        <img src={eagle} alt="Eagle" width="33" height="33"></img></h1>
 				<div className="colored-line" id="centered-gl"></div>
         <div className="activities-text">
-					<p>Naturopathie, Soins Chamaniques, Relaxation et Méditation...</p>
+					<p>Soin chamanique, Guidance, Naturopathie, Méditation...</p>
 				</div>
       </div>
 
       {/* Description Section */}
       <div className="description">
         <p>
-          Je suis Khadija Asfouri, naturopathe et thérapeute holistique.
+          Je suis naturopathe et thérapeute holistique.
           <br />
           <br />
           Je vous invite à un voyage intérieur, un espace où il est possible de se reconnecter à soi, en douceur, sans
