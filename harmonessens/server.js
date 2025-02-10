@@ -7,6 +7,7 @@ const clientRoutes = require("./src/routes/clients");
 const appointmentRoutes = require("./src/routes/appointments");
 const calendarRoutes = require("./src/routes/calendar");
 const emailRoutes = require("./src/routes/email");
+const stripeRoutes = require("./src/routes/stripe");
 const jwt = require("jsonwebtoken");
 
 const app = express();
@@ -21,6 +22,7 @@ app.use("/clients", clientRoutes);
 app.use("/appointments", appointmentRoutes);
 app.use("/calendar", calendarRoutes);
 app.use("/email", emailRoutes);
+app.use("/stripe", stripeRoutes);
 
 // Admin login route
 app.post("/admin/login", (req, res) => {

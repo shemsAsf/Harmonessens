@@ -4,18 +4,22 @@ import { appointments } from "../Data/Appointments";
 import "./Form.css";
 import "./Summary.css";
 import ClientValueModal from '../components/ClientValueModal';
+import CheckoutForm from '../components/CheckoutForm';
 import { ClientCheck, UpdateClient } from '../utils/ClientUtil';
 import { AddAppointmentToDB, RemoveAppointmentFromDB } from '../utils/AppointmentUtils';
 import { AddAppointmentToCalendar, RemoveCalendarEvent } from '../utils/CalendarUtil';
 import { SendAppointmentEmail } from '../utils/EmailUtils';
 import { FormatDuration } from '../utils/DateTimeUtil';
 import { NotifyError, NotifySuccess } from '../utils/NotifyUtil';
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 const Summary = () => {
 	const { state: reservationDetails } = useLocation();
 	const appointmentInfo = appointments.find((appt) => appt.id === reservationDetails.id);
 	const navigate = useNavigate();
 	const [showModal, setShowModal] = useState(false);
+	const [paymentModalVisible, setPaymentModalVisible] = useState(false);
 	const [differences, setDifferences] = useState([]);
 	const [modalPromise, setModalPromise] = useState(null);
 	const [formData, setFormData] = useState({
@@ -26,12 +30,84 @@ const Summary = () => {
 		message: '',
 	});
 	const [clientId, setClientIdAndShowModal] = useState(null);
+	const [emailData, setEmailData] = useState(null);
+	const [processIds, setProcessIds] = useState(null);
+
+	const stripePromise = loadStripe("pk_test_51QmwNtFDZlTLF3ipsKdOVGodzcE5FuBvCEThg1eCczGSdOdAEHHjPzMK9saR79fLoiYkFLjGTfxz1iEAtBojtQ3s00Cn6ogTBZ");
+
+	const [clientSecret, setClientSecret] = useState(null);
+
+	useEffect(() => {
+		const fetchClientSecret = async () => {
+			try {
+				const response = await fetch(`${process.env.REACT_APP_API_URL}/stripe/create-payment-intent`, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						amount: appointmentInfo.price * 100,
+						currency: "eur",
+					}),
+				});
+
+				if (response.status === 500) {
+					throw new Error("Server error:", response.error);
+				}
+
+				const data = await response.json();
+
+				if (!data.clientSecret) {
+					throw new Error("Invalid response: Missing clientSecret.");
+				}
+
+				setClientSecret(data.clientSecret);
+				console.log("Successfully fetched client secret.");
+			} catch (error) {
+				console.error("Error fetching client secret:", error);
+				
+				if (processIds) {
+					console.log("Cleaning up calendar event and database event...");
+					RemoveCalendarEvent(processIds.calendar);
+					RemoveAppointmentFromDB(processIds.appointment);
+				}
+	
+				NotifyError(navigate, appointmentInfo.id ? `/appointment/${appointmentInfo.id}` : "/appointment", "Erreur lors de la récupération du paiement.");
+			}
+		};
+
+		if (paymentModalVisible) {
+			fetchClientSecret();
+		}
+	}, [paymentModalVisible, reservationDetails, navigate, appointmentInfo.id, processIds, appointmentInfo?.clientIds]);
 
 	useEffect(() => {
 		if (clientId !== null) {
 			setShowModal(true);;
 		}
 	}, [clientId]);
+
+	useEffect(() => {
+		const cleanup = () => {
+			if (paymentModalVisible && processIds) {
+				console.log("Page closed before payment. Cleaning up appointment...");
+				setPaymentModalVisible(false);
+				RemoveCalendarEvent(processIds.calendar);
+				RemoveAppointmentFromDB(processIds.appointment);
+			}
+		};
+	
+		window.addEventListener("beforeunload", cleanup);
+		window.addEventListener("visibilitychange", () => {
+			if (document.visibilityState === "hidden") {
+				cleanup();
+			}
+		});
+	
+		return () => {
+			window.removeEventListener("beforeunload", cleanup);
+			window.removeEventListener("visibilitychange", cleanup);
+		};
+	}, [paymentModalVisible, processIds]);
+	
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -73,20 +149,34 @@ const Summary = () => {
 			return;
 		}
 
-		// --- Send Comfirmation Email ---
-		const emailResponse = await SendAppointmentEmail(
-			appointmentResponse.id,
-			calendarResponse.inviteLink,
-			formData,
-			reservationDetails,
-		)
-		if (!emailResponse) {
-			NotifyError();
-			RemoveCalendarEvent(calendarResponse.eventId);
-			RemoveAppointmentFromDB(appointmentResponse.id);
-			return;
+		if (!payNow) {
+			// --- Send Comfirmation Email ---
+			const emailResponse = await SendAppointmentEmail(
+				appointmentResponse.id,
+				calendarResponse.inviteLink,
+				formData,
+				reservationDetails,
+			)
+			if (!emailResponse) {
+				NotifyError(null, null, "Une erreur est survenue lors de l'envoi du mail de confirmation. Votre réservation & été sauvegardée avec succès");
+			}
+			NotifySuccess(navigate, `/seeAppointment/${appointmentResponse.id}`);
 		}
-		NotifySuccess(navigate, `/seeAppointment/${appointmentResponse.id}`);
+		else {
+			// --- Show Payment Method ---
+			console.log("gotta show payment method");
+			setEmailData({
+				appointmentId: appointmentResponse.id,
+				inviteLink: calendarResponse.inviteLink,
+				formData,
+				reservationDetails,
+			})
+			setProcessIds({
+				calendar: calendarResponse.eventId,
+				appointment: appointmentResponse.id
+			})
+			setPaymentModalVisible(true);
+		}
 	};
 
 	const handleSubmit = (event, payNow) => {
@@ -117,6 +207,26 @@ const Summary = () => {
 		setDifferences(differences);
 		setModalPromise({ resolve });
 		setClientIdAndShowModal(id);
+	}
+
+	const handleSuccessPayment = async () => {
+		setPaymentModalVisible(false);
+		{
+			// --- Send Comfirmation Email ---
+			const emailResponse = await SendAppointmentEmail({ ...emailData })
+			if (!emailResponse) {
+				NotifyError(null, null, "Une erreur est survenue lors de l'envoi du mail de confirmation. Votre réservation & été sauvegardée avec succès");
+			}
+			NotifySuccess(navigate, `/seeAppointment/${processIds.appointment}`);
+		}
+	}
+
+	const handleFailedPayment = async () => {
+		setPaymentModalVisible(false);
+		NotifyError(null, null, "Une erreur est survenue lors du payment.")
+
+		RemoveCalendarEvent(processIds.calendar);
+		RemoveAppointmentFromDB(processIds.appointment);
 	}
 
 	return (
@@ -193,7 +303,7 @@ const Summary = () => {
 						</div>
 					</form>
 				</div>
-				
+
 				<div className="summary-details">
 					<h2>{appointmentInfo.title}</h2>
 					<div className="colored-line left-aligned-line"></div>
@@ -203,6 +313,18 @@ const Summary = () => {
 					<p><strong>Prix:</strong> {appointmentInfo.price}€</p>
 				</div>
 			</div>
+
+			{/* Payment Modal */}
+			{paymentModalVisible && clientSecret && (
+				<div className="payment-modal">
+					<Elements stripe={stripePromise} options={{clientSecret}}>
+						<CheckoutForm
+							handlePayment={handleSuccessPayment}
+							handleFailedPayment={handleFailedPayment}
+						/>
+					</Elements>
+				</div>
+			)}
 
 			{showModal && (
 				<ClientValueModal

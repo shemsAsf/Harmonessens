@@ -35,7 +35,7 @@ export const AddAppointmentToCalendar = async (reservationId, reservationDetails
 
 export const RemoveCalendarEvent = async (eventId) => {
     try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/remove-event`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/calendar/remove-event`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ eventId }),
