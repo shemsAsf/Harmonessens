@@ -1,7 +1,7 @@
 export const appointments = [
   {
     id: 1,
-    title: "Le soin chamanique: un voyage vers soi",
+    title: "Le soin chamanique : un voyage vers soi",
     image: "Images/Tambour.jpg",
     description: [
       "Il est des instants où l’on se sent perdu, comme si un fil invisible nous avait détaché de nous-mêmes. Une impression de vide, d’incomplétude, un murmure intérieur que l’on n’arrive ni à nommer ni à apaiser. On avance alors avec un poids discret mais persistant, des émotions qui ressurgissent sans prévenir, des schémas qui se répètent inlassablement, des relations qui nous épuisent, des événements qui semblent insister pour être enfin entendus.",
@@ -19,8 +19,8 @@ export const appointments = [
   },
   {
     id: 2,
-    title: "Guidance Chamanique avec les Runes",
-    image: "https://i.pinimg.com/736x/fe/45/43/fe454310d5bda20b3d4f4bc2e8e1778e.jpg",
+    title: "La Guidance chamaniques avec les runes : un phare pour guider votre chemin.",
+    image: "/images/Rune.jpg",
     description: [
       "Il y a des moments dans la vie où tout devient flou, où les doutes prennent le dessus et où l'on perd de vue ce qui fait sens. Peut-être cherchez-vous des réponses, un éclairage sur une situation, ou simplement un moyen d’être à l’écoute de votre âme pour retrouver votre chemin de lumière et de vérité.",
       "La guidance chamanique avec les runes intervient alors comme un appui. Ces symboles ancestraux, porteurs de mystères et de sagesse, vous aident à comprendre les cycles de votre vie et les choix qui s’offrent à vous. Plus qu’une simple lecture, c’est un véritable dialogue avec votre monde intérieur pour révéler ce qui vous bloque, ce qui vous inspire, et ce qui vous guide.",
@@ -33,8 +33,8 @@ export const appointments = [
   },
   {
     id: 3,
-    title: "Massage Énergétique",
-    image: "https://i.pinimg.com/736x/05/b0/3a/05b03a5804952dacbcbf2e5040f346c5.jpg",
+    title: "Le massage énergétique : une harmonie Esprit, Corps et Ame.",
+    image: "/images/Owl.jpg",
     description: [
       "Ce massage énergétique est une invitation à vous recentrer et à harmoniser vos énergies. Grâce à un toucher conscient et délicat, des huiles choisies spécialement pour répondre à vos besoins, et l’utilisation d’outils vibratoires comme les bols tibétains ou les cristaux, ce soin agit en profondeur sur les tensions physiques et émotionnelles.",
       "Idéal pour relâcher les pressions du quotidien, ce massage offre une relaxation totale, libère les énergies bloquées et recharge le corps d’une vitalité nouvelle. C’est une parenthèse de douceur et de sérénité, où l’âme trouve réconfort et paix. Vous en ressortez aligné, léger, et profondément apaisé.",
@@ -44,8 +44,8 @@ export const appointments = [
   },
   {
     id: 4,
-    title: "Massage Chamanique: Un Rituel de Passage",
-    image: "/images/Tarot.jpg",
+    title: "Massage Chamanique : Un Rituel de Passage",
+    image: "/images/Flower.jpg",
     description: [
       "Le massage chamanique est conçu comme un rituel sacré, un soin profond pour accompagner les grandes étapes de votre vie. Que vous viviez une transition importante, comme la ménopause, un deuil, une séparation, ou tout autre changement clé, ce massage agit comme un véritable soutien, en vous aidant à accueillir vos émotions et à avancer en paix.",
       "Inspiré des 4 éléments, il vous connecte à la Terre pour l’ancrage, à l’Eau pour la libération émotionnelle, à l’Air pour l’allègement de l’esprit, et au Feu pour raviver votre énergie vitale. Chaque geste, chaque intention posée durant ce soin, vous enveloppe dans une énergie de transformation et de réconfort, vous permettant de renaître à vous-même.",
@@ -56,8 +56,8 @@ export const appointments = [
   },
   {
     id: 5,
-    title: "La naturopathie: un accompagnement sur-mesure ",
-    image: "https://i.pinimg.com/736x/bf/58/3a/bf583a31d9f8bdc7d672e8c9106934f9.jpg",
+    title: "La naturopathie : un accompagnement sur-mesure ",
+    image: "/images/FlowerLight.jpg",
     description: [
       "Chaque séance de naturopathie est un espace dédié à l’écoute et à la compréhension du corps dans sa globalité. Elle dure environ une heure et permet d’explorer les déséquilibres physiques, émotionnels et énergétiques qui peuvent impacter le bien-être au quotidien.",
       "La consultation commence par un échange approfondi pour cerner les besoins et les problématiques spécifiques. L’alimentation, le sommeil, la digestion, la gestion du stress ou encore la vitalité générale sont autant d’éléments pris en compte pour dresser un bilan personnalisé. Il ne s’agit pas seulement d’apaiser des symptômes, mais de comprendre leur origine et de proposer des ajustements adaptés pour retrouver un équilibre durable.",
@@ -65,5 +65,31 @@ export const appointments = [
     ],
     length: 60,
     price: 50,
+  },
+  {
+    id: 6,
+    title: "Au - delà du voile : un voyage intérieur guidé par les oracles. (30min)",
+    image: "/images/Tarot.jpg",
+    description: [
+      "Il existe des portes invisibles que seule l’âme sait reconnaître. À travers les oracles et le pendule, je t’invite à franchir ces seuils, à explorer les mondes subtils où résident les réponses que ton cœur cherche en silence. Chaque carte tirée, chaque mouvement du pendule murmure des vérités enfouies, des éclats de lumière dissimulés dans l’ombre.",
+      "Mais souviens-toi, ces révélations ne sont que des éclats de possibles. Le véritable pouvoir réside en toi. Tu es l’architecte de ta réalité, le maître des directions que tu choisis d’emprunter. En modifiant ta vibration intérieure, tu influences le tissu même de ton existence, transformant les obstacles en passages, les doutes en certitudes.",
+      "Cette guidance est une invitation à te reconnecter à l’essence sacrée de ton être, à écouter les messages que l’univers t’adresse, tout en respectant ton libre arbitre. Je t’accompagne dans ce voyage entre visible et invisible, avec bienveillance et respect, pour que chaque révélation soit un pas vers ta propre vérité.",
+      "Es-tu prêt à lever le voile et à écouter les murmures de l’invisible ?"
+    ],
+    length: 30,
+    price: 50,
+  },
+  {
+    id: 7,
+    title: "Au - delà du voile : un voyage intérieur guidé par les oracles. (1h)",
+    image: "/images/Tarot.jpg",
+    description: [
+      "Il existe des portes invisibles que seule l’âme sait reconnaître. À travers les oracles et le pendule, je t’invite à franchir ces seuils, à explorer les mondes subtils où résident les réponses que ton cœur cherche en silence. Chaque carte tirée, chaque mouvement du pendule murmure des vérités enfouies, des éclats de lumière dissimulés dans l’ombre.",
+      "Mais souviens-toi, ces révélations ne sont que des éclats de possibles. Le véritable pouvoir réside en toi. Tu es l’architecte de ta réalité, le maître des directions que tu choisis d’emprunter. En modifiant ta vibration intérieure, tu influences le tissu même de ton existence, transformant les obstacles en passages, les doutes en certitudes.",
+      "Cette guidance est une invitation à te reconnecter à l’essence sacrée de ton être, à écouter les messages que l’univers t’adresse, tout en respectant ton libre arbitre. Je t’accompagne dans ce voyage entre visible et invisible, avec bienveillance et respect, pour que chaque révélation soit un pas vers ta propre vérité.",
+      "Es-tu prêt à lever le voile et à écouter les murmures de l’invisible ?"
+    ],
+    length: 60,
+    price: 90,
   },
 ];
