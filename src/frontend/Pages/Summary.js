@@ -1,16 +1,16 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { appointments } from "../Data/Appointments";
-import "./Form.css";
-import "./Summary.css";
-import ClientValueModal from '../components/ClientValueModal';
-import CheckoutForm from '../components/CheckoutForm';
-import { ClientCheck, UpdateClient } from '../utils/ClientUtil';
-import { AddAppointmentToDB, RemoveAppointmentFromDB } from '../utils/AppointmentUtils';
-import { AddAppointmentToCalendar, RemoveCalendarEvent } from '../utils/CalendarUtil';
-import { SendAppointmentEmail } from '../utils/EmailUtils';
-import { FormatDuration } from '../utils/DateTimeUtil';
-import { NotifyError, NotifySuccess } from '../utils/NotifyUtil';
+import "../Style/Form.css";
+import "../Style/Summary.css";
+import ClientValueModal from '../Components/ClientModal/ClientValueModal';
+import CheckoutForm from '../Components/CheckoutForm';
+import { ClientCheck, UpdateClient } from '../Utils/ClientUtil';
+import { AddAppointmentToDB, RemoveAppointmentFromDB } from '../Utils/AppointmentUtils';
+import { AddAppointmentToCalendar, RemoveCalendarEvent } from '../Utils/CalendarUtil';
+import { SendAppointmentEmail } from '../Utils/EmailUtils';
+import { FormatDuration } from '../Utils/DateTimeUtil';
+import { NotifyError, NotifySuccess } from '../Utils/NotifyUtil';
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -77,7 +77,7 @@ const Summary = () => {
 		if (paymentModalVisible) {
 			fetchClientSecret();
 		}
-	}, [paymentModalVisible, reservationDetails, navigate, appointmentInfo.id, processIds, appointmentInfo?.clientIds]);
+	}, [paymentModalVisible, reservationDetails, navigate, appointmentInfo.id, processIds, appointmentInfo?.clientIds, appointmentInfo.price]);
 
 	useEffect(() => {
 		if (clientId !== null) {
@@ -155,6 +155,7 @@ const Summary = () => {
 				appointmentResponse.id,
 				calendarResponse.inviteLink,
 				formData,
+				appointmentInfo.title,
 				reservationDetails,
 			)
 			if (!emailResponse) {
@@ -169,6 +170,7 @@ const Summary = () => {
 				appointmentId: appointmentResponse.id,
 				inviteLink: calendarResponse.inviteLink,
 				formData,
+				title: appointmentInfo.title,
 				reservationDetails,
 			})
 			setProcessIds({

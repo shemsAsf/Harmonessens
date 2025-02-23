@@ -2,8 +2,8 @@ import React, { useEffect, useState, useCallback } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { useNavigate } from "react-router-dom";
-import { appointments } from "../Data/Appointments";
-import "./Calendar.css"
+import { appointments } from "../../Data/Appointments";
+import "../../Style/Calendar.css"
 
 // Opening hours
 const openingHours = {

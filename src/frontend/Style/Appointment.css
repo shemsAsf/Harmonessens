@@ -1,4 +1,77 @@
-.appointment-card {
+.info-card {
+  display: flex;
+  align-items: center;
+  border-left: 5px solid var(--accent-color-dark);
+  border-radius: 8px;
+  padding: 12px 15px;
+  margin: 10px 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.info-icon {
+  font-size: 1.2rem;
+  color: var(--accent-color-dark);
+  margin-right: 10px;
+}
+
+.info-content p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color:  var(--accent-color-dark);
+}
+
+.info-content span {
+  font-size: 0.95rem;
+  color:  var(--accent-color-dark);
+}
+
+
+  .session-details {
+    margin-top: 30px;
+  }
+  
+  .subsection-title {
+    font-size: 1.5rem;
+    color: #444;
+    margin-bottom: 10px;
+  }
+  
+  .session-steps {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .session-steps li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #fdf6e3;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .pricing-section {
+    margin-top: 30px;
+    text-align: center;
+  }
+  
+  .pricing {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  .button-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .appointment-end-text {
+    margin: 16px 50px;
+  }
+
+  /* --- Card --- */
+
+  .appointment-card {
     display: flex;
     flex-direction: row;
     padding: 25px;

@@ -1,9 +1,9 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import AppointmentCalendar from "../../components/AppointmentCalendar";
+import AppointmentCalendar from "../../Components/Calendar/AppointmentCalendar";
 import { appointments } from "../../Data/Appointments";
-import { FormatDuration } from "../../utils/DateTimeUtil";
-import "./Appointment.css"
+import { FormatDuration } from "../../Utils/DateTimeUtil";
+import "../../Style/Appointment.css";
 
 const AppointmentDetail = () => {
 	const { id } = useParams();

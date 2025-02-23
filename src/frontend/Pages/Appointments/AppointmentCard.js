@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./AppointmentCard.css";
+import "../../Style/Appointment.css";
 
 const AppointmentCard = ({ appointment }) => {
 	const [isExpanded, setIsExpanded] = useState(false);

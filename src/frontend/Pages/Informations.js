@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import "./Informations.css";
-import InfoNav from "../components/InfoNav";
+import InfoNav from "../Components/InfoNav/InfoNav";
+import "../Style/Informations.css";
 
 const content = {
   naturopathie: (

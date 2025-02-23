@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./Contact.css";
-import "./Form.css";
+import "../Style/Contact.css";
+import "../Style/Form.css";
 import Swal from "sweetalert2";
 
 function Contact() {

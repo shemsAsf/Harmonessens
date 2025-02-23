@@ -2,12 +2,12 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const { checkAndCreateTables } = require("./src/config/db");
-const clientRoutes = require("./src/routes/clients");
-const appointmentRoutes = require("./src/routes/appointments");
-const calendarRoutes = require("./src/routes/calendar");
-const emailRoutes = require("./src/routes/email");
-const stripeRoutes = require("./src/routes/stripe");
+const { checkAndCreateTables } = require("./src/backend/config/db");
+const clientRoutes = require("./src/backend/routes/clients");
+const appointmentRoutes = require("./src/backend/routes/appointments");
+const calendarRoutes = require("./src/backend/routes/calendar");
+const emailRoutes = require("./src/backend/routes/email");
+const stripeRoutes = require("./src/backend/routes/stripe");
 const jwt = require("jsonwebtoken");
 
 const app = express();

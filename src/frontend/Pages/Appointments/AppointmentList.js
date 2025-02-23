@@ -1,8 +1,8 @@
 import React from "react";
 import { appointments } from "../../Data/Appointments";
 import AppointmentCard from "./AppointmentCard";
-import "./Appointment.css"
 import { useNavigate } from "react-router-dom";
+import "../../Style/Appointment.css";
 
 const AppointmentList = () => {
 	const navigate = useNavigate();

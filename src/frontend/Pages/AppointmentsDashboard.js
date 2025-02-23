@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import Calendar from "react-calendar";
-import "../components/Calendar.css";
-import ReservationDetails from "../components/ReservationDetail";
+import ReservationDetails from "../Components/ReservationDetail";
 import { jwtDecode } from "jwt-decode";
-import "./Form.css";
+import "../Style/Calendar.css";
+import "../Style/Form.css";
 
 const AppointmentsDashboard = () => {
     const [password, setPassword] = useState("");

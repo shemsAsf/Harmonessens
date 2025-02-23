@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js";
-import { NotifyError } from "../utils/NotifyUtil";
 import { useNavigate } from "react-router-dom";
 
 const CheckoutForm = ({ handlePayment, handleFailedPayment }) => {

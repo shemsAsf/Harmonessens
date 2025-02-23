@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GetAppointment } from "../utils/AppointmentUtils";
-import { GetClient } from "../utils/ClientUtil";
-import { NotifyError } from "../utils/NotifyUtil";
-import { FormatDuration } from "../utils/DateTimeUtil";
+import { GetAppointment } from "../Utils/AppointmentUtils";
+import { GetClient } from "../Utils/ClientUtil";
+import { NotifyError } from "../Utils/NotifyUtil";
+import { FormatDuration } from "../Utils/DateTimeUtil";
 import { appointments } from "../Data/Appointments";
-import "../pages/Summary.css";
+import "../Style/Summary.css";
 
 const ReservationDetails = ({ appointmentId }) => {
     const [appointmentInfo, setAppointmentInfo] = useState(null);

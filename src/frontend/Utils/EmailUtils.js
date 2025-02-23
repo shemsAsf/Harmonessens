@@ -1,13 +1,14 @@
 import { getLocalDate } from "./DateTimeUtil";
 
-export const SendAppointmentEmail = async (appointmentId, inviteLink, formData, reservationDetails) => {
+export const SendAppointmentEmail = async (appointmentId, inviteLink, formData, title, reservationDetails) => {
     try {
+        console.log("title:", )
         const response = await fetch(`${process.env.REACT_APP_API_URL}/email/send-appointment-email`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 ...formData,
-                title: reservationDetails.title,
+                title,
                 day: getLocalDate(reservationDetails.date).toLocaleDateString(),
                 time: reservationDetails.time,
                 appointmentId,

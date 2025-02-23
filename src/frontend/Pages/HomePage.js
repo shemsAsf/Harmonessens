@@ -1,6 +1,6 @@
 import React from "react";
-import "./HomePage.css";
-import eagle from "../ressources/eagle-icon.svg";
+import eagle from "../Assets/eagle-icon.svg";
+import "../Style/HomePage.css";
 
 function Home() {
   return (

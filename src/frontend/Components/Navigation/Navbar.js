@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Navigation.css";
+import "./Navbar.css";
 
 function Navbar() {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

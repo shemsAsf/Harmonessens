@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import ReservationDetail from "../components/ReservationDetail";
+import ReservationDetail from "../Components/ReservationDetail";
 
 const SeeAppointment = () => {
     const { appointmentId } = useParams();

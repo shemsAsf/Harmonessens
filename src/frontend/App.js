@@ -1,15 +1,15 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/HomePage";
-import Navbar from "./components/Navigation";
-import Information from "./pages/Informations";
-import Blog from "./pages/Blog";
-import Contact from "./pages/Contact";
-import AppointmentList from "./pages/Appointments/AppointmentList";
-import AppointmentDetail from "./pages/Appointments/AppointmentDetail";
-import Summary from "./pages/Summary";
-import AppointmentsDashboard from "./pages/AppointmentsDashboard";
-import SeeAppointment from "./pages/SeeAppointment";
-import Footer from "./components/FooterComp";
+import Home from "./Pages/HomePage";
+import Navbar from "./Components/Navigation/Navbar";
+import Information from "./Pages/Informations";
+import Blog from "./Pages/Blog";
+import Contact from "./Pages/Contact";
+import AppointmentList from "./Pages/Appointments/AppointmentList";
+import AppointmentDetail from "./Pages/Appointments/AppointmentDetail";
+import Summary from "./Pages/Summary";
+import AppointmentsDashboard from "./Pages/AppointmentsDashboard";
+import SeeAppointment from "./Pages/SeeAppointment";
+import Footer from "./Components/Footer/FooterComp";
 import "./App.css";
 
 function App() {
