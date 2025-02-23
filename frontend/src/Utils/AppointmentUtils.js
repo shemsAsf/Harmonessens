@@ -1,4 +1,4 @@
-import { getValidDateTime } from "../Utils/DateTimeUtil";
+import { getValidDateTime } from "./DateTimeUtil";
 
 export const AddAppointmentToDB = async (appointment, formData, reservationDetails, hasPaid, clientId) => {
     const createAppointmentRequestData = {
