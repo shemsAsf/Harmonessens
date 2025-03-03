@@ -44,5 +44,5 @@ app.get("/status", (req, res) => {
 // Start server
 app.listen(port, async () => {
   console.log(`Server running on port ${port}`);
-  //await checkAndCreateTables();
+  await checkAndCreateTables();
 });
