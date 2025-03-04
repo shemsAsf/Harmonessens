@@ -1,40 +1,39 @@
-const mysql = require("mysql2/promise");
+const sqlite3 = require("better-sqlite3");
+const path = require("path");
 
-const db = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
+// Define database path
+const dbPath = path.join(__dirname, "../data/harmonessensDB.sqlite");
+const db = new sqlite3(dbPath);
 
-const checkAndCreateTables = async () => {
+// Function to create tables if they don’t exist
+const checkAndCreateTables = () => {
   const createClientsTableQuery = `
     CREATE TABLE IF NOT EXISTS clients (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      first_name VARCHAR(255) NOT NULL,
-      last_name VARCHAR(255) NOT NULL,
-      email VARCHAR(255) UNIQUE NOT NULL,
-      phone VARCHAR(20) DEFAULT NULL
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      first_name TEXT NOT NULL,
+      last_name TEXT NOT NULL,
+      email TEXT UNIQUE NOT NULL,
+      phone TEXT DEFAULT NULL
     );
   `;
 
-  const createReservationsTableQuery = `
+  const createAppointmentsTableQuery = `
     CREATE TABLE IF NOT EXISTS appointments (
-      id INT PRIMARY KEY,
-      appointmentId INT NOT NULL,
-      start_time DATETIME NOT NULL,
-      end_time DATETIME NOT NULL,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      appointmentId INTEGER NOT NULL,
+      start_time TEXT NOT NULL,  -- Stored as ISO 8601 string (e.g., '2025-02-24T14:00:00Z')
+      end_time TEXT NOT NULL,
       comment TEXT DEFAULT NULL,
-      has_paid BOOLEAN DEFAULT FALSE,
-      client_id INT NOT NULL,
+      has_paid INTEGER DEFAULT 0,
+      client_id INTEGER NOT NULL,
       FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
     );
   `;
 
   try {
-    await db.query(createClientsTableQuery);
-    await db.query(createReservationsTableQuery);
-    console.log("Checked and created tables if they don't exist.");
+    db.exec(createClientsTableQuery);
+    db.exec(createAppointmentsTableQuery);
+    console.log("SQLite tables checked/created successfully.");
   } catch (error) {
     console.error("Error creating tables:", error.message);
   }

@@ -1,25 +1,30 @@
 import { db } from "../config/db.js";
 
-export const CreateClient = async (req, res) => {
+// Create a client
+export const CreateClient = (req, res) => {
 	const { firstName, lastName, email, phone } = req.body;
 	if (!firstName || !lastName || !email) {
 		return res.status(400).json({ message: "Required fields missing." });
 	}
 	try {
-		const [result] = await db.query(
-			"INSERT INTO clients (first_name, last_name, email, phone) VALUES (?, ?, ?, ?)",
-			[firstName, lastName, email, phone || null]
+		const stmt = db.prepare(
+			"INSERT INTO clients (first_name, last_name, email, phone) VALUES (?, ?, ?, ?)"
 		);
-		res.status(201).json({ success: true, clientId: result.insertId });
+		const result = stmt.run(firstName, lastName, email, phone || null);
+
+		res.status(201).json({ success: true, clientId: result.lastInsertRowid });
 	} catch (error) {
 		res.status(500).json({ message: error.message });
 	}
 };
 
-export const CheckClientExistence = async (req, res) => {
+// Check if client exists
+export const CheckClientExistence = (req, res) => {
 	const { email } = req.query;
 	try {
-		const [result] = await db.query("SELECT * FROM clients WHERE email = ?", [email]);
+		const stmt = db.prepare("SELECT * FROM clients WHERE email = ?");
+		const result = stmt.all(email);
+
 		if (result.length) {
 			res.status(200).json({ success: true, found: true, client: result[0] });
 		} else {
@@ -30,7 +35,8 @@ export const CheckClientExistence = async (req, res) => {
 	}
 };
 
-export const ModifyExistingClient = async (req, res) => {
+// Modify existing client
+export const ModifyExistingClient = (req, res) => {
 	const { id, firstName, lastName, email, phone } = req.body;
 	if (!id) {
 		return res.status(400).json({
@@ -40,7 +46,8 @@ export const ModifyExistingClient = async (req, res) => {
 	}
 
 	try {
-		const [existingClient] = await db.query("SELECT * FROM clients WHERE id = ?", [id]);
+		const stmt = db.prepare("SELECT * FROM clients WHERE id = ?");
+		const existingClient = stmt.all(id); 
 
 		if (existingClient.length === 0) {
 			return res.status(404).json({
@@ -50,12 +57,12 @@ export const ModifyExistingClient = async (req, res) => {
 		}
 
 		// Update client information
-		await db.query(
+		const updateStmt = db.prepare(
 			`UPDATE clients 
-          SET first_name = ?, last_name = ?, email = ?, phone = ?
-          WHERE id = ?`,
-			[firstName, lastName, email, phone, id]
+			SET first_name = ?, last_name = ?, email = ?, phone = ?
+			WHERE id = ?`
 		);
+		updateStmt.run(firstName, lastName, email, phone, id); // run() for update
 
 		res.status(200).json({
 			success: true,
@@ -71,7 +78,8 @@ export const ModifyExistingClient = async (req, res) => {
 	}
 };
 
-export const GetClient = async (req, res) => {
+// Get client by ID
+export const GetClient = (req, res) => {
 	const { id } = req.query;
 
 	if (!id) {
@@ -79,10 +87,15 @@ export const GetClient = async (req, res) => {
 	}
 
 	try {
-		const [result] = await db.query("SELECT * FROM clients WHERE id = ?", [id]);
-		return res.status(200).json({ success: true, client: result[0] });
+		const stmt = db.prepare("SELECT * FROM clients WHERE id = ?");
+		const result = stmt.get(id);
+		if (!result) {
+			return res.status(404).json({ success: false, message: "Client not found." });
+		}
+
+		return res.status(200).json({ success: true, client: result });
 	} catch (error) {
-		console.error("Error fetching clients with the given id:", error);
+		console.error("Error fetching client with the given id:", error);
 		return res.status(500).json({ success: false, error });
 	}
 };

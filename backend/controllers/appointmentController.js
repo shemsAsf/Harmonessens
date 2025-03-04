@@ -3,48 +3,50 @@ import jwt from "jsonwebtoken";
 
 export const addAppointmentToDb = async (req, res) => {
 	const { appointmentId, startDateTime, durationInMinutes, message, hasPaid, clientId } = req.body;
-	// Validate if the client exists in the database
+
 	try {
-		const [client] = await db.query('SELECT * FROM clients WHERE id = ?', [clientId]);
-		if (client.length === 0) {
-			return res.status(400).json({
-				success: false,
-				message: "Client not found."
-			});
+		// Check if client exists
+		const client = db.prepare('SELECT * FROM clients WHERE id = ?').get(clientId);
+		if (!client) {
+			return res.status(400).json({ success: false, message: "Client not found." });
 		}
 	} catch (error) {
 		console.error("Error finding client:", error.message);
-		return res.status(500).json({
-			success: false,
-			message: "Internal server error while validating client.",
-		});
+		return res.status(500).json({ success: false, message: "Internal server error while validating client." });
 	}
 
-	// Calculate the end time based on start time and duration
-	const endTime = new Date(new Date(startDateTime).getTime() + durationInMinutes * 60000);
+	// Calculate end time
+	const endTime = new Date(new Date(startDateTime).getTime() + durationInMinutes * 60000).toISOString();
 
-	// Check for overlapping appointments
-	const hasOverlap = await checkForOverlaps(startDateTime, endTime);
+	// Check for overlaps
+	const hasOverlap = checkForOverlaps(startDateTime, endTime);
 	if (hasOverlap) {
 		return res.status(409).json({ success: false, message: 'Appointment time overlaps with an existing appointment' });
 	}
 
-	// Generate a random 6-character appointment ID
-	let foundValidId = false;
-	let reservationId = -1;
-	do {
-		reservationId = Math.floor(Math.random() * (1000000 - 100000) + 100000);
-		const [appointmentsWithId] = await db.query('SELECT * FROM appointments WHERE id = ?', [reservationId])
-		foundValidId = appointmentsWithId.length === 0;
-	} while (!foundValidId);
+	// Generate unique 6-digit appointment ID
+	let reservationId;
+	while (true) {
+		reservationId = Math.floor(Math.random() * 900000) + 100000;
+		const existing = db.prepare('SELECT id FROM appointments WHERE id = ?').get(reservationId);
+		if (!existing) break;
+	}
 
-	// Create the appointment in the database
+	// Insert appointment
+
+	console.log("Inserting appointment with the following values:");
+console.log("reservationId:", reservationId);
+console.log("appointmentId:", appointmentId);
+console.log("startDateTime:", startDateTime);
+console.log("endTime:", endTime);
+console.log("message:", message);
+console.log("hasPaid:", hasPaid);
+console.log("clientId:", clientId);
 	try {
-		await db.query(
-			`INSERT INTO appointments (id, appointmentId, start_time, end_time, comment, has_paid, client_id) 
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
-			[reservationId, appointmentId, new Date(startDateTime), endTime, message, hasPaid, clientId]
-		);
+		db.prepare(`
+            INSERT INTO appointments (id, appointmentId, start_time, end_time, comment, has_paid, client_id) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        `).run(reservationId, appointmentId, startDateTime, endTime, message, hasPaid ? 1 : 0, clientId);
 
 		res.status(200).json({
 			success: true,
@@ -54,10 +56,7 @@ export const addAppointmentToDb = async (req, res) => {
 
 	} catch (error) {
 		console.error("Database error:", error.message);
-		res.status(500).json({
-			success: false,
-			message: "Failed to create appointment.",
-		});
+		res.status(500).json({ success: false, message: "Failed to create appointment." });
 	}
 };
 
@@ -69,9 +68,9 @@ export const removeAppointment = async (req, res) => {
 	}
 
 	try {
-		const result = await db.query('DELETE FROM appointments WHERE id = ?', id);
+		const result = db.prepare('DELETE FROM appointments WHERE id = ?').run(id);
 
-		if (result) {
+		if (result.changes > 0) {
 			return res.status(200).json({ success: true, message: 'Appointment deleted successfully' });
 		} else {
 			return res.status(404).json({ success: false, message: 'Appointment not found' });
@@ -90,14 +89,13 @@ export const getAppointmentsByDate = async (req, res) => {
 	}
 
 	try {
-		const [appointments] = await db.query(
-			`SELECT 
-			  TIME(start_time) AS start_time, 
-			  TIME(end_time) AS end_time 
-			FROM appointments 
-			WHERE DATE(start_time) = ?`,
-			[date]
-		);
+		const appointments = db.prepare(`
+            SELECT 
+                strftime('%H:%M', start_time) AS start_time, 
+                strftime('%H:%M', end_time) AS end_time 
+            FROM appointments 
+            WHERE DATE(start_time) = ?
+        `).all(date);
 
 		return res.status(200).json({ success: true, appointments });
 	} catch (error) {
@@ -114,57 +112,53 @@ export const getAppointment = async (req, res) => {
 	}
 
 	try {
-		const [appointment] = await db.query(
-			`SELECT *
-			FROM appointments 
-			WHERE id = ?`,
-			[id]
-		);
+		const appointment = db.prepare('SELECT * FROM appointments WHERE id = ?').get(id);
 
-		return res.status(200).json({ success: true, appointment: appointment[0] });
+		if (!appointment) {
+			return res.status(404).json({ success: false, message: "Appointment not found." });
+		}
+
+		return res.status(200).json({ success: true, appointment });
 	} catch (error) {
-		console.error("Error fetching appointment with the given id:", error);
+		console.error("Error fetching appointment:", error);
 		return res.status(500).json({ success: false, message: "Internal server error" });
 	}
 };
 
 export const getAppointments = async (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1];
+	const token = req.headers.authorization?.split(" ")[1];
 
-    if (!token) {
-        return res.status(401).json({ success: false, message: "Unauthorized: No token provided" });
-    }
+	if (!token) {
+		return res.status(401).json({ success: false, message: "Unauthorized: No token provided" });
+	}
 
-    try {
-        // Verify the token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        
-        if (!decoded) {
-            return res.status(403).json({ success: false, message: "Forbidden: Invalid token" });
-        }
+	try {
+		// Verify the token
+		const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        // Fetch all appointments
-        const [appointments] = await db.query(
-            `SELECT * FROM appointments`
-        );
+		if (!decoded) {
+			return res.status(403).json({ success: false, message: "Forbidden: Invalid token" });
+		}
 
-        return res.status(200).json({ success: true, appointments });
-    } catch (error) {
-        console.error("Error fetching appointments:", error);
-        return res.status(500).json({ success: false, message: "Internal server error" });
-    }
+		// Fetch all appointments
+		const appointments = db.prepare('SELECT * FROM appointments').all();
+
+		return res.status(200).json({ success: true, appointments });
+	} catch (error) {
+		console.error("Error fetching appointments:", error);
+		return res.status(500).json({ success: false, message: "Internal server error" });
+	}
 };
 
-const checkForOverlaps = async (startTime, endTime) => {
-	// Query to check if there is an overlap with any existing appointment
+const checkForOverlaps = (startTime, endTime) => {
 	const query = `
-    SELECT * FROM appointments
-    WHERE
-      (? <= start_time AND ? >= start_time) OR
-      (? <= end_time AND ? >= end_time) OR
-	  (? >= start_time AND ? <= end_time)
-  `;
+        SELECT * FROM appointments
+        WHERE
+            (? <= start_time AND ? >= start_time) OR
+            (? <= end_time AND ? >= end_time) OR
+            (? >= start_time AND ? <= end_time)
+    `;
 
-	const [existingAppointments] = await db.query(query, [startTime, endTime, startTime, endTime, startTime, endTime]);
+	const existingAppointments = db.prepare(query).all(startTime, endTime, startTime, endTime, startTime, endTime);
 	return existingAppointments.length > 0;
 };
