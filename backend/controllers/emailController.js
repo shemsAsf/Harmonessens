@@ -14,22 +14,57 @@ const createContactMail = ({ firstName, lastName, email, phone, subject, message
 		to: "contact@harmonessens.fr",
 		subject: `Message depuis le site web: ${subject}`,
 		html: `
-      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-        <h2 style="color: #4CAF50;">Nouveau message depuis le site web</h2>
-        <p><strong>De la part de:</strong></p>
-        <ul style="list-style-type: none; padding: 0;">
-          <li><strong>Prénom:</strong> ${firstName}</li>
-          <li><strong>Nom:</strong> ${lastName}</li>
-          <li><strong>Email:</strong> <a href="mailto:${email}" style="color: #4CAF50;">${email}</a></li>
-          <li><strong>Téléphone:</strong> ${phone || "Non spécifié"}</li>
-        </ul>
-        <hr style="border: 0; border-top: 1px solid #ccc; margin: 20px 0;">
-        <p><strong>Message:</strong></p>
-        <p style="padding: 10px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 5px;">${message}</p>
-        <hr style="border: 0; border-top: 1px solid #ccc; margin: 20px 0;">
-        <p style="font-size: 0.9em; color: #888;">Cet email a été généré automatiquement depuis le site Harmonessens.</p>
-      </div>
-    `,
+  	<div style="
+		font-family: Arial, sans-serif;
+		line-height: 1.6;
+		color: #333;
+		max-width: 600px;
+		margin: auto;
+		background: #ffffff;
+		padding: 20px;
+		border-radius: 10px;
+		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  	">
+
+		<h2 style="color: #4CAF50; text-align: center;">📩 Nouveau message reçu</h2>
+
+		<div style="
+			background: #f9f9f9;
+			padding: 15px;
+			border-radius: 8px;
+			border-left: 5px solid #4CAF50;
+			margin-bottom: 20px;
+		">
+			<p><strong>📌 Informations de l'expéditeur:</strong></p>
+			<ul style="list-style: none; padding: 0; margin: 0;">
+				<li><strong>👤 Prénom:</strong> ${firstName}</li>
+				<li><strong>👤 Nom:</strong> ${lastName}</li>
+				<li><strong>✉️ Email:</strong> <a href="mailto:${email}" style="color: #4CAF50;">${email}</a></li>
+				<li><strong>📞 Téléphone:</strong> ${phone || "Non spécifié"}</li>
+			</ul>
+		</div>
+
+		<div style="
+			background: #f9f9f9;
+			padding: 15px;
+			border-radius: 8px;
+			border-left: 5px solid #4CAF50;
+			margin-bottom: 20px;
+		">
+			<p><strong>💬 Message:</strong></p>
+			<p style="padding: 10px; background: #ffffff; border: 1px solid #ddd; border-radius: 5px;">
+			${message}
+			</p>
+		</div>
+
+		<hr style="border: 0; border-top: 1px solid #ccc; margin: 20px 0;">
+
+		<p style="font-size: 0.9em; text-align: center; color: #888;">
+			Cet email a été généré automatiquement depuis le site <strong>Harmonessens</strong>.
+		</p>
+  	</div>
+`
+
 	};
 };
 
@@ -46,63 +81,98 @@ const createAppointmentMail = ({ firstName, lastName, email, phone, title, messa
 		to: `contact@harmonessens.fr, ${email}`,
 		subject: `Rendez-Vous Harmonessens: ${title}`,
 		html: `
-		<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-		  <h2 style="color: #4CAF50;">Nouveau rendez-vous Harmonessens</h2>
-		  <p><strong>De la part de:</strong></p>
-		  <ul style="list-style-type: none; padding: 0;">
+	<div style="
+		font-family: Arial, sans-serif;
+		line-height: 1.6;
+		color: #333;
+		max-width: 600px;
+		margin: auto;
+		background: #ffffff;
+		padding: 20px;
+		border-radius: 10px;
+		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+	">
+
+		<h2 style="color: #4CAF50; text-align: center;">✨ Nouveau Rendez-vous Harmonessens ✨</h2>
+
+		<div style="
+			background: #f9f9f9;
+			padding: 15px;
+			border-radius: 8px;
+			border-left: 5px solid #4CAF50;
+			margin-bottom: 20px;
+		">
+			<p><strong>De la part de:</strong></p>
+			<ul style="list-style: none; padding: 0; margin: 0;">
 			<li><strong>Prénom:</strong> ${firstName}</li>
 			<li><strong>Nom:</strong> ${lastName}</li>
 			<li><strong>Email:</strong> <a href="mailto:${email}" style="color: #4CAF50;">${email}</a></li>
 			<li><strong>Téléphone:</strong> ${phone || "Non spécifié"}</li>
-		  </ul>
-		  
-		  <p><strong>Horaires:</strong></p>
-		  <ul style="list-style-type: none; padding: 0;">
-			<li><strong>Le:</strong> ${day}</li>	
-			<li><strong>À:</strong> ${time}</li>
-		  </ul>
-
-		  <p style="text-align: center;">
-		    <a href="${process.env.REACT_APP_WEBSITE_URL}/seeAppointment/${appointmentId}" target="_blank" style="
-		      display: inline-block;
-		      background-color: #4CAF50;
-		      color: white;
-		      text-decoration: none;
-		      padding: 12px 20px;
-		      border-radius: 5px;
-		      font-weight: bold;
-		      font-size: 14px;
-		      margin-bottom: 15px;
-		    ">Voir ma réservation</a>
-		  </p>
-		  <p style="text-align: center;">
-		    <a href="${inviteLink}" target="_blank" style="
-		      display: inline-block;
-		      background-color: #4CAF50;
-		      color: white;
-		      text-decoration: none;
-		      padding: 12px 20px;
-		      border-radius: 5px;
-		      font-weight: bold;
-		      font-size: 14px;
-		    ">📅 Ajouter à Google Agenda</a>
-		  </p>
-
-		  <hr style="border: 0; border-top: 1px solid #ccc; margin: 20px 0;">
-		  
-		  ${message ? `
-			<p><strong>Message:</strong></p>
-			<p style="padding: 10px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 5px;">${message}</p>
-			<hr style="border: 0; border-top: 1px solid #ccc; margin: 20px 0;">
-		  ` : ''}
-		  
-		  <hr style="border: 0; border-top: 1px solid #ccc; margin: 20px 0;">
-
-		  <hr style="border: 0; border-top: 1px solid #ccc; margin: 20px 0;">
-		  
-		  <p style="font-size: 0.9em; color: #888;">Cet email a été généré automatiquement depuis le site Harmonessens.</p>
+			</ul>
 		</div>
-	  `,
+
+		<div style="
+			background: #f9f9f9;
+			padding: 15px;
+			border-radius: 8px;
+			border-left: 5px solid #4CAF50;
+			margin-bottom: 20px;
+		">
+			<p><strong>🕒 Horaires du rendez-vous:</strong></p>
+			<ul style="list-style: none; padding: 0; margin: 0;">
+			<li><strong>📅 Date:</strong> ${day}</li>
+			<li><strong>⏰ Heure:</strong> ${time}</li>
+			</ul>
+		</div>
+
+		<div style="text-align: center; margin-bottom: 20px;">
+			<a href="${process.env.ALLOWED_ORIGIN}/seeAppointment/${appointmentId}" target="_blank" style="
+			display: inline-block;
+			background-color: #4CAF50;
+			color: white;
+			text-decoration: none;
+			padding: 14px 22px;
+			border-radius: 6px;
+			font-weight: bold;
+			font-size: 16px;
+			margin-right: 10px;
+			">🔍 Voir ma réservation</a>
+
+			<a href="${inviteLink}" target="_blank" style="
+			display: inline-block;
+			background-color: #4CAF50;
+			color: white;
+			text-decoration: none;
+			padding: 14px 22px;
+			border-radius: 6px;
+			font-weight: bold;
+			font-size: 16px;
+			">📅 Ajouter à Google Agenda</a>
+		</div>
+
+		${message ? `
+			<div style="
+			background: #f9f9f9;
+			padding: 15px;
+			border-radius: 8px;
+			border-left: 5px solid #4CAF50;
+			margin-bottom: 20px;
+			">
+			<p><strong>📩 Message du client:</strong></p>
+			<p style="padding: 10px; background: #ffffff; border: 1px solid #ddd; border-radius: 5px;">
+				${message}
+			</p>
+			</div>
+		` : ''}
+
+		<hr style="border: 0; border-top: 1px solid #ccc; margin: 20px 0;">
+
+		<p style="font-size: 0.9em; text-align: center; color: #888;">
+			Cet email a été généré automatiquement depuis le site <strong>Harmonessens</strong>.
+		</p>
+	</div>
+`
+
 	};
 };
 
