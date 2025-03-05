@@ -14,7 +14,16 @@ const app = express();
 const port = 5000;
 
 // Middleware
-app.use(cors());
+const allowedOrigin = process.env.ALLOWED_ORIGIN;
+
+app.use(
+  cors({
+    origin: allowedOrigin,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+
 app.use(bodyParser.json());
 
 // Routes
