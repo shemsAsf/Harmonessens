@@ -1,9 +1,18 @@
 const sqlite3 = require("better-sqlite3");
 const path = require("path");
 
-// Define database path
-const dbPath = path.join("/data", "harmonessensDB.sqlite");
-const db = new sqlite3(dbPath);
+// Define database 
+let db;
+try{
+  //Path for local dev db
+  const dbPath = path.join(__dirname, "../data/harmonessensDB.sqlite");
+  db = new sqlite3(dbPath);
+}
+catch{
+  //Path for Render db
+  const dbPath = path.join("/data", "harmonessensDB.sqlite");
+  db = new sqlite3(dbPath);
+}
 
 // Function to create tables if they don’t exist
 const checkAndCreateTables = () => {
@@ -25,6 +34,7 @@ const checkAndCreateTables = () => {
       end_time TEXT NOT NULL,
       comment TEXT DEFAULT NULL,
       has_paid INTEGER DEFAULT 0,
+      online INTEGER DEFAULT 0, -- 0 for in-person, 1 for online
       client_id INTEGER NOT NULL,
       FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
     );

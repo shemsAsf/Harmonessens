@@ -21,22 +21,21 @@ const AppointmentCard = ({ appointment }) => {
 				<h3>{appointment.title}</h3>
 				{isExpanded
 					? appointment.description.map((paragraph, index) => <p key={index}>{paragraph}</p>)
-					: `${appointment.description[0].slice(0, sliceValue)}...`}
+					: (
+							<p>{appointment.description[0].slice(0, sliceValue)}...</p>
+					)}
 
 				<br />
 				<span className="toggle-text" onClick={() => setIsExpanded(!isExpanded)}>
 					{isExpanded ? "^ Réduire" : "v En savoir plus"}
 				</span>
-
-				{isExpanded && (
-					<div className="button-container">
-						<button
-							className="appointment-button"
-							onClick={() => window.location.href = `/appointment/${appointment.id}`}>
-							Prendre Rendez-vous
-						</button>
-					</div>
-				)}
+				<div className="button-container">
+					<button
+						className="appointment-button"
+						onClick={() => window.location.href = `/appointment/${appointment.id}`}>
+						Prendre Rendez-vous
+					</button>
+				</div>
 			</div>
 		</div>
 	);

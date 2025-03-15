@@ -36,6 +36,16 @@ const AppointmentDetail = () => {
 					<p>Prix: <span>{appointment.price}€</span></p>
 				</div>
 			</div>
+			{ appointment.allowOnline && (
+				
+
+			<div className="info-card">
+			<i className="fas fa-globe info-icon"></i>
+			<div className="info-content">
+				<p>Ce rendez vous peut être prix en ligne</p>
+			</div>
+		</div>
+			)}
 			<br />
 			<AppointmentCalendar appointmentId={appointment.id} />
 		</div>

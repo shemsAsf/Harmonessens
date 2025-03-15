@@ -14,12 +14,12 @@ const app = express();
 const port = 5000;
 
 // Middleware
-const allowedOrigin = process.env.ALLOWED_ORIGIN;
+const allowedOrigin = [process.env.ALLOWED_ORIGIN, "http://localhost:3000"];
 
 app.use(
   cors({
     origin: allowedOrigin,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
 );

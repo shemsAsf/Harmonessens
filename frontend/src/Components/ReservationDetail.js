@@ -64,6 +64,7 @@ const ReservationDetails = ({ appointmentId }) => {
                 <p><strong>Heure:</strong> {new Date(reservationDetails.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                 <p><strong>Durée:</strong> {FormatDuration(appointmentInfo.length)}</p>
                 <p><strong>Reste à payer:</strong> {reservationDetails.has_paid ? 0 : appointmentInfo.price}€</p>
+                {reservationDetails.online == 1 && <p><strong>Rendez-vous en ligne</strong></p>}
             </div>
 
             {/* Client Information */}

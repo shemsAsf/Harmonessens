@@ -1,152 +1,187 @@
 /* Calendar Container */
 .calendar-container {
-    display: flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 40px;
+}
+
+/* Calendar Title */
+.calendar-container h3 {
+  font-size: 26px;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Calendar Styling */
+.react-calendar {
+  border: none;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  transition: box-shadow 0.3s ease-in-out;
+  max-width: 90%;
+}
+
+.react-calendar__tile {
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  color: #333;
+  padding: 10px;
+}
+
+.react-calendar__tile:enabled:hover {
+  background-color: var(--accent-color);
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.react-calendar__tile--disabled {
+  background-color: #f0f0f0;
+  color: #ccc;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+  text-align: center;
+}
+
+.react-calendar__tile--active {
+  background-color: var(--accent-color-dark) !important;
+  color: #fff;
+}
+
+/* Time and Button Container */
+.time-button-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Time Selection */
+.time-selection {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-right: 20px;
+  /* space between time selection and button */
+}
+
+.time-selection label {
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 500;
+}
+
+.time-selection select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #333;
+  transition: border 0.2s ease;
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 20px;
+}
+
+.time-selection select:focus {
+  border-color: var(--accent-color-dark);
+  outline: none;
+}
+
+/* Confirm Button */
+.confirm-button {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
+  max-width: 320px;
+}
+
+.confirm-button:hover {
+  background-color: var(--accent-color-dark);
+  transform: scale(1.05);
+}
+
+.confirm-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Style the select dropdown */
+.time-selection select {
+  padding: 12px;
+  font-size: 16px;
+  border: 2px solid var(--accent-color);
+  border-radius: 8px;
+  background-color: #fff;
+  color: #333;
+  transition: border 0.2s ease, background-color 0.3s ease;
+  width: 100%;
+  max-width: 350px;
+  appearance: none;
+  /* Removes default styles */
+  cursor: pointer;
+  position: relative;
+  font-weight: 500;
+}
+
+/* Custom dropdown arrow */
+.time-selection select {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='green'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 35px;
+}
+
+/* When select has a value, make it green */
+.time-selection select:focus,
+.time-selection select:valid {
+  border-color: var(--accent-color);
+  background-color: #f1f6f2;
+}
+
+/* Media Queries for Mobile */
+@media (max-width: 768px) {
+
+  /* On small screens, stack the time and button container under the calendar */
+  .calendar-flex-container {
     flex-direction: column;
     align-items: center;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   }
-  
-  .calendar-flex-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 40px;
-  }
-  
-  /* Calendar Title */
-  .calendar-container h3 {
-    font-size: 26px;
-    color: #333;
-    margin-bottom: 20px;
-    font-weight: 600;
-    text-align: center;
-  }
-  
-  /* Calendar Styling */
-  .react-calendar {
-    border: none;
-    border-radius: 12px;
-    background-color: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    transition: box-shadow 0.3s ease-in-out;
-    max-width: 90%;
-  }
-  
-  .react-calendar__tile {
-    font-size: 16px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    color: #333;
-    padding: 10px;
-  }
-  
-  .react-calendar__tile:enabled:hover {
-    background-color: var(--accent-color);
-    color: #fff;
-    transform: scale(1.05);
-  }
-  
-  .react-calendar__tile--disabled {
-    background-color: #f0f0f0;
-    color: #ccc;
-  }
-  
-  .react-calendar__month-view__weekdays__weekday {
-    font-size: 14px;
-    color: #666;
-    font-weight: 500;
-    text-align: center;
-  }
-  
-  .react-calendar__tile--active {
-    background-color: var(--accent-color-dark) !important;
-    color: #fff;
-  }
-  
-  /* Time and Button Container */
-  .time-button-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin-top: 20px;
-  }
-  
-  /* Time Selection */
+
   .time-selection {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin-right: 20px; /* space between time selection and button */
-  }
-  
-  .time-selection label {
-    font-size: 16px;
-    margin-bottom: 8px;
-    color: #333;
-    font-weight: 500;
-  }
-  
-  .time-selection select {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
-    color: #333;
-    transition: border 0.2s ease;
-    width: 100%;
-    max-width: 320px;
+    margin-right: 0;
     margin-bottom: 20px;
-  }
-  
-  .time-selection select:focus {
-    border-color: var(--accent-color-dark);
-    outline: none;
-  }
-  
-  /* Confirm Button */
-  .confirm-button {
-    background-color: var(--accent-color);
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    /* Add space between time selection and button */
     width: 100%;
-    max-width: 320px;
+    max-width: none;
   }
-  
-  .confirm-button:hover {
-    background-color: var(--accent-color-dark);
-    transform: scale(1.05);
-  }
-  
-  .confirm-button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-  }
-  
-  /* Media Queries for Mobile */
-  @media (max-width: 768px) {
-    /* On small screens, stack the time and button container under the calendar */
-    .calendar-flex-container {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .time-selection {
-      margin-right: 0;
-      margin-bottom: 20px; /* Add space between time selection and button */
-      width: 100%;
-      max-width: none;
-    }
-  }
-  
-  
+}

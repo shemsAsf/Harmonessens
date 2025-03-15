@@ -75,7 +75,7 @@ const sendContactEMail = async (req, res) => {
 	return sendMail(res, mailOptions);
 };
 
-const createAppointmentMail = ({ firstName, lastName, email, phone, title, message, day, time, appointmentId, inviteLink }) => {
+const createAppointmentMail = ({ firstName, lastName, email, phone, title, message, isOnline, day, time, appointmentId, inviteLink }) => {
 	return {
 		from: process.env.EMAIL_USER,
 		to: `contact@harmonessens.fr, ${email}`,
@@ -107,7 +107,7 @@ const createAppointmentMail = ({ firstName, lastName, email, phone, title, messa
 			<li><strong>Prénom:</strong> ${firstName}</li>
 			<li><strong>Nom:</strong> ${lastName}</li>
 			<li><strong>Email:</strong> <a href="mailto:${email}" style="color: #4CAF50;">${email}</a></li>
-			<li><strong>Téléphone:</strong> ${phone || "Non spécifié"}</li>
+			 ${phone == null ? `` : `<li><strong>Téléphone:</strong>${phone}</li>`}
 			</ul>
 		</div>
 
@@ -122,6 +122,7 @@ const createAppointmentMail = ({ firstName, lastName, email, phone, title, messa
 			<ul style="list-style: none; padding: 0; margin: 0;">
 			<li><strong>📅 Date:</strong> ${day}</li>
 			<li><strong>⏰ Heure:</strong> ${time}</li>
+			 ${isOnline ? `<li><strong>🌎Rendez-vous en ligne</strong></li>` : ``}
 			</ul>
 		</div>
 
@@ -165,6 +166,26 @@ const createAppointmentMail = ({ firstName, lastName, email, phone, title, messa
 			</div>
 		` : ''}
 
+		${isOnline == 1 ? `
+			<div style="
+				background: #f9f9f9;
+				padding: 15px;
+				border-radius: 8px;
+				border-left: 5px solid #4CAF50;
+				margin-bottom: 20px;
+			">
+				<p><strong>📜 Déroulement d’un soin à distance :</strong></p>
+				<p>Il vous suffit de réserver votre rendez-vous à la date et à l’heure qui vous conviennent. 
+				Le jour du soin, je vous contacterai via WhatsApp pour un premier échange afin de poser l’intention du soin ensemble. 
+				Ensuite, vous serez invité(e) à vous installer confortablement dans un espace au calme, propice à l’écoute intérieure. 
+				Pour profiter pleinement de ce moment, vous pouvez allumer une bougie, diffuser un encens si cela vous parle, et écouter 
+				en fond un voyage chamanique pour accompagner la détente.</p>
+				<p>Pendant ce temps, je prendrai le temps de réaliser le soin, en lien avec votre volonté et le besoin que vous avez exprimé. 
+				Nous échangerons ensuite ensemble sur ce qui a été fait, votre ressenti et votre expérience du soin.</p>
+				<p>Un moment d’alignement et de connexion avec vous-même. ✨</p>
+			</div>
+		` : ''}
+		
 		<hr style="border: 0; border-top: 1px solid #ccc; margin: 20px 0;">
 
 		<p style="font-size: 0.9em; text-align: center; color: #888;">
@@ -172,14 +193,12 @@ const createAppointmentMail = ({ firstName, lastName, email, phone, title, messa
 		</p>
 	</div>
 `
-
 	};
 };
 
-
 const sendAppointmentEMail = async (req, res) => {
-	const { firstName, lastName, email, phone, title, message, day, time, appointmentId, inviteLink } = req.body;
-	const mailOptions = createAppointmentMail({ firstName, lastName, email, phone, title, message, day, time, appointmentId, inviteLink });
+	const { firstName, lastName, email, phone, title, message, isOnline, day, time, appointmentId, inviteLink } = req.body;
+	const mailOptions = createAppointmentMail({ firstName, lastName, email, phone, title, message, isOnline, day, time, appointmentId, inviteLink });
 
 	return sendMail(res, mailOptions);
 };

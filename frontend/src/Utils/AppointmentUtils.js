@@ -8,6 +8,7 @@ export const AddAppointmentToDB = async (appointment, formData, reservationDetai
         message: formData.message,
         hasPaid,
         clientId,
+        online: formData.isOnline,
     };
 
     try {

@@ -28,6 +28,7 @@ const Summary = () => {
 		email: '',
 		phone: '',
 		message: '',
+		isOnline: false,
 	});
 	const [clientId, setClientIdAndShowModal] = useState(null);
 	const [emailData, setEmailData] = useState(null);
@@ -63,13 +64,13 @@ const Summary = () => {
 				console.log("Successfully fetched client secret.");
 			} catch (error) {
 				console.error("Error fetching client secret:", error);
-				
+
 				if (processIds) {
 					console.log("Cleaning up calendar event and database event...");
 					RemoveCalendarEvent(processIds.calendar);
 					RemoveAppointmentFromDB(processIds.appointment);
 				}
-	
+
 				NotifyError(navigate, appointmentInfo.id ? `/appointment/${appointmentInfo.id}` : "/appointment", "Erreur lors de la récupération du paiement.");
 			}
 		};
@@ -94,24 +95,28 @@ const Summary = () => {
 				RemoveAppointmentFromDB(processIds.appointment);
 			}
 		};
-	
+
 		window.addEventListener("beforeunload", cleanup);
 		window.addEventListener("visibilitychange", () => {
 			if (document.visibilityState === "hidden") {
 				cleanup();
 			}
 		});
-	
+
 		return () => {
 			window.removeEventListener("beforeunload", cleanup);
 			window.removeEventListener("visibilitychange", cleanup);
 		};
 	}, [paymentModalVisible, processIds]);
-	
+
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
 		setFormData({ ...formData, [name]: value });
+	};
+
+	const handleCheckboxChange = (e) => {
+		setFormData({ ...formData, isOnline: e.target.checked });
 	};
 
 	const OnConfirmation = async (payNow) => {
@@ -142,7 +147,7 @@ const Summary = () => {
 			return;
 		}
 
-		const calendarResponse = await AddAppointmentToCalendar(appointmentResponse.id, reservationDetails, appointmentInfo);
+		const calendarResponse = await AddAppointmentToCalendar(appointmentResponse.id, reservationDetails, appointmentInfo, formData.isOnline);
 		if (!calendarResponse.success) {
 			NotifyError();
 			RemoveAppointmentFromDB(appointmentResponse.id);
@@ -165,7 +170,6 @@ const Summary = () => {
 		}
 		else {
 			// --- Show Payment Method ---
-			console.log("gotta show payment method");
 			setEmailData({
 				appointmentId: appointmentResponse.id,
 				inviteLink: calendarResponse.inviteLink,
@@ -287,21 +291,41 @@ const Summary = () => {
 								onChange={handleChange}
 							></textarea>
 						</div>
+
+						{/* Conditionally render checkbox for online payment */}
+						{appointmentInfo.allowOnline && (
+							<div className="form-field">
+								<label>
+									<input
+										type="checkbox"
+										checked={formData.isOnline}
+										onChange={handleCheckboxChange}
+									/>
+									<span>Rendez-vous en ligne ?</span>
+								</label>
+							</div>
+						)}
+
 						<div className="form-field button-group">
-							<button
-								className="submit-button"
-								type="button"
-								onClick={(e) => handleSubmit(e, true)}
-							>
-								Payer Maintenant
-							</button>
+								<button
+									className="submit-button"
+									type="button"
+									onClick={(e) => handleSubmit(e, true)}
+									disabled={formData.payOnline}
+								>
+									Payer Maintenant
+								</button>
+							{!formData.isOnline && (
 							<button
 								className="submit-button"
 								type="button"
 								onClick={(e) => handleSubmit(e, false)}
+								disabled={formData.payOnline}
 							>
 								Payer Plus Tard
 							</button>
+							)}
+
 						</div>
 					</form>
 				</div>
@@ -319,7 +343,7 @@ const Summary = () => {
 			{/* Payment Modal */}
 			{paymentModalVisible && clientSecret && (
 				<div className="payment-modal">
-					<Elements stripe={stripePromise} options={{clientSecret}}>
+					<Elements stripe={stripePromise} options={{ clientSecret }}>
 						<CheckoutForm
 							handlePayment={handleSuccessPayment}
 							handleFailedPayment={handleFailedPayment}

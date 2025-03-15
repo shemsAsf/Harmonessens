@@ -2,7 +2,7 @@ import { db } from "../config/db.js";
 import jwt from "jsonwebtoken";
 
 export const addAppointmentToDb = async (req, res) => {
-	const { appointmentId, startDateTime, durationInMinutes, message, hasPaid, clientId } = req.body;
+	const { appointmentId, startDateTime, durationInMinutes, message, hasPaid, clientId, online } = req.body;
 
 	try {
 		// Check if client exists
@@ -33,20 +33,11 @@ export const addAppointmentToDb = async (req, res) => {
 	}
 
 	// Insert appointment
-
-	console.log("Inserting appointment with the following values:");
-console.log("reservationId:", reservationId);
-console.log("appointmentId:", appointmentId);
-console.log("startDateTime:", startDateTime);
-console.log("endTime:", endTime);
-console.log("message:", message);
-console.log("hasPaid:", hasPaid);
-console.log("clientId:", clientId);
 	try {
 		db.prepare(`
-            INSERT INTO appointments (id, appointmentId, start_time, end_time, comment, has_paid, client_id) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        `).run(reservationId, appointmentId, startDateTime, endTime, message, hasPaid ? 1 : 0, clientId);
+            INSERT INTO appointments (id, appointmentId, start_time, end_time, comment, has_paid, online, client_id) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `).run(reservationId, appointmentId, startDateTime, endTime, message, hasPaid ? 1 : 0, online ? 1 : 0, clientId);
 
 		res.status(200).json({
 			success: true,

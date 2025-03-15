@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js";
-import { useNavigate } from "react-router-dom";
 
 const CheckoutForm = ({ handlePayment, handleFailedPayment }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {

@@ -1,9 +1,87 @@
-  .text-columns p {
-    margin: 0;
-    padding: 0;
-  }
 
-  .text-columns p {
-    margin-bottom: 20px;
+
+/* Introduction Text */
+.intro-text {
+  font-size: 1.1rem;
+  color: #333; /* Dark text color */
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+/* Section that holds service cards */
+.service-section {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.9); /* Light white background */
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Service Title */
+.service-title {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Service Cards */
+.services {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.service-card {
+  background: #fff; /* White background for each card */
+  width: 250px;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  opacity: 1; /* Make sure opacity is visible */
+  transform: translateY(0); /* Reset transform */
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.service-card h4 {
+  font-size: 1.2rem;
+  color: var(--accent-color-dark);
+  margin-top: 1rem;
+}
+
+.service-card p {
+  font-size: 1rem;
+  color: #555; /* Darker text color */
+}
+
+.service-icon {
+  font-size: 2.5rem;
+  color: var(--accent-color-dark); /* Blue icon color */
+}
+
+/* Closing Text */
+.closing-text {
+  font-size: 1.1rem;
+  color: #333; /* Dark text color */
+  line-height: 1.8;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+  
+  /* Bounce animation for icons */
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
   }
   

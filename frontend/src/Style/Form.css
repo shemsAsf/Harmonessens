@@ -60,6 +60,19 @@
   .centered-form {
     margin: auto; /* Centers horizontally */
 }
+
+.form-field input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.form-field label {
+  font-size: 1.1em;
+  display: flex;
+  align-items: center;
+}
+
   @media (max-width: 768px) {
     .form-div {
       width: 100%;

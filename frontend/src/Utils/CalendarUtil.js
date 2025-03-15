@@ -1,9 +1,10 @@
 import { getValidDateTime } from "./DateTimeUtil";
 
-export const AddAppointmentToCalendar = async (reservationId, reservationDetails, appointmentInfo) => {
+export const AddAppointmentToCalendar = async (reservationId, reservationDetails, appointmentInfo, isOnline) => {
     const createCalendarRequestData = {
         summary: `Harmonessens: ${appointmentInfo.title}`,
-        description: `Voir ma réservation: ${process.env.REACT_APP_WEBSITE_URL}/seeAppointment/${reservationId}`,
+        description: `Voir ma réservation: ${process.env.REACT_APP_WEBSITE_URL}/seeAppointment/${reservationId}
+        ${isOnline ? "Ce redez-vous prendra lieu en ligne." : ""}`,
         startDateTime: getValidDateTime(reservationDetails.date, reservationDetails.time),
         durationInMinutes: appointmentInfo.length,
     };

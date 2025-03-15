@@ -67,7 +67,6 @@
   /* Hover effect */
   .nav-link:hover {
     color: var(--accent-color);
-    background-color: #f9f9f9;
   }
   
   /* Responsive styles */
