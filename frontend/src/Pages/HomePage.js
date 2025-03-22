@@ -1,13 +1,13 @@
 import React from "react";
 import eagle from "../Assets/eagle-icon.svg";
 import "../Style/HomePage.css";
+import Carousel from "../Components/Calendar/Carousel/Carousel";
 
 function Home() {
 	return (
 		<div className="home">
-			{/* Hero Section */}
-			<div className="hero">
-			</div>
+			<br/>
+			<Carousel></Carousel>
 
 			{/* Activities Section */}
 			<div className="activities">

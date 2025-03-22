@@ -10,17 +10,6 @@
     margin-top: 0;
   }
   
-  /* Hero Section */
-  .hero {
-    background-image: url("../Assets/hero.jpg");
-    background-size: cover;
-    background-position: center;
-    height: 60vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
   .practitioner-name {
     font-size: 3rem;
     color: white;
