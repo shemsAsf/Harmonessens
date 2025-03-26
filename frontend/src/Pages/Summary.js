@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { appointments } from "../Data/Appointments";
 import "../Style/Form.css";
 import "../Style/Summary.css";
 import ClientValueModal from '../Components/ClientModal/ClientValueModal';
@@ -15,8 +14,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
 const Summary = () => {
-	const { state: reservationDetails } = useLocation();
-	const appointmentInfo = appointments.find((appt) => appt.id === reservationDetails.id);
+	const { state: {reservationDetails, service} } = useLocation();
 	const navigate = useNavigate();
 	const [showModal, setShowModal] = useState(false);
 	const [paymentModalVisible, setPaymentModalVisible] = useState(false);
@@ -45,7 +43,7 @@ const Summary = () => {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({
-						amount: appointmentInfo.price * 100,
+						amount: service.price * 100,
 						currency: "eur",
 					}),
 				});
@@ -71,14 +69,14 @@ const Summary = () => {
 					RemoveAppointmentFromDB(processIds.appointment);
 				}
 
-				NotifyError(navigate, appointmentInfo.id ? `/appointment/${appointmentInfo.id}` : "/appointment", "Erreur lors de la récupération du paiement.");
+				NotifyError(navigate, service.id ? `/appointment/${service.id}` : "/appointment", "Erreur lors de la récupération du paiement.");
 			}
 		};
 
 		if (paymentModalVisible) {
 			fetchClientSecret();
 		}
-	}, [paymentModalVisible, reservationDetails, navigate, appointmentInfo.id, processIds, appointmentInfo?.clientIds, appointmentInfo.price]);
+	}, [paymentModalVisible, reservationDetails, navigate, service.id, processIds, service?.clientIds, service.price]);
 
 	useEffect(() => {
 		if (clientId !== null) {
@@ -133,12 +131,12 @@ const Summary = () => {
 		}
 
 		// --- Add appointment to database ---
-		const appointmentResponse = await AddAppointmentToDB(appointmentInfo, formData, reservationDetails, payNow, clientId);
+		const appointmentResponse = await AddAppointmentToDB(service, formData, reservationDetails, payNow, clientId);
 		if (!appointmentResponse.success) {
 			if (appointmentResponse.error === 409) {
 				NotifyError(
 					navigate,
-					appointmentInfo.id ? `/appointment/${appointmentInfo.id}` : "/appointment",
+					service.id ? `/appointment/${service.id}` : "/appointment",
 					"L'horaire du rendez-vous chevauche un autre rendez-vous existant."
 				);
 			} else {
@@ -147,7 +145,7 @@ const Summary = () => {
 			return;
 		}
 
-		const calendarResponse = await AddAppointmentToCalendar(appointmentResponse.id, reservationDetails, appointmentInfo, formData.isOnline);
+		const calendarResponse = await AddAppointmentToCalendar(appointmentResponse.id, reservationDetails, service, formData.isOnline);
 		if (!calendarResponse.success) {
 			NotifyError();
 			RemoveAppointmentFromDB(appointmentResponse.id);
@@ -160,7 +158,7 @@ const Summary = () => {
 				appointmentResponse.id,
 				calendarResponse.inviteLink,
 				formData,
-				appointmentInfo.title,
+				service.title,
 				reservationDetails,
 			)
 			if (!emailResponse) {
@@ -174,7 +172,7 @@ const Summary = () => {
 				appointmentId: appointmentResponse.id,
 				inviteLink: calendarResponse.inviteLink,
 				formData,
-				title: appointmentInfo.title,
+				title: service.title,
 				reservationDetails,
 			})
 			setProcessIds({
@@ -293,7 +291,7 @@ const Summary = () => {
 						</div>
 
 						{/* Conditionally render checkbox for online payment */}
-						{appointmentInfo.allowOnline && (
+						{service.allowOnline && (
 							<div className="form-field">
 								<label>
 									<input
@@ -307,23 +305,23 @@ const Summary = () => {
 						)}
 
 						<div className="form-field button-group">
-								<button
-									className="submit-button"
-									type="button"
-									onClick={(e) => handleSubmit(e, true)}
-									disabled={formData.payOnline}
-								>
-									Payer Maintenant
-								</button>
-							{!formData.isOnline && (
 							<button
 								className="submit-button"
 								type="button"
-								onClick={(e) => handleSubmit(e, false)}
+								onClick={(e) => handleSubmit(e, true)}
 								disabled={formData.payOnline}
 							>
-								Payer Plus Tard
+								Payer Maintenant
 							</button>
+							{!formData.isOnline && (
+								<button
+									className="submit-button"
+									type="button"
+									onClick={(e) => handleSubmit(e, false)}
+									disabled={formData.payOnline}
+								>
+									Payer Plus Tard
+								</button>
 							)}
 
 						</div>
@@ -331,12 +329,12 @@ const Summary = () => {
 				</div>
 
 				<div className="summary-details">
-					<h2>{appointmentInfo.title}</h2>
+					<h2>{service.title}</h2>
 					<div className="colored-line left-aligned-line"></div>
 					<p><strong>Date:</strong> {new Date(reservationDetails.date).toLocaleDateString()}</p>
 					<p><strong>Heure:</strong> {reservationDetails.time}</p>
-					<p><strong>Durée:</strong> {FormatDuration(appointmentInfo.length)}</p>
-					<p><strong>Prix:</strong> {appointmentInfo.price}€</p>
+					<p><strong>Durée:</strong> {FormatDuration(service.length)}</p>
+					<p><strong>Prix:</strong> {service.price}€</p>
 				</div>
 			</div>
 

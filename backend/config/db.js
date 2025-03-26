@@ -3,12 +3,12 @@ const path = require("path");
 
 // Define database 
 let db;
-try{
+try {
   //Path for local dev db
   const dbPath = path.join(__dirname, "../data/harmonessensDB.sqlite");
   db = new sqlite3(dbPath);
 }
-catch{
+catch {
   //Path for Render db
   const dbPath = path.join("/data", "harmonessensDB.sqlite");
   db = new sqlite3(dbPath);
@@ -36,13 +36,28 @@ const checkAndCreateTables = () => {
       has_paid INTEGER DEFAULT 0,
       online INTEGER DEFAULT 0, -- 0 for in-person, 1 for online
       client_id INTEGER NOT NULL,
+      FOREIGN KEY (appointmentId) REFERENCES services(id) ON DELETE CASCADE,
       FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
+    );
+  `;
+
+  const createServicesTableQuery = `
+    CREATE TABLE IF NOT EXISTS services (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      image TEXT,
+      description TEXT NOT NULL,
+      length INTEGER NOT NULL,
+      price INTEGER NOT NULL,
+      allowOnline INTEGER NOT NULL DEFAULT 0,
+      isActive INTEGER NOT NULL DEFAULT 1
     );
   `;
 
   try {
     db.exec(createClientsTableQuery);
     db.exec(createAppointmentsTableQuery);
+    db.exec(createServicesTableQuery);
     console.log("SQLite tables checked/created successfully.");
   } catch (error) {
     console.error("Error creating tables:", error.message);

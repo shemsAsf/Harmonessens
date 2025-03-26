@@ -4,11 +4,11 @@ import { GetAppointment } from "../Utils/AppointmentUtils";
 import { GetClient } from "../Utils/ClientUtil";
 import { NotifyError } from "../Utils/NotifyUtil";
 import { FormatDuration } from "../Utils/DateTimeUtil";
-import { appointments } from "../Data/Appointments";
 import "../Style/Summary.css";
+import { fetchService } from "../Utils/ServicesUtils";
 
 const ReservationDetails = ({ appointmentId }) => {
-    const [appointmentInfo, setAppointmentInfo] = useState(null);
+    const [appointmentInfo, setService] = useState(null);
     const [reservationDetails, setReservationDetails] = useState(null);
     const [clientInfo, setClientInfo] = useState(null);
     const navigate = useNavigate();
@@ -38,7 +38,7 @@ const ReservationDetails = ({ appointmentId }) => {
             }
 
             setReservationDetails(appointmentResult.appointment);
-            setAppointmentInfo(appointments.find((appt) => appt.id === appointmentResult.appointment.appointmentId));
+            await fetchService(appointmentResult.appointment.appointmentId, setService);
             setClientInfo(clientResult.client);
         };
 

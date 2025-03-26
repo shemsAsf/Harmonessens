@@ -130,3 +130,4 @@ dist
 .pnp.*
 backend/config/GoogleAuth.json
 backend/data/harmonessensDB.sqlite
+backend/data/images/*

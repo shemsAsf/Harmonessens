@@ -1,7 +1,7 @@
 import React from "react";
 import eagle from "../Assets/eagle-icon.svg";
 import "../Style/HomePage.css";
-import Carousel from "../Components/Calendar/Carousel/Carousel";
+import Carousel from "../Components/Carousel/Carousel";
 
 function Home() {
 	return (

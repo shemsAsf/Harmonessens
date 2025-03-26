@@ -1,0 +1,15 @@
+.dashboard-buttons {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+  }
+
+.dashboard-buttons button {
+    padding: 12px;
+    border: none;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;  
+  }

@@ -4,10 +4,11 @@ import Navbar from "./Components/Navigation/Navbar";
 import Information from "./Pages/Informations";
 import Blog from "./Pages/Blog";
 import Contact from "./Pages/Contact";
-import AppointmentList from "./Pages/Appointments/AppointmentList";
-import AppointmentDetail from "./Pages/Appointments/AppointmentDetail";
+import ServiceList from "./Pages/Services/ServiceList";
+import ServiceDetails from "./Pages/Services/ServiceDetails";
 import Summary from "./Pages/Summary";
-import AppointmentsDashboard from "./Pages/AppointmentsDashboard";
+import Dashboard from "./Pages/Admin/Dashboard";
+import ServiceForm from "./Pages/Admin/ServiceForm";
 import SeeAppointment from "./Pages/SeeAppointment";
 import Footer from "./Components/Footer/FooterComp";
 import "./App.css";
@@ -22,10 +23,11 @@ function App() {
         <Route path="/information/:section" element={<Information />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/appointment" element={<AppointmentList />} />
-        <Route path="/appointment/:id" element={<AppointmentDetail />} />
+        <Route path="/appointment" element={<ServiceList />} />
+        <Route path="/appointment/:id" element={<ServiceDetails />} />
         <Route path="/summary" element={<Summary />} />
-        <Route path="/AppointmentsDashboard" element={<AppointmentsDashboard />} />
+        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/ServiceForm/:id?" element={<ServiceForm />} />
         <Route path="/SeeAppointment/:appointmentId?" element={<SeeAppointment />} />
       </Routes>
       <Footer />

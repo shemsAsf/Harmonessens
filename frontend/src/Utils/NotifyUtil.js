@@ -13,11 +13,11 @@ export const NotifyError = (navigate, redirect, errorMessage) => {
     });
 };
 
-export const NotifySuccess = (navigate, redirect) => {
+export const NotifySuccess = (navigate, redirect, text) => {
     Swal.fire({
         icon: 'success',
         title: 'Réservation Confirmée',
-        text: 'La réservation a été effectuée avec succès.',
+        text: `${text ? text : "La réservation a été effectuée avec succès."}`,
         confirmButtonColor: '#4CAF50',
     }).then(() => {
         navigate(redirect);

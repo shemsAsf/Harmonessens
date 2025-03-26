@@ -2,7 +2,6 @@ import React, { useEffect, useState, useCallback } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { useNavigate } from "react-router-dom";
-import { appointments } from "../../Data/Appointments";
 import "../../Style/Calendar.css"
 
 // Opening hours
@@ -14,8 +13,7 @@ const openingHours = {
 	"Saturday": { morning: [9.5, 13] },
 };
 
-const AppointmentCalendar = ({ appointmentId, onAppointmentSubmit }) => {
-	const appointment = appointments.find((appt) => appt.id === appointmentId);
+const AppointmentCalendar = ({ service }) => {
 	const [selectedDate, setSelectedDate] = useState(null);
 	const [selectedTime, setSelectedTime] = useState(null);
 	const [availableTimes, setAvailableTimes] = useState([]);
@@ -46,12 +44,12 @@ const AppointmentCalendar = ({ appointmentId, onAppointmentSubmit }) => {
 		const availableTimes = [];
 
 		const processTimeRange = (range) => {
-			for (let i = range[0]; i < range[1] - appointment.length / 60; i += 0.5) {
+			for (let i = range[0]; i < range[1] - service.length / 60; i += 0.5) {
 				const startHour = Math.floor(i);
 				const startMinutes = (i % 1) * 60;
 				const startTime = startHour + startMinutes / 60;
 
-				const endTimeInMinutes = startHour * 60 + startMinutes + appointment.length;
+				const endTimeInMinutes = startHour * 60 + startMinutes + service.length;
 				const endHour = Math.floor(endTimeInMinutes / 60);
 				const endMinutes = endTimeInMinutes % 60;
 				const endTime = endHour + endMinutes / 60;
@@ -74,7 +72,7 @@ const AppointmentCalendar = ({ appointmentId, onAppointmentSubmit }) => {
 		if (hours.afternoon) processTimeRange(hours.afternoon);
 
 		return availableTimes.length > 0 ? availableTimes : ["Aucun créneau disponible pour cette journée."];
-	}, [appointment.length]);
+	}, [service.length]);
 
 	// Get available times for the selected date and ensure that the time doesn't exceed working hours
 	const getAvailableTimes = useCallback(async (date) => {
@@ -134,11 +132,11 @@ const AppointmentCalendar = ({ appointmentId, onAppointmentSubmit }) => {
 	const handleSubmit = () => {
 		if (selectedDate && selectedTime) {
 			const reservationDetails = {
-				id: appointment.id,
+				id: service.id,
 				date: selectedDate,
 				time: selectedTime,
 			};
-			navigate("/summary", { state: reservationDetails });
+			navigate("/summary", { state: {reservationDetails, service} });
 		} else {
 			alert("Please select a date and time for your appointment.");
 		}

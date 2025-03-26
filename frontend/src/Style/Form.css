@@ -1,92 +1,132 @@
-
-
-.form-div{
-    flex: 3;
-    width: 48%;
-    box-sizing: border-box;
-    padding: 20px;
-  }
-
-  .form-div h2 {
-    font-size: 22px;
-    margin-bottom: 15px;
-  }
-
-  .form-div form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .form-field {
-    margin-bottom: 15px;
-  }
-  
-  input,
-  textarea {
-    padding: 12px;
-    font-size: 14px;
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  textarea {
-    height: 120px;
-  }
-  
-  .submit-button {
-    padding: 12px;
-    background-color: var(--accent-color);
-    border: none;
-    color: white;
-    font-size: 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: 100%;
-  }
-  
-  .submit-button:hover {
-    background-color: var(--accent-color-dark);
-  }
-
-  .button-group {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-  }
-
-  .centered-form {
-    margin: auto; /* Centers horizontally */
+/* Form Styling */
+.form-div {
+  flex: 3;
+  width: 48%;
+  box-sizing: border-box;
+  padding: 20px;
 }
 
+.form-div h2 {
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+.form-div form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field {
+  margin-bottom: 15px;
+}
+
+input,
+textarea {
+  padding: 12px;
+  font-size: 14px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+textarea {
+  height: 120px;
+}
+
+/* Submit Button */
+.submit-button {
+  padding: 12px;
+  background-color: var(--accent-color);
+  border: none;
+  color: white;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;  
+}
+
+.submit-button:hover {
+  background-color: var(--accent-color-dark);
+}
+
+/* Custom File Input */
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-button {
+  padding: 12px;
+  background-color: var(--accent-color);
+  color: white;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.custom-file-button:hover {
+  background-color: var(--accent-color-dark);
+}
+
+.custom-file-button:focus {
+  outline: none;
+}
+
+input[type="range"] {
+  accent-color: var(--accent-color-dark);
+}
+
+/* File Form Image Preview */
+img.preview {
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+/* Checkbox Styling */
 .form-field input[type="checkbox"] {
   width: 20px;
   height: 20px;
   margin-right: 10px;
+  accent-color: var(--accent-color);
 }
 
-.form-field label {
-  font-size: 1.1em;
+/* Button Group */
+.button-group {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-  @media (max-width: 768px) {
-    .form-div {
+/* Centering Form */
+.centered-form {
+  margin: auto; /* Centers horizontally */
+}
+
+/* Media Query for Mobile */
+@media (max-width: 768px) {
+  .form-div {
       width: 100%;
       padding: 0 10px;
-    }
-  
-    .form-div h2 {
+  }
+
+  .form-div h2 {
       text-align: center;
       font-size: 20px;
-    }
-  
-    input,
-    textarea,
-    .submit-button {
+  }
+
+  input,
+  textarea,
+  .submit-button {
       font-size: 12px;
-    }
-  } 
+  }
+}
