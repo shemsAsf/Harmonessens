@@ -27,7 +27,7 @@ const allowedOrigin = [process.env.ALLOWED_ORIGIN, "http://localhost:3000"];
 
 app.use(
   cors({
-    origin: allowedOrigin,
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })

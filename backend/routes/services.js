@@ -11,4 +11,6 @@ router.post("/create-service", upload.single('image'), async (req, res) => contr
 
 router.put("/update-service/:id", upload.single('image'), async (req, res) => controller.UpdateService(req, res));
 
+router.delete("/remove-service/:id", async (req, res) => controller.RemoveService(req, res));
+
 module.exports = router;

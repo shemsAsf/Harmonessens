@@ -3,6 +3,7 @@ import "../../Style/Form.css";
 import AdminAuth from "../../Components/AdminAuth";
 import { useParams, useNavigate } from "react-router-dom";
 import { CreateService, EditService, fetchService, GetService } from "../../Utils/ServicesUtils";
+import { CreateService, EditService, fetchService, RemoveService } from "../../Utils/ServicesUtils";
 
 const ServiceForm = () => {
 	const { id } = useParams();
@@ -11,7 +12,7 @@ const ServiceForm = () => {
 	// Define state for form fields
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
-	const [length, setLength] = useState("");
+	const [length, setLength] = useState(90);
 	const [price, setPrice] = useState("");
 	const [allowOnline, setAllowOnline] = useState(false);
 	const [isActive, setIsActive] = useState(true);
@@ -66,10 +67,14 @@ const ServiceForm = () => {
 		}
 	};
 
+	const handleRemove = async (e) => {
+		if (serviceToEdit){
+			RemoveService(navigate, serviceToEdit.id)
+		}
 	return (
 		<AdminAuth>
 			<div className="calendar-container">
-				<h2>{serviceToEdit ? "Edit Service" : "Create Service"}</h2>
+				<h2>{serviceToEdit ? "Modifier un Service" : "Créer un Service"}</h2>
 
 				<div className="form-div">
 					<form onSubmit={handleSubmit} encType="multipart/form-data">
@@ -163,6 +168,10 @@ const ServiceForm = () => {
 								{serviceToEdit ? "Mettre à jour" : "Créer"} Service
 							</button>
 						</div>
+						
+						{/* Delete Button */}
+						{serviceToEdit && 
+							<div className="form-field">
 					</form>
 				</div>
 			</div>

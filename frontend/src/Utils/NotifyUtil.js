@@ -13,10 +13,10 @@ export const NotifyError = (navigate, redirect, errorMessage) => {
     });
 };
 
-export const NotifySuccess = (navigate, redirect, text) => {
+export const NotifySuccess = (navigate, redirect, text, title) => {
     Swal.fire({
         icon: 'success',
-        title: 'Réservation Confirmée',
+        title: `${title ? title : 'Réservation Confirmée'}`,
         text: `${text ? text : "La réservation a été effectuée avec succès."}`,
         confirmButtonColor: '#4CAF50',
     }).then(() => {

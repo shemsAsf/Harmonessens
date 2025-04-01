@@ -24,8 +24,6 @@ const ServiceCard = ({ service, isDashboard }) => {
 		}
 	};
 
-	console.log(service);
-
 	// If service.active is 0 and isDashboard is false, don't render the card
 	if (service.isActive === 0 && !isDashboard) {
 		return null;

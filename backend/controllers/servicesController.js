@@ -12,7 +12,7 @@ const GetServices = (req, res) => {
 
 		const services = result.map((service) => ({
 			...service,
-			image: `${req.protocol}://${req.get("host")}/images/${path.basename(service.image)}`,
+			image: GetImageAsLink(req, service.image),
 		}));
 
 		return res.status(200).json({ success: true, services });
@@ -20,7 +20,7 @@ const GetServices = (req, res) => {
 		console.error("Error fetching appointments for the given date:", error);
 		return res.status(500).json({ success: false, message: "Internal server error" });
 	}
-};
+}; 
 
 const GetService = (req, res) => {
 	try {
@@ -34,7 +34,7 @@ const GetService = (req, res) => {
   
 	  const service = {
 		...result,
-		image: `${req.protocol}://${req.get("host")}/images/${path.basename(result.image)}`,
+		image: GetImageAsLink(req, result.image),
 	  };
   
 	  return res.status(200).json({ success: true, service });
@@ -92,11 +92,7 @@ const UpdateService = (req, res) => {
 		// Delete old image if a new one was uploaded
 		if (data.image && oldImage) {
 			const oldImagePath = path.join(IMAGE_FOLDER, oldImage);
-			fs.unlink(oldImagePath, (unlinkErr) => {
-				if (unlinkErr && unlinkErr.code !== "ENOENT") {
-					console.error("Error deleting old image:", unlinkErr.message);
-				}
-			});
+			RemoveImage(oldImagePath);
 		}
 
 		res.status(200).json({ success: true, message: "Service updated successfully" });
@@ -106,7 +102,6 @@ const UpdateService = (req, res) => {
 	}
 };
 
-  
 const validateAndConvertServiceData = (req, res) => {
 	const { title, description, length, price, allowOnline, isActive } = req.body;
 	const image = req.file ? req.file.filename : null;
@@ -130,9 +125,44 @@ const validateAndConvertServiceData = (req, res) => {
 	return { title, description, lengthNum, priceNum, allowOnlineInt, isActiveInt, image };
 };
 
+const RemoveService = (req, res) => {
+	try {
+		const { id } = req.params;
+
+		const row = db.prepare("SELECT * FROM services WHERE id = ?").get(id);
+		if (!row) {
+			return res.status(404).json({ success: false, message: "Service not found" });
+		}
+
+		if (row.image) {
+			RemoveImage(row.image);
+		}
+
+		db.prepare("DELETE FROM services WHERE id = ?").run(id);
+
+		return res.status(200).json({ success: true, service: row });
+	} catch (error) {
+		console.error("Error removing service:", error);
+		return res.status(500).json({ success: false, message: "Internal server error" });
+	}
+};
+
+const RemoveImage = (name) => {
+	fs.unlink(name, (unlinkErr) => {
+		if (unlinkErr && unlinkErr.code !== "ENOENT") {
+			console.error("Error deleting image:", unlinkErr.message);
+		}
+	});
+}
+
+const GetImageAsLink = (req, img) => {
+	return img == null ? "" : `${req.protocol}://${req.get("host")}/images/${path.basename(img)}`
+}
+
 module.exports = {
 	GetServices,
 	GetService,
 	CreateService,
 	UpdateService,
+	RemoveService,
 };
