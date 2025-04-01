@@ -14,7 +14,7 @@ const GetServices = (req, res) => {
 
 		const services = result.map((service) => ({
 			...service,
-			image: `${req.protocol}://${req.get("host")}/images/${path.basename(service.image)}`,
+			image: service.image == null ? "" : `${req.protocol}://${req.get("host")}/images/${path.basename(service.image)}`,
 		}));
 
 		return res.status(200).json({ success: true, services });
