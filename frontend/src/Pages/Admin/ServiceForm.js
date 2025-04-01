@@ -70,6 +70,8 @@ const ServiceForm = () => {
 		if (serviceToEdit){
 			RemoveService(navigate, serviceToEdit.id)
 		}
+	};
+
 	return (
 		<AdminAuth>
 			<div className="calendar-container">
