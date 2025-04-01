@@ -5,10 +5,10 @@
   "scripts": {
     "frontend": "cd frontend && npm install",
     "backend": "cd backend && npm install",
+    "install-all": "concurrently \"npm run frontend\" \"npm run backend\" \"npm install\"",
     "start-frontend": "cd frontend && npm start",
     "start-backend": "cd backend && npm run dev",
-    "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
-    "build": "cd frontend && npm run build"
+    "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\""
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

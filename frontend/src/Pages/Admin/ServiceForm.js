@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import "../../Style/Form.css";
 import AdminAuth from "../../Components/AdminAuth";
 import { useParams, useNavigate } from "react-router-dom";
-import { CreateService, EditService, fetchService, GetService } from "../../Utils/ServicesUtils";
 import { CreateService, EditService, fetchService, RemoveService } from "../../Utils/ServicesUtils";
 
 const ServiceForm = () => {
@@ -172,6 +171,11 @@ const ServiceForm = () => {
 						{/* Delete Button */}
 						{serviceToEdit && 
 							<div className="form-field">
+								<button type="button" className="submit-button" onClick={handleRemove}>
+									Supprimer service
+								</button>
+							</div>
+						}
 					</form>
 				</div>
 			</div>

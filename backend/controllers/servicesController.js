@@ -8,7 +8,7 @@ const GetServices = (req, res) => {
 	try {
 		const result = db.prepare(
 			"SELECT * FROM services"
-		).all()
+		).all();
 
 		const services = result.map((service) => ({
 			...service,
