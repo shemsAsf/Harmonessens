@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "../../Style/Form.css";
 import AdminAuth from "../../Components/AdminAuth";
 import { useParams, useNavigate } from "react-router-dom";
-import { CreateService, EditService, fetchService, GetService } from "../../Utils/ServicesUtils";
+import { CreateService, EditService, fetchService } from "../../Utils/ServicesUtils";
 
 const ServiceForm = () => {
 	const { id } = useParams();

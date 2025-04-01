@@ -10,6 +10,8 @@ const GetServices = (req, res) => {
 			"SELECT * FROM services"
 		).all()
 
+		console.log(result);
+
 		const services = result.map((service) => ({
 			...service,
 			image: `${req.protocol}://${req.get("host")}/images/${path.basename(service.image)}`,
