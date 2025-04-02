@@ -66,6 +66,7 @@ const AdminAuth = ({ children }) => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
+                    <br/>
                     <button className="submit-button" onClick={handleLogin}>Se connecter</button>
                 </div>
             </div>

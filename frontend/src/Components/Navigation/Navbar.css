@@ -90,6 +90,7 @@
   
     .nav-list.open {
       display: flex;
+      z-index: 99;
     }
   
     .nav-item {
