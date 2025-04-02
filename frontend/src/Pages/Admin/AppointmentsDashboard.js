@@ -7,6 +7,7 @@ import "../../Style/Form.css";
 const AppointmentsDashboard = () => {
     const [appointments, setAppointments] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [showAll, setShowAll] = useState(false);
 
     useEffect(() => {
         const authToken = localStorage.getItem("token");
@@ -39,13 +40,17 @@ const AppointmentsDashboard = () => {
             setAppointments([]);
         }
     };
+    
+    const handleSeeAll = () => {
+        setShowAll(true);
+    };
 
-    const filteredAppointments = appointments
-        .filter((appt) => {
+    const filteredAppointments = showAll
+        ? appointments.filter((appt) => new Date(appt.start_time) > new Date())
+        : appointments.filter((appt) => {
             const appointmentDate = new Date(appt.start_time);
             return appointmentDate.toDateString() === selectedDate.toDateString();
-        })
-        .sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
+        });
 
     return (
         <div className="admin-page">
@@ -55,19 +60,24 @@ const AppointmentsDashboard = () => {
                 <h3>Choisir une date</h3>
                 <div className="calendar-flex-container">
                     <Calendar
-                        onChange={(date) => setSelectedDate(date)}
+                        onChange={(date) => {
+                            setSelectedDate(date);
+                            setShowAll(false);
+                        }}
                         value={selectedDate}
                     />
                 </div>
             </div>
-
-            <h2 className="main-title" >Rendez-vous du {selectedDate.toLocaleDateString()}</h2>
+            <button className="submit-button" onClick={handleSeeAll}>Voir tous les futurs rendez-vous</button>
+            <h2 className="main-title">{showAll ? "Tous les futurs rendez-vous" : `Rendez-vous du ${selectedDate.toLocaleDateString()}`}</h2>
             {filteredAppointments.length > 0 ? (
-                filteredAppointments.map((appt) => (
-                    <ReservationDetails appointmentId={appt.id} />
-                ))
+                filteredAppointments
+                    .sort((a, b) => new Date(a.start_time) - new Date(b.start_time))
+                    .map((appt) => (
+                        <ReservationDetails key={appt.id} appointmentId={appt.id} />
+                    ))
             ) : (
-                <p className="centered-text">Aucun rendez-vous ce jour-là.</p>
+                <p className="centered-text">Aucun rendez-vous trouvé.</p>
             )}
         </div>
     );
