@@ -35,7 +35,7 @@ textarea {
 }
 
 /* Submit Button */
-.submit-button {
+.submit-button, .cancel-button {
   padding: 12px;
   background-color: var(--accent-color);
   border: none;
@@ -47,8 +47,16 @@ textarea {
   width: 100%;  
 }
 
+.cancel-button {
+  background-color: rgb(225, 65, 65)
+}
+
 .submit-button:hover {
   background-color: var(--accent-color-dark);
+}
+
+.cancel-button:hover {
+  background-color: rgb(192, 55, 55)
 }
 
 /* Custom File Input */

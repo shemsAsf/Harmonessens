@@ -65,13 +65,16 @@ const ServiceForm = () => {
 			CreateService(navigate, formData);
 		}
 	};
-
+	
 	const handleRemove = async (e) => {
-		if (serviceToEdit){
-			RemoveService(navigate, serviceToEdit.id)
+		if (serviceToEdit) {
+			const isConfirmed = window.confirm("Are you sure you want to remove this service?");
+			if (isConfirmed) {
+				RemoveService(navigate, serviceToEdit.id);
+			}
 		}
 	};
-
+	
 	return (
 		<AdminAuth>
 			<div className="calendar-container">
@@ -173,7 +176,7 @@ const ServiceForm = () => {
 						{/* Delete Button */}
 						{serviceToEdit && 
 							<div className="form-field">
-								<button type="button" className="submit-button" onClick={handleRemove}>
+								<button type="button" className="cancel-button" onClick={handleRemove}>
 									Supprimer service
 								</button>
 							</div>

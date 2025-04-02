@@ -60,12 +60,14 @@ const AdminAuth = ({ children }) => {
             <div className="main-div">
                 <div className="form-div centered-form">
                     <h2 className="main-title">Connexion Admin</h2>
+                    <br/>
                     <input
                         type="password"
                         placeholder="Mot de passe"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
+                    <br/>
                     <br/>
                     <button className="submit-button" onClick={handleLogin}>Se connecter</button>
                 </div>

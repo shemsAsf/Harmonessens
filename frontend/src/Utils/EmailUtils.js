@@ -2,7 +2,6 @@ import { getLocalDate } from "./DateTimeUtil";
 
 export const SendAppointmentEmail = async (appointmentId, inviteLink, formData, title, reservationDetails) => {
     try {
-        console.log("title:", )
         const response = await fetch(`${process.env.REACT_APP_API_URL}/email/send-appointment-email`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
