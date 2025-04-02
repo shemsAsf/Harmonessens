@@ -60,7 +60,7 @@ export const CreateService = async (navigate, formData) => {
 			throw new Error('Error creating service');
 		}
 
-		NotifySuccess(navigate, "/Dashboard", "service créé avec succès.")
+		NotifySuccess(navigate, "/Dashboard/services", "service créé avec succès.")
 	} catch (error) {
 		NotifyError(null, null, error.message)
 	}
@@ -75,7 +75,7 @@ export const EditService = async (navigate, formData, id) => {
 		if (!response.ok) {
 			throw new Error('Error updating service');
 		}
-		NotifySuccess(navigate, "/Dashboard", "service modifié avec succès.", "Succès")
+		NotifySuccess(navigate, "/Dashboard/services", "service modifié avec succès.", "Succès")
 	} catch (error) {
 		NotifyError(null, null, error.message)
 	}
@@ -89,7 +89,7 @@ export const RemoveService = async (navigate, id) => {
 		if (!response.ok) {
 			throw new Error('Error removing service');
 		}
-		NotifySuccess(navigate, "/Dashboard", "service supprimé avec succès.", "Succès")
+		NotifySuccess(navigate, "/Dashboard/services", "service supprimé avec succès.", "Succès")
 	} catch (error) {
 		NotifyError(null, null, error.message)
 	}

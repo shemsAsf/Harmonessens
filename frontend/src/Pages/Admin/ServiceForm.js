@@ -60,9 +60,9 @@ const ServiceForm = () => {
 
 		// Submit either create or edit based on serviceToEdit
 		if (serviceToEdit) {
-			EditService(navigate, formData, serviceToEdit.id); // Pass the service ID for editing
+			EditService(navigate, formData, serviceToEdit.id);
 		} else {
-			CreateService(navigate, formData); // Create a new service
+			CreateService(navigate, formData);
 		}
 	};
 

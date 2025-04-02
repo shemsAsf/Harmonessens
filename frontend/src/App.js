@@ -26,7 +26,7 @@ function App() {
         <Route path="/appointment" element={<ServiceList />} />
         <Route path="/appointment/:id" element={<ServiceDetails />} />
         <Route path="/summary" element={<Summary />} />
-        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/Dashboard/:page?" element={<Dashboard />} />
         <Route path="/ServiceForm/:id?" element={<ServiceForm />} />
         <Route path="/SeeAppointment/:appointmentId?" element={<SeeAppointment />} />
       </Routes>

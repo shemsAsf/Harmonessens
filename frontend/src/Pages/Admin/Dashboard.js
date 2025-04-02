@@ -3,10 +3,11 @@ import AppointmentsDashboard from './AppointmentsDashboard';
 import AdminAuth from "../../Components/AdminAuth";
 import "../../Style/Dashboard.css";
 import AppointmentCards from '../Services/ServiceCards';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Dashboard = () => {
-    const [activeComponent, setActiveComponent] = useState("appointments");
+	const { page } = useParams();
+    const [activeComponent, setActiveComponent] = useState(page ? page : "appointments");
     const navigate = useNavigate();
 
     const handleButtonClick = (component) => {
