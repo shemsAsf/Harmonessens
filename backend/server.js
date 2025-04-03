@@ -12,10 +12,10 @@ const serviceRoutes = require("./routes/services");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const path = require("path");
+const { IMAGE_FOLDER } = require("./config/constants");
 
 const app = express();
 const port = 5000;
-const IMAGE_FOLDER = path.join(__dirname, "./data/images/services");
 
 // Ensure image folder exists
 if (!fs.existsSync(IMAGE_FOLDER)) {
