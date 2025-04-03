@@ -3,12 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { GetAppointment } from "../Utils/AppointmentUtils";
 import { GetClient } from "../Utils/ClientUtil";
 import { NotifyError } from "../Utils/NotifyUtil";
-import { FormatDuration } from "../Utils/DateTimeUtil";
 import "../Style/Summary.css";
 import { fetchService } from "../Utils/ServicesUtils";
 
 const ReservationDetails = ({ appointmentId }) => {
-    const [appointmentInfo, setService] = useState(null);
+    const [Service, setService] = useState(null);
     const [reservationDetails, setReservationDetails] = useState(null);
     const [clientInfo, setClientInfo] = useState(null);
     const navigate = useNavigate();
@@ -38,14 +37,19 @@ const ReservationDetails = ({ appointmentId }) => {
             }
 
             setReservationDetails(appointmentResult.appointment);
-            await fetchService(appointmentResult.appointment.appointmentId, setService);
+            if(appointmentResult.appointment.appointmentId === 0){
+                setService({title: "Occupé", length:0, price:0})
+            }
+            else{
+                await fetchService(appointmentResult.appointment.appointmentId, setService);
+            }
             setClientInfo(clientResult.client);
         };
 
         fetchInfo();
     }, [appointmentId, navigate]);
 
-    if (!appointmentInfo) {
+    if (!Service) {
         return (
             <div className="loading-container">
                 <div className="spinner"></div>
@@ -58,12 +62,12 @@ const ReservationDetails = ({ appointmentId }) => {
         <div className="summary-container">
             {/* Appointment Details */}
             <div className="summary-details">
-                <h2>{appointmentInfo.title}</h2>
+                <h2>{Service.title}</h2>
                 <div className="colored-line left-aligned-line"></div>
                 <p><strong>Date:</strong> {new Date(reservationDetails.start_time).toLocaleDateString()}</p>
-                <p><strong>Heure:</strong> {new Date(reservationDetails.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                <p><strong>Durée:</strong> {FormatDuration(appointmentInfo.length)}</p>
-                <p><strong>Reste à payer:</strong> {reservationDetails.has_paid ? 0 : appointmentInfo.price}€</p>
+                <p><strong>Heure de debut:</strong> {new Date(reservationDetails.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                <p><strong>Heure de fin:</strong> {new Date(reservationDetails.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                <p><strong>Reste à payer:</strong> {reservationDetails.has_paid ? 0 : Service.price}€</p>
                 {reservationDetails.online === 1 && <p><strong>Rendez-vous en ligne</strong></p>}
             </div>
 

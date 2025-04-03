@@ -1,4 +1,4 @@
-import {React, useEffect, useState} from "react";
+import { React, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AppointmentCalendar from "../../Components/Calendar/AppointmentCalendar";
 import { FormatDuration } from "../../Utils/DateTimeUtil";
@@ -10,23 +10,23 @@ const ServiceDetails = () => {
 	const [service, setService] = useState(null);
 
 	useEffect(() => {
-			if (id) {
-				const fetchService = async () => {
-					try {
-						const fetchedService = await GetService(id);
-						if (fetchedService && fetchedService.success) {
-							setService(fetchedService.service);
-						} else {
-							console.error("Service not found or error fetching");
-						}
-					} catch (error) {
-						console.error("Error fetching service:", error);
+		if (id) {
+			const fetchService = async () => {
+				try {
+					const fetchedService = await GetService(id);
+					if (fetchedService && fetchedService.success) {
+						setService(fetchedService.service);
+					} else {
+						console.error("Service not found or error fetching");
 					}
-				};
-	
-				fetchService();
-			}
-		}, [id]);
+				} catch (error) {
+					console.error("Error fetching service:", error);
+				}
+			};
+
+			fetchService();
+		}
+	}, [id]);
 
 	if (!service) return <p className="error-message">Service not found</p>;
 
@@ -55,15 +55,15 @@ const ServiceDetails = () => {
 					<p>Prix: <span>{service.price}€</span></p>
 				</div>
 			</div>
-			{ service.allowOnline && (
-				
+			{service.allowOnline && (
 
-			<div className="info-card">
-			<i className="fas fa-globe info-icon"></i>
-			<div className="info-content">
-				<p>Ce rendez vous peut être prix en ligne</p>
-			</div>
-		</div>
+
+				<div className="info-card">
+					<i className="fas fa-globe info-icon"></i>
+					<div className="info-content">
+						<p>Ce rendez vous peut être prix en ligne</p>
+					</div>
+				</div>
 			)}
 			<br />
 			<AppointmentCalendar service={service} />

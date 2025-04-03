@@ -58,7 +58,6 @@ app.post("/admin/login", (req, res) => {
 app.get('/images/:imageName', (req, res) => {
   const imageName = req.params.imageName;
   const imagePath = path.join(IMAGE_FOLDER, imageName);
-  console.log(imagePath);
 
   // Check if the image exists
   fs.exists(imagePath, (exists) => {

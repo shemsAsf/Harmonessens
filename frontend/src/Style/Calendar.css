@@ -18,6 +18,14 @@
   gap: 40px;
 }
 
+.calendar-flex-collumn-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+  flex-direction: column;
+}
+
+
 /* Calendar Title */
 .calendar-container h3 {
   font-size: 26px;
@@ -110,29 +118,6 @@
   outline: none;
 }
 
-/* Confirm Button */
-.confirm-button {
-  background-color: var(--accent-color);
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  font-size: 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  width: 100%;
-  max-width: 320px;
-}
-
-.confirm-button:hover {
-  background-color: var(--accent-color-dark);
-  transform: scale(1.05);
-}
-
-.confirm-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
 
 /* Style the select dropdown */
 .time-selection select {

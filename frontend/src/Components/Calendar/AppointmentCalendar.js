@@ -169,7 +169,7 @@ const AppointmentCalendar = ({ service }) => {
 						</div>
 
 						<button
-							className="confirm-button"
+							className="submit-button"
 							onClick={handleSubmit}
 							disabled={!selectedTime}>
 							Valider
