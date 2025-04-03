@@ -148,12 +148,30 @@ const RemoveService = (req, res) => {
 };
 
 const RemoveImage = (name) => {
-	fs.unlink(name, (unlinkErr) => {
-		if (unlinkErr && unlinkErr.code !== "ENOENT") {
-			console.error("Error deleting image:", unlinkErr.message);
+	const filePath = path.join(IMAGE_FOLDER, name);
+
+	// Check if the file exists before attempting to delete it
+	fs.access(filePath, fs.constants.F_OK, (err) => {
+		if (err) {
+			if (err.code === "ENOENT") {
+				console.log(`Image not found, skipping: ${filePath}`);
+				return;
+			}
+			console.error("Error checking image existence:", err.message);
+			return;
 		}
+
+		// If the file exists, delete it
+		fs.unlink(filePath, (unlinkErr) => {
+			if (unlinkErr) {
+				console.error("Error deleting image:", unlinkErr.message);
+			} else {
+				console.log(`Deleted image: ${filePath}`);
+			}
+		});
 	});
-}
+};
+
 
 const GetImageAsLink = (req, img) => {
 	return img == null ? "" : `${req.protocol}://${req.get("host")}/images/${path.basename(img)}`
