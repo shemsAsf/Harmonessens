@@ -7,7 +7,7 @@ const GetServices = (req, res) => {
 
 	try {
 		const result = db.prepare(
-			"SELECT * FROM services"
+			"SELECT * FROM services wHERE id > 0"
 		).all();
 
 		const services = result.map((service) => ({

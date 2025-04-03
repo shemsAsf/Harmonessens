@@ -22,7 +22,7 @@ export const AddAppointmentToCalendar = async (reservationId, reservationDetails
             throw new Error(data.message || "Failed to create calendar event");
         }
 
-        console.log("Calendar event successfully created:", data);
+        console.log("Calendar event successfully created");
 
         return {
             success: true,

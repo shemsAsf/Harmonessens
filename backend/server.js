@@ -27,7 +27,7 @@ const allowedOrigin = [process.env.ALLOWED_ORIGIN, "http://localhost:3000"];
 
 app.use(
   cors({
-    origin: "*",
+    origin: allowedOrigin,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
@@ -65,7 +65,6 @@ app.get('/images/:imageName', (req, res) => {
           return res.status(404).json({ error: 'Image not found' });
       }
 
-      // Set the correct content type for the image (you can adjust for different image formats)
       res.sendFile(imagePath, (err) => {
           if (err) {
               res.status(500).json({ error: 'Error serving the image' });
