@@ -62,22 +62,28 @@ const CreateService = (req, res) => {
 
 const UpdateService = (req, res) => {
 	const { id } = req.params;
+	console.log(`Updating service with ID: ${id}`);
+
 	const data = validateAndConvertServiceData(req, res);
-	if (!data || !id) return res.status(400).json({ error: "Invalid data or missing ID" });
+	if (!data || !id) {
+		console.error("Invalid data or missing ID", { id, data });
+		return res.status(400).json({ error: "Invalid data or missing ID" });
+	}
 
 	try {
-		// Retrieve the old image
+		console.log("Fetching old image for service...");
 		const stmt1 = db.prepare("SELECT image FROM services WHERE id = ?");
-		const row = stmt1.get(id); 
+		const row = stmt1.get(id);
 
-		// If no service found, return an error
 		if (!row) {
+			console.warn(`Service with ID ${id} not found.`);
 			return res.status(404).json({ error: "Service not found" });
 		}
 
 		const oldImage = row.image;
+		console.log(`Old image: ${oldImage ? oldImage : "No image found"}`);
 
-		// Update the service
+		console.log("Updating service data in the database...");
 		const stmt = db.prepare(`
 			UPDATE services 
 			SET title = ?, description = ?, length = ?, price = ?, allowOnline = ?, isActive = ?, image = COALESCE(?, image)
@@ -88,15 +94,20 @@ const UpdateService = (req, res) => {
 			data.title, data.description, data.lengthNum, data.priceNum, 
 			data.allowOnlineInt, data.isActiveInt, data.image, id
 		);
+		console.log(`Service updated. Changes applied: ${result.changes}`);
 
-		// Delete old image only if:
+		// Delete old image if:
 		// - A new image was uploaded
-		// - The old image is not empty or null
+		// - The old image exists and is not an empty string
 		if (data.image && oldImage && oldImage.trim() !== "") {
 			const oldImagePath = path.join(IMAGE_FOLDER, oldImage);
+			console.log(`Attempting to remove old image at: ${oldImagePath}`);
 			RemoveImage(oldImagePath);
+		} else {
+			console.log("No old image to remove.");
 		}
 
+		console.log("Update process completed successfully.");
 		res.status(200).json({ success: true, message: "Service updated successfully" });
 
 	} catch (err) {
@@ -104,7 +115,6 @@ const UpdateService = (req, res) => {
 		res.status(500).json({ error: "Internal server error" });
 	}
 };
-
 
 const validateAndConvertServiceData = (req, res) => {
 	const { title, description, length, price, allowOnline, isActive } = req.body;
