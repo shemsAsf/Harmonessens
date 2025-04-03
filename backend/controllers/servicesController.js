@@ -67,8 +67,8 @@ const UpdateService = (req, res) => {
 
 	try {
 		// Retrieve the old image
-		const smtm1 = db.prepare("SELECT image FROM services WHERE id = ?");
-		const row = smtm1.get(id); 
+		const stmt1 = db.prepare("SELECT image FROM services WHERE id = ?");
+		const row = stmt1.get(id); 
 
 		// If no service found, return an error
 		if (!row) {
@@ -78,19 +78,21 @@ const UpdateService = (req, res) => {
 		const oldImage = row.image;
 
 		// Update the service
-		const smtm = db.prepare(`
+		const stmt = db.prepare(`
 			UPDATE services 
 			SET title = ?, description = ?, length = ?, price = ?, allowOnline = ?, isActive = ?, image = COALESCE(?, image)
 			WHERE id = ?
 		`);
 
-		const result = smtm.run(
+		const result = stmt.run(
 			data.title, data.description, data.lengthNum, data.priceNum, 
 			data.allowOnlineInt, data.isActiveInt, data.image, id
 		);
 
-		// Delete old image if a new one was uploaded
-		if (data.image && oldImage) {
+		// Delete old image only if:
+		// - A new image was uploaded
+		// - The old image is not empty or null
+		if (data.image && oldImage && oldImage.trim() !== "") {
 			const oldImagePath = path.join(IMAGE_FOLDER, oldImage);
 			RemoveImage(oldImagePath);
 		}
@@ -98,9 +100,11 @@ const UpdateService = (req, res) => {
 		res.status(200).json({ success: true, message: "Service updated successfully" });
 
 	} catch (err) {
-		res.status(500).json({ error: err.message });
+		console.error("Error updating service:", err.message);
+		res.status(500).json({ error: "Internal server error" });
 	}
 };
+
 
 const validateAndConvertServiceData = (req, res) => {
 	const { title, description, length, price, allowOnline, isActive } = req.body;
