@@ -3,7 +3,9 @@ import Calendar from "react-calendar";
 import ReservationDetails from "../../Components/ReservationDetail";
 import "../../Style/Calendar.css";
 import "../../Style/Form.css";
-import { addAppointmentLockToDB } from "../../Utils/AppointmentUtils";
+import { addAppointmentLockToDB, RemoveAppointmentFromDB } from "../../Utils/AppointmentUtils";
+import { NotifyError, NotifySuccess } from "../../Utils/NotifyUtil";
+import { useNavigate } from "react-router-dom";
 
 const generateTimes = (startHour, endHour, interval) => {
 	let times = [];
@@ -26,7 +28,9 @@ const AppointmentsDashboard = () => {
 	const [selectedEndTime, setSelectedEndTime] = useState("");
 	const [showAll, setShowAll] = useState(false);
 	const [clientId, setClientId] = useState(0);
-	const [showReservationForm, setShowReservationForm] = useState(false); // NEW STATE
+	const [showReservationForm, setShowReservationForm] = useState(false);
+
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		const fetchClientId = async () => {
@@ -87,12 +91,11 @@ const AppointmentsDashboard = () => {
 		setSelectedEndTime(e.target.value);
 	};
 
-	const handleSubmit = () => {
-		console.log("Submitting appointment...");
-		console.log("Current clientId:", clientId);
+	const handleSubmit = async () => {
 
 		if (!clientId || clientId === 0) {
 			console.error("Invalid clientId, submission aborted");
+			NotifyError(null, null, "Client par default introuvable.")
 			return;
 		}
 
@@ -102,8 +105,14 @@ const AppointmentsDashboard = () => {
 			const startMinutes = start[0] * 60 + start[1];
 			const endMinutes = end[0] * 60 + end[1];
 			const duration = endMinutes - startMinutes;
-			console.log("params :", selectedDate, selectedStartTime, duration, clientId)
-			addAppointmentLockToDB(selectedDate, selectedStartTime, duration, clientId);
+
+			const result = await addAppointmentLockToDB(selectedDate, selectedStartTime, duration, clientId);
+			if(result.success){
+				NotifySuccess(navigate, 0, "Creneaux reservé avec succes", "Success")
+			}
+			else{
+				NotifyError(null, null, "Veuillez réessayer plus tard.")
+			}
 		}
 	};
 
@@ -190,8 +199,10 @@ const AppointmentsDashboard = () => {
 			{filteredAppointments.length > 0 ? (
 				filteredAppointments
 					.sort((a, b) => new Date(a.start_time) - new Date(b.start_time))
-					.map((appt) => (
+					.map((appt) => (<div>
 						<ReservationDetails key={appt.id} appointmentId={appt.id} />
+						<button onClick={() => RemoveAppointmentFromDB(appt.id)}>Supprimer le rendez vous</button>
+						</div>
 					))
 			) : (
 				<p className="centered-text">Aucun rendez-vous trouvé.</p>

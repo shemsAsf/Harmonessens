@@ -28,9 +28,15 @@ export const addAppointmentToDb = async (req, res) => {
 	let reservationId;
 	while (true) {
 		reservationId = Math.floor(Math.random() * 900000) + 100000;
-		const existing = db.prepare('SELECT id FROM appointments WHERE id = ?').get(reservationId);
-		if (!existing) break;
+
+		const existingInAppointments = db.prepare('SELECT id FROM appointments WHERE id = ?').get(reservationId);
+		const existingInUsedIds = db.prepare('SELECT id FROM used_ids WHERE id = ?').get(reservationId);
+
+		if (!existingInAppointments && !existingInUsedIds) break;
 	}
+
+	// Store the new ID in the `used_ids` table to prevent future reuse
+	db.prepare('INSERT INTO used_ids (id) VALUES (?)').run(reservationId);
 
 	// Insert appointment
 	try {

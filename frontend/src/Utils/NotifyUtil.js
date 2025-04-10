@@ -7,7 +7,7 @@ export const NotifyError = (navigate, redirect, errorMessage) => {
         text: `Une erreur est survenue, ${errorMessage ? errorMessage : "Veuillez réessayer plus tard."}`,
         confirmButtonColor: '#F44336',
     }).then(() => {
-        if (redirect) {
+        if (redirect !== null) {
             navigate(redirect);
         }
     });
@@ -20,6 +20,8 @@ export const NotifySuccess = (navigate, redirect, text, title) => {
         text: `${text ? text : "La réservation a été effectuée avec succès."}`,
         confirmButtonColor: '#4CAF50',
     }).then(() => {
-        navigate(redirect);
+        if (redirect !== null) {
+            navigate(redirect);
+        }
     });
 }
