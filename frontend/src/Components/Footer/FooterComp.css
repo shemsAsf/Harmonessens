@@ -35,10 +35,13 @@
 .footer-column a {
   font-size: 14px;
   text-align: left;
+  text-decoration: none;
 }
 
 .footer-column-info p.p-wm {
   margin: 5px 0 0 25px;
+  color:#000;
+  text-decoration: none;
 }
 
 .contact-link,

@@ -88,6 +88,10 @@ p {
   margin-bottom: 10px;
 }
 
+a {
+  color: 000;
+}
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }

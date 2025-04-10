@@ -36,32 +36,26 @@ function Presentation() {
           <br />
           <div className="services">
             <div className="service-card" data-aos="fade-up">
-              <i className="fas fa-leaf service-icon"></i>
               <h4>Naturopathie</h4>
               <p>Rétablir l’équilibre du corps et soutenir sa vitalité naturelle.</p>
             </div>
             <div className="service-card" data-aos="fade-up" data-aos-delay="100">
-              <i className="fas fa-heart service-icon"></i>
               <h4>Soins Chamaniques</h4>
               <p>Libérer les mémoires, apaiser les blessures de l’âme et retrouver votre pouvoir intérieur.</p>
             </div>
             <div className="service-card" data-aos="fade-up" data-aos-delay="200">
-              <i className="fas fa-hands-helping service-icon"></i>
               <h4>Rituels Sacrés</h4>
               <p>Honorer les passages de vie, s’aligner avec les cycles naturels et poser des intentions profondes.</p>
             </div>
             <div className="service-card" data-aos="fade-up" data-aos-delay="300">
-              <i className="fas fa-magic service-icon"></i>
               <h4>Massage Énergétique</h4>
               <p>Harmoniser vos centres d’énergie et libérer les tensions accumulées.</p>
             </div>
             <div className="service-card" data-aos="fade-up" data-aos-delay="300">
-              <i class="fa-solid fa-hand-holding-heart service-icon"></i>
               <h4>Massage d’intégration chamanique</h4>
-              <p>Accompagner les grands passages de l’existence, Soutenir les transitions de vie, Ancrer ces transformations</p>
+              <p>Accompagner les grands passages de l’existence, Soutenir les transitions de vie, Ancrer ces transformations.</p>
             </div>
             <div className="service-card" data-aos="fade-up" data-aos-delay="400">
-              <i class="fa-solid fa-strikethrough service-icon"></i>
               <h4>Guidance par les Runes et Cartomancie</h4>
               <p>Apporter des éclairages sur votre chemin et décrypter les messages de votre inconscient.</p>
             </div>

@@ -32,16 +32,20 @@ function Footer() {
               <i className="fab fa-facebook-f"></i>
               <strong>Facebook</strong>
             </p>
-            <a href="https://www.facebook.com/harmonessens/" target="_blank" rel="noopener noreferrer"> 
-              <p className="p-wm">Harmonessens - Khadija Asfouri Naturopathie Soins énergétiques</p>
-            </a>  
+            <p className="p-wm">
+              <a className="contact-link" href="https://www.facebook.com/harmonessens/" target="_blank" rel="noopener noreferrer">
+                Harmonessens - Khadija Asfouri Naturopathie Soins énergétiques
+              </a>
+            </p>
             <p>
               <i className="fab fa-instagram"></i>
               <strong>Instagram</strong>
             </p>
-            <a href="https://www.instagram.com/swin_harmonessens/" target="_blank" rel="noopener noreferrer"> 
-              <p className="p-wm">@swin_harmonessens</p>
-            </a>  
+            <p className="p-wm">
+              <a className="contact-link" href="https://www.instagram.com/swin_harmonessens/" target="_blank" rel="noopener noreferrer">
+                @swin_harmonessens
+              </a>
+            </p>
           </div>
         </div>
 
@@ -52,7 +56,7 @@ function Footer() {
           <div className="footer-column-info">
             <p>
               <i className="fas fa-envelope"></i>
-              <strong>Email :</strong> 
+              <strong>Email :</strong>
             </p>
             <p className="p-wm">
               <a href="mailto:contact@harmonessens.fr" className="contact-link">contact@harmonessens.fr</a>
@@ -66,7 +70,7 @@ function Footer() {
             </p>
             <p>
               <i className="fas fa-map-marker-alt"></i>
-              <strong>Adresse :</strong> 
+              <strong>Adresse :</strong>
             </p>
             <p className="p-wm">
               125 allée de Lauzard <br />
