@@ -16,7 +16,7 @@ export const addAppointmentToDb = async (req, res) => {
 	}
 
 	// Calculate end time
-	const endTime = new Date(new Date(startDateTime).getTime() + durationInMinutes * 60000).toISOString();
+	const endTime = new Date(new Date(startDateTime).getTime() + durationInMinutes * 60000).toISOString().slice(0,-5);
 
 	// Check for overlaps
 	const hasOverlap = checkForOverlaps(startDateTime, endTime);

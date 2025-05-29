@@ -131,3 +131,5 @@ dist
 backend/config/GoogleAuth.json
 backend/data/harmonessensDB.sqlite
 backend/data/images/*
+frontend/build/*
+
