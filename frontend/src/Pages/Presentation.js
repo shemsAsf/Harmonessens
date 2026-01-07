@@ -1,5 +1,5 @@
 import React from "react";
-import "../Style/Informations.css";
+import "../Style/Presentation.css";
 
 function Presentation() {
   return (

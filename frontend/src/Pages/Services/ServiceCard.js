@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const ServiceCard = ({ service, isDashboard }) => {
 	const navigate = useNavigate();
 	const [isExpanded, setIsExpanded] = useState(false);
-	const [sliceValue, setSliceValue] = useState(window.innerWidth < 768 ? 100 : 300);
+	const [sliceValue, setSliceValue] = useState(window.innerWidth < 768 ? 100 : 300);	
 
 	useEffect(() => {
 		const handleResize = () => {

@@ -1,4 +1,3 @@
-import React from "react";
 import eagle from "../Assets/eagle-icon.svg";
 import "../Style/HomePage.css";
 import Carousel from "../Components/Carousel/Carousel";

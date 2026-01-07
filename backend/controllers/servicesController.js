@@ -4,7 +4,6 @@ const fs = require("fs");
 const { IMAGE_FOLDER } = require("../config/constants.js");
 
 const GetServices = (req, res) => {
-
 	try {
 		const result = db.prepare(
 			"SELECT * FROM services wHERE id > 0"
@@ -188,7 +187,7 @@ const RemoveImage = (name) => {
 
 
 const GetImageAsLink = (req, img) => {
-	return img == null ? "" : `${req.protocol}://${req.get("host")}/images/${path.basename(img)}`
+	return img == null ? "" : `${req.protocol}://${req.get("host")}/api/images/${path.basename(img)}`
 }
 
 module.exports = {

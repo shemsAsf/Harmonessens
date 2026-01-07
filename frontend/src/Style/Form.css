@@ -34,7 +34,7 @@ textarea {
   height: 120px;
 }
 
-/* Submit Button */
+
 .submit-button, .cancel-button {
   padding: 12px;
   background-color: var(--accent-color);
@@ -44,7 +44,7 @@ textarea {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  width: 100%;  
+  width: 100%; 
 }
 
 .cancel-button {

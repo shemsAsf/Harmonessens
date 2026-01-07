@@ -2,6 +2,7 @@ import React from "react";
 import AppointmentCards from "./ServiceCards";
 import { useNavigate } from "react-router-dom";
 import "../../Style/Services.css";
+import "../../Style/Form.css"
 
 const ServiceList = () => {
     const navigate = useNavigate();
@@ -14,7 +15,7 @@ const ServiceList = () => {
             <div className="colored-line" id="centered-gl"></div>
             <br />
 
-            <div className="appointment-end-text">
+            <div className="">
                 <p>
                     Plusieurs soins vous appellent, mais vous ne savez pas lequel vous convient le mieux ?<br /><br />
                     Lorsque l’âme perçoit l’appel du soin avant que l’esprit ne comprenne, l’hésitation est naturelle.

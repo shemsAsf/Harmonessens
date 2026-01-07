@@ -1,16 +1,32 @@
 {
   "name": "harmonessens",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "frontend": "cd frontend && npm install",
-    "backend": "cd backend && npm install",
-    "install-all": "concurrently \"npm run frontend\" \"npm run backend\" \"npm install\"",
-    "start-frontend": "cd frontend && npm start",
-    "start-backend": "cd backend && npm run dev",
-    "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\""
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install-frontend": "cd frontend && npm install",
+    "build-frontend": "cd frontend && npm run build",
+    "build": "npm run install-frontend && npm run build-frontend",
+    "start": "node server.js",
+    "dev": "concurrently \"node server.js\" \"cd frontend && npm start\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "better-sqlite3": "^12.5.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "http-proxy-middleware": "^3.0.5",
+    "jsonwebtoken": "^9.0.3",
+    "jwt-decode": "^4.0.0",
+    "multer": "^2.0.2",
+    "nodemailer": "^7.0.12"
   },
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.2.1"
   }
 }

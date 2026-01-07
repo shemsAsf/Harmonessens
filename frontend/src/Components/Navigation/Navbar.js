@@ -30,7 +30,7 @@ function Navbar() {
 			</button>
 			<ul className={`nav-list ${isMobileMenuOpen ? "open" : ""}`}>
 				<li className="nav-item">
-					<Link to="/information" className="nav-link" onClick={closeMobileMenu}>
+					<Link to="/presentation" className="nav-link" onClick={closeMobileMenu}>
 						Présentation
 					</Link>
 				</li>

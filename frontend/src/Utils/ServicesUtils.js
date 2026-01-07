@@ -1,19 +1,17 @@
 import { NotifySuccess, NotifyError } from "./NotifyUtil";
 
+// Fetch all services
 export const GetServices = async () => {
 	try {
-		const response = await fetch(`${process.env.REACT_APP_API_URL}/services/get-services`);
+		const response = await fetch("/api/services");
 
-		if (!response.ok) {
-			throw new Error(`HTTP error! Status: ${response.status}`);
-		}
-
+		if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 		const data = await response.json();
 
-		if (Array.isArray(data.services)) {
+		if (data.success && Array.isArray(data.services)) {
 			return data.services;
 		} else {
-			console.error("Services data is not in the expected format");
+			console.error("Services data is not in expected format");
 			return [];
 		}
 	} catch (error) {
@@ -24,73 +22,72 @@ export const GetServices = async () => {
 
 export const GetService = async (id) => {
 	try {
-		const response = await fetch(`${process.env.REACT_APP_API_URL}/services/get-service/${id}`);
-		if (response.ok) {
-			const serviceData = await response.json();
-			return serviceData;
+		const response = await fetch(`/api/services/${id}`);
+		if (!response.ok) throw new Error("Service not found");
+
+		const serviceData = await response.json();
+		if (serviceData.success) {
+			return serviceData.service;
 		} else {
-			throw new Error('Service not found');
+			console.error("Error fetching service");
+			return;
 		}
 	} catch (error) {
-		alert("Error fetching service: " + error.message);
+		console.error("Error fetching service:", error);
+		return null;
 	}
 };
 
 export const fetchService = async (id, setService) => {
 	try {
-		const fetchedService = await GetService(id);
-		if (fetchedService && fetchedService.success) {
-			setService(fetchedService.service);
-		} else {
-			console.error("Service not found or error fetching");
-		}
+		const service = await GetService(id);
+		if (service) setService(service);
+		else console.error("Service not found or error fetching");
 	} catch (error) {
 		console.error("Error fetching service:", error);
 	}
 };
 
-
 export const CreateService = async (navigate, formData) => {
 	try {
-		const response = await fetch(`${process.env.REACT_APP_API_URL}/services/create-service`, {
-			method: 'POST',
+		const response = await fetch("/api/services", {
+			method: "POST",
 			body: formData,
 		});
-		if (!response.ok) {
-			throw new Error('Error creating service');
-		}
 
-		NotifySuccess(navigate, "/Dashboard/services", "service créé avec succès.")
+		if (!response.ok) throw new Error("Error creating service");
+
+		NotifySuccess(navigate, "/Dashboard/services", "Service créé avec succès.");
 	} catch (error) {
-		NotifyError(null, null, error.message)
+		NotifyError(null, null, error.message);
 	}
 };
 
 export const EditService = async (navigate, formData, id) => {
 	try {
-		const response = await fetch(`${process.env.REACT_APP_API_URL}/services/update-service/${id}`, {
-			method: 'PUT',
+		const response = await fetch(`/api/services/${id}`, {
+			method: "PUT",
 			body: formData,
 		});
-		if (!response.ok) {
-			throw new Error('Error updating service');
-		}
-		NotifySuccess(navigate, "/Dashboard/services", "service modifié avec succès.", "Succès")
+
+		if (!response.ok) throw new Error("Error updating service");
+
+		NotifySuccess(navigate, "/Dashboard/services", "Service modifié avec succès.", "Succès");
 	} catch (error) {
-		NotifyError(null, null, error.message)
+		NotifyError(null, null, error.message);
 	}
-}
+};
 
 export const RemoveService = async (navigate, id) => {
 	try {
-		const response = await fetch(`${process.env.REACT_APP_API_URL}/services/remove-service/${id}`, {
-			method: 'DELETE'
+		const response = await fetch(`/api/services/${id}`, {
+			method: "DELETE",
 		});
-		if (!response.ok) {
-			throw new Error('Error removing service');
-		}
-		NotifySuccess(navigate, "/Dashboard/services", "service supprimé avec succès.", "Succès")
+
+		if (!response.ok) throw new Error("Error removing service");
+
+		NotifySuccess(navigate, "/Dashboard/services", "Service supprimé avec succès.", "Succès");
 	} catch (error) {
-		NotifyError(null, null, error.message)
+		NotifyError(null, null, error.message);
 	}
-}
+};

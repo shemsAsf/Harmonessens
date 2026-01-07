@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import AppointmentsDashboard from './AppointmentsDashboard';
+import { useState } from 'react';
 import AdminAuth from "../../Components/AdminAuth";
 import "../../Style/Dashboard.css";
 import AppointmentCards from '../Services/ServiceCards';
@@ -7,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const Dashboard = () => {
 	const { page } = useParams();
-    const [activeComponent, setActiveComponent] = useState(page ? page : "appointments");
+    const [activeComponent, setActiveComponent] = useState(page ? page : "services");
     const navigate = useNavigate();
 
     const handleButtonClick = (component) => {
@@ -23,18 +22,16 @@ const Dashboard = () => {
                     <br/>
                     <br/>
                     <div className="dashboard-buttons">
-                        <button onClick={() => handleButtonClick('appointments')}>Rendez-vous</button>
                         <button onClick={() => handleButtonClick('services')}>Services</button>
                     </div>
                     <br/>
                     <div className="dashboard-content">
-                        {activeComponent === 'appointments' && <AppointmentsDashboard />}
                         {activeComponent === 'services' && 
                         <div>
                             <button 
                                 className="submit-button" 
                                 onClick={() => navigate('/ServiceForm')}>
-                                    <i class="fa-solid fa-plus"></i> Créer un service
+                                    <i className="fa-solid fa-plus"></i> Créer un service
                             </button>
                             <AppointmentCards isDashboard="true" />
                         </div>}

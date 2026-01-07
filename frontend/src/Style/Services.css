@@ -108,6 +108,10 @@
   color: #888;
 }
 
+a.submit-button{
+  text-align: center;
+  text-decoration: none;
+}
 
 .appointment-image {
   width: 100px;

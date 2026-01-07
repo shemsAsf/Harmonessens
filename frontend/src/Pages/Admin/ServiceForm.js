@@ -29,13 +29,18 @@ const ServiceForm = () => {
 	// Prefill the form when service data is fetched
 	useEffect(() => {
 		if (serviceToEdit) {
-			setTitle(serviceToEdit.title);
-			setDescription(serviceToEdit.description);
-			setLength(serviceToEdit.length);
-			setPrice(serviceToEdit.price);
-			setAllowOnline(serviceToEdit.allowOnline);
-			setIsActive(serviceToEdit.isActive);
-			setPreview(serviceToEdit.image);
+			console.log("serviceToEdit", serviceToEdit);
+			setTitle(serviceToEdit.title ?? "");
+			setDescription(serviceToEdit.description ?? "");
+			setLength(Number(serviceToEdit.length ?? 90));
+			setPrice(serviceToEdit.price ?? "");
+			setAllowOnline(Boolean(serviceToEdit.allowOnline));
+			setIsActive(Boolean(serviceToEdit.isActive));
+			setPreview(serviceToEdit.image ?? null);
+
+			console.log("serviceToEdit:", serviceToEdit);
+			console.log("title state:", title);
+
 		}
 	}, [serviceToEdit]);
 
@@ -54,8 +59,8 @@ const ServiceForm = () => {
 		formData.append("description", description);
 		formData.append("length", length);
 		formData.append("price", price);
-		formData.append("allowOnline", allowOnline ? 1 : 0); 
-		formData.append("isActive", isActive ? 1 : 0); 
+		formData.append("allowOnline", allowOnline ? 1 : 0);
+		formData.append("isActive", isActive ? 1 : 0);
 		if (image) formData.append("image", image);
 
 		// Submit either create or edit based on serviceToEdit
@@ -65,7 +70,7 @@ const ServiceForm = () => {
 			CreateService(navigate, formData);
 		}
 	};
-	
+
 	const handleRemove = async (e) => {
 		if (serviceToEdit) {
 			const isConfirmed = window.confirm("Are you sure you want to remove this service?");
@@ -74,7 +79,7 @@ const ServiceForm = () => {
 			}
 		}
 	};
-	
+
 	return (
 		<AdminAuth>
 			<div className="calendar-container">
@@ -172,9 +177,9 @@ const ServiceForm = () => {
 								{serviceToEdit ? "Mettre à jour" : "Créer"} Service
 							</button>
 						</div>
-						
+
 						{/* Delete Button */}
-						{serviceToEdit && 
+						{serviceToEdit &&
 							<div className="form-field">
 								<button type="button" className="cancel-button" onClick={handleRemove}>
 									Supprimer service
