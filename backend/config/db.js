@@ -2,18 +2,18 @@ const sqlite3 = require("better-sqlite3");
 const path = require("path");
 
 let db;
-try {
-	//Path for local dev db
+
+
+if (process.env.NODE_ENV === "test") {
+	db = new Database(":memory:");
+	console.log("Using in-memory SQLite database for tests");
+}
+else {
 	const dbPath = path.join(__dirname, "../data/harmonessensDB.sqlite");
 	db = new sqlite3(dbPath);
 	console.log("Created db using dirname");
 }
-catch {
-	//Path for Render db
-	const dbPath = path.join("/data", "harmonessensDB.sqlite");
-	db = new sqlite3(dbPath);
-	console.log("Created db using /data");
-}
+
 
 // Function to create tables if they don’t exist
 const checkAndCreateTables = () => {
