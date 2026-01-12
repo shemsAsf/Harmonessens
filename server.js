@@ -15,13 +15,13 @@ const emailRoutes = require("./backend/routes/email");
 const { IMAGE_FOLDER } = require("./backend/config/constants");
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 
 if (!fs.existsSync(IMAGE_FOLDER)) {
 	fs.mkdirSync(IMAGE_FOLDER, { recursive: true });
 }
 
-const allowedOrigin = [process.env.ALLOWED_ORIGIN, "http://localhost:3000"];
+const allowedOrigin = [process.env.ALLOWED_ORIGIN];
 app.use(
 	cors({
 		origin: allowedOrigin,

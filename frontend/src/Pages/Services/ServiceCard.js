@@ -53,7 +53,7 @@ const ServiceCard = ({ service, isDashboard }) => {
 					) : (
 						<button
 							className="appointment-button"
-							onClick={() => window.location.href = `/appointment/${service.id}`}
+							onClick={() => navigate(`/contact`)}
 						>
 							Prendre Rendez-vous
 						</button>

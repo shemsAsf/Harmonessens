@@ -1,5 +1,9 @@
 import { NotifySuccess, NotifyError } from "./NotifyUtil";
 
+const authHeaders = () => ({
+	Authorization: `Bearer ${localStorage.getItem("adminToken")}`
+});
+
 // Fetch all services
 export const GetServices = async () => {
 	try {
@@ -52,6 +56,7 @@ export const CreateService = async (navigate, formData) => {
 	try {
 		const response = await fetch("/api/services", {
 			method: "POST",
+			headers: authHeaders(),
 			body: formData,
 		});
 
@@ -67,6 +72,7 @@ export const EditService = async (navigate, formData, id) => {
 	try {
 		const response = await fetch(`/api/services/${id}`, {
 			method: "PUT",
+			headers: authHeaders(),
 			body: formData,
 		});
 
@@ -82,6 +88,7 @@ export const RemoveService = async (navigate, id) => {
 	try {
 		const response = await fetch(`/api/services/${id}`, {
 			method: "DELETE",
+			headers: authHeaders(),
 		});
 
 		if (!response.ok) throw new Error("Error removing service");

@@ -8,7 +8,6 @@ const ServiceForm = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 
-	// Define state for form fields
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [length, setLength] = useState(90);
@@ -19,17 +18,14 @@ const ServiceForm = () => {
 	const [preview, setPreview] = useState(null);
 	const [serviceToEdit, setServiceToEdit] = useState(null);
 
-	// Fetch service data when id is available
 	useEffect(() => {
 		if (id) {
 			fetchService(id, setServiceToEdit)
 		}
 	}, [id]);
 
-	// Prefill the form when service data is fetched
 	useEffect(() => {
 		if (serviceToEdit) {
-			console.log("serviceToEdit", serviceToEdit);
 			setTitle(serviceToEdit.title ?? "");
 			setDescription(serviceToEdit.description ?? "");
 			setLength(Number(serviceToEdit.length ?? 90));
@@ -37,10 +33,6 @@ const ServiceForm = () => {
 			setAllowOnline(Boolean(serviceToEdit.allowOnline));
 			setIsActive(Boolean(serviceToEdit.isActive));
 			setPreview(serviceToEdit.image ?? null);
-
-			console.log("serviceToEdit:", serviceToEdit);
-			console.log("title state:", title);
-
 		}
 	}, [serviceToEdit]);
 

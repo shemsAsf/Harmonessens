@@ -44,8 +44,12 @@ const GetService = (req, res) => {
   };
 
 const CreateService = (req, res) => {
+	console.log("got here", req);
 	const data = validateAndConvertServiceData(req, res);
-	if (!data) return;
+	console.log("got there");
+	if (!data) {console.log("where's my data ?"); return};
+
+	console.log(data);
 
 	try {
 		const stmt = db.prepare(
@@ -116,8 +120,11 @@ const UpdateService = (req, res) => {
 };
 
 const validateAndConvertServiceData = (req, res) => {
+	console.log("got hereish");
+	console.log(req.body);
 	const { title, description, length, price, allowOnline, isActive } = req.body;
 	const image = req.file ? req.file.filename : null;
+
 
 	if (!title || !description || length === undefined || price === undefined) {
 		res.status(400).json({ error: "Missing required fields" });
