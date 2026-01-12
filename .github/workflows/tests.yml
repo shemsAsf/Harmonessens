@@ -23,6 +23,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
+
       - name: Run backend tests
         run: npm run test:backend
         env:
