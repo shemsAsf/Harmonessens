@@ -5,7 +5,7 @@ let db;
 
 
 if (process.env.NODE_ENV === "test") {
-	db = new Database(":memory:");
+	db = new sqlite3(":memory:");
 	console.log("Using in-memory SQLite database for tests");
 }
 else {
