@@ -1,41 +1,53 @@
-const sqlite3 = require("better-sqlite3");
-const path = require("path");
+const mysql = require("mysql2/promise");
+require("dotenv").config();
 
 let db;
 
-
 if (process.env.NODE_ENV === "test") {
-	db = new sqlite3(":memory:");
-	console.log("Using in-memory SQLite database for tests");
-}
-else {
-	const dbPath = path.join(__dirname, "../data/harmonessensDB.sqlite");
-	db = new sqlite3(dbPath);
-	console.log("Created db using dirname");
+    // Use a local test database
+    db = mysql.createPool({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "test_harmonessens",
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
+    });
+    console.log("Using MySQL test database");
+} else {
+    db = mysql.createPool({
+        host: process.env.DB_HOST || "localhost",
+        user: process.env.DB_USER || "root",
+        password: process.env.DB_PASS || "",
+        database: process.env.DB_NAME || "harmonessens",
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
+    });
+    console.log("Connected to MySQL database");
 }
 
-
-// Function to create tables if they don’t exist
-const checkAndCreateTables = () => {
-	const createServicesTableQuery = `
+const checkAndCreateTables = async () => {
+    const createServicesTableQuery = `
     CREATE TABLE IF NOT EXISTS services (
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		title TEXT NOT NULL,
-		image TEXT,
-		description TEXT NOT NULL,
-		length INTEGER NOT NULL,
-		price INTEGER NOT NULL,
-		allowOnline INTEGER NOT NULL DEFAULT 0,
-		isActive INTEGER NOT NULL DEFAULT 1
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        image VARCHAR(255),
+        description TEXT NOT NULL,
+        length INT NOT NULL,
+        price INT NOT NULL,
+        allowOnline TINYINT(1) NOT NULL DEFAULT 0,
+        isActive TINYINT(1) NOT NULL DEFAULT 1
     );
-  `;
+    `;
 
-	try {
-		db.exec(createServicesTableQuery);
-		console.log("SQLite tables checked/created successfully.");
-	} catch (error) {
-		console.error("Error creating tables:", error.message);
-	}
+    try {
+        await db.execute(createServicesTableQuery);
+        console.log("MySQL tables checked/created successfully.");
+    } catch (error) {
+        console.error("Error creating tables:", error.message);
+    }
 };
 
 module.exports = { db, checkAndCreateTables };

@@ -1,7 +1,7 @@
-const request = require("supertest");
-const express = require("express");
-const bodyParser = require("body-parser");
-const servicesController = require("../controllers/servicesController.js");
+import request from "supertest";
+import express from "express";
+import bodyParser from "body-parser";
+import servicesController from "../controllers/servicesController.js";
 const adminAuth = require("../middlewares/adminAuth.js");
 const { db } = require("../config/db.js");
 const fs = require("fs");
@@ -9,8 +9,7 @@ const mockFs = require("mock-fs");
 const path = require("path");
 const { upload } = require("../utils/utils");
 
-
-jest.mock("../config/db.js");
+jest.mock("../config/db.js"); // mock MySQL pool
 
 const app = express();
 app.use(bodyParser.json());
@@ -31,7 +30,6 @@ beforeAll(() => {
     const imagesPath = path.join(IMAGE_FOLDER);
     const fakeFs = {};
     fakeFs[imagesPath] = { "old.png": "fake image content" };
-
     mockFs(fakeFs);
 });
 
@@ -39,9 +37,7 @@ afterAll(() => {
     mockFs.restore();
 });
 
-/* ---SERVICES--- */
-
-describe("Services Controller", () => {
+describe("Services Controller (MySQL)", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
@@ -52,9 +48,7 @@ describe("Services Controller", () => {
             { id: 2, title: "Service 2", image: "img2.png", description: "desc", length: 90, price: 80, allowOnline: 0, isActive: 1 },
         ];
 
-        db.prepare.mockReturnValue({
-            all: () => mockServices
-        });
+        db.query.mockResolvedValue([mockServices, []]);
 
         const res = await request(app).get("/api/services");
 
@@ -66,9 +60,7 @@ describe("Services Controller", () => {
 
     test("GET /api/services/:id returns a single service", async () => {
         const mockService = { id: 1, title: "Service 1", image: "img1.png", description: "desc", length: 60, price: 50, allowOnline: 1, isActive: 1 };
-        db.prepare.mockReturnValue({
-            get: () => mockService
-        });
+        db.query.mockResolvedValue([[mockService], []]);
 
         const res = await request(app).get("/api/services/1");
 
@@ -78,8 +70,8 @@ describe("Services Controller", () => {
     });
 
     test("POST /api/services creates a service", async () => {
-        const runMock = jest.fn(() => ({ lastInsertRowid: 123 }));
-        db.prepare.mockReturnValue({ run: runMock });
+        const insertResult = { insertId: 123 };
+        db.query.mockResolvedValue([insertResult, []]);
 
         const res = await request(app)
             .post("/api/services")
@@ -95,16 +87,41 @@ describe("Services Controller", () => {
         expect(res.body.serviceId).toBe(123);
     });
 
+    test("PUT /api/services/:id updates a service", async () => {
+        const oldImage = "old.png";
+
+        // Mock select to fetch old service
+        db.query.mockResolvedValueOnce([[{ image: oldImage }], []]);
+        // Mock update
+        db.query.mockResolvedValueOnce([{}, []]);
+
+        jest.spyOn(fs, "unlink").mockImplementation((path, cb) => cb(null));
+
+        const res = await request(app)
+            .put("/api/services/1")
+            .field("title", "Updated Service")
+            .field("description", "Updated description")
+            .field("length", 70)
+            .field("price", 120)
+            .field("allowOnline", 1)
+            .field("isActive", 1);
+
+        expect(res.status).toBe(200);
+        expect(res.body.success).toBe(true);
+    });
+
     test("DELETE /api/services/:id removes a service", async () => {
         const mockRow = { id: 1, title: "Service 1", image: "old.png" };
-        db.prepare.mockReturnValueOnce({ get: () => mockRow }) // SELECT
-            .mockReturnValueOnce({ run: () => { } }); // DELETE
 
-        // Spy on RemoveImage
-        const { RemoveImage } = require("../controllers/servicesController.js");
+        // Mock select
+        db.query.mockResolvedValueOnce([[mockRow], []]);
+        // Mock delete
+        db.query.mockResolvedValueOnce([{}, []]);
+
         jest.spyOn(fs, "unlink").mockImplementation((path, cb) => cb(null));
 
         const res = await request(app).delete("/api/services/1");
+
         expect(res.status).toBe(200);
         expect(res.body.success).toBe(true);
         expect(res.body.service.id).toBe(1);
