@@ -1,7 +1,7 @@
-import request from "supertest";
-import express from "express";
-import bodyParser from "body-parser";
-import servicesController from "../controllers/servicesController.js";
+const request = require("supertest");
+const express = require("express");
+const bodyParser = require("body-parser");
+const servicesController = require("../controllers/servicesController.js");
 const adminAuth = require("../middlewares/adminAuth.js");
 const { db } = require("../config/db.js");
 const fs = require("fs");
