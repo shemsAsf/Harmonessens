@@ -9,7 +9,7 @@ const mockFs = require("mock-fs");
 const path = require("path");
 const { upload } = require("../utils/utils");
 
-jest.mock("../config/db.js"); // mock MySQL pool
+jest.mock("../config/db.js");
 
 const app = express();
 app.use(bodyParser.json());
