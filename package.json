@@ -4,15 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "install-backend": "npm install",
-    "install-frontend": "cd frontend && npm install",
-    "install:all": "npm run install-backend && npm run install-frontend",
+    "install:backend": "npm install",
+    "install:frontend": "cd frontend && npm install",
+    "install:all": "npm run install:backend && npm run install:frontend",
     "test:backend": "jest --config backend/jest.config.js",
     "test:frontend": "cd frontend && npm test",
-    "build-frontend": "cd frontend && npm run build",
-    "build": "npm run build-frontend",
-    "start": "node server.js",
-    "setup-and-start": "npm run install:all && npm run build && npm start"
+    "build:frontend": "cd frontend && npm run build",
+    "build": "npm run install:frontend && npm run build:frontend",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
