@@ -12,6 +12,15 @@ const login = (req, res) => {
   res.json({ token });
 };
 
+const checkEnv = (req, res) => {
+  return res.status(404).json({
+    adPass : process.env.ADMIN_PASSWORD,
+    email: process.env.EMAIL_USER,
+    dbHost: process.env.DB_HOST
+  })
+}
+
 module.exports = {
-	login
+	login,
+  checkEnv
 };
