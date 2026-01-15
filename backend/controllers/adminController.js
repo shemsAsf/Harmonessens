@@ -14,9 +14,9 @@ const login = (req, res) => {
 
 const checkEnv = (req, res) => {
   return res.status(404).json({
-    adPass : process.env.ADMIN_PASSWORD,
-    email: process.env.EMAIL_USER,
-    dbHost: process.env.DB_HOST
+    adPass : process.env.ADMIN_PASSWORD || "not found",
+    email: process.env.EMAIL_USER || "not found",
+    dbHost: process.env.DB_HOST || "not found"
   })
 }
 
