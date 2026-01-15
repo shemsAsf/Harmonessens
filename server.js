@@ -5,6 +5,23 @@ const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
 
+
+// Log file redirection
+const logFile = path.join(process.cwd(), "logs", "console.log");
+fs.mkdirSync(path.dirname(logFile), { recursive: true });
+
+const write = (type, args) => {
+	const line =
+		`[${new Date().toISOString()}] [${type}] ` +
+		args.map(a => (typeof a === "string" ? a : JSON.stringify(a))).join(" ");
+
+	fs.appendFileSync(logFile, line + "\n");
+};
+
+console.log = (...args) => write("LOG", args);
+console.error = (...args) => write("ERROR", args);
+
+
 // Backend modules
 const { checkAndCreateTables } = require("./backend/config/db");
 const serviceRoutes = require("./backend/routes/services");
