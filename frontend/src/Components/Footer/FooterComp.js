@@ -73,7 +73,7 @@ function Footer() {
               <strong>Adresse :</strong>
             </p>
             <p className="p-wm">
-              125 allée de Lauzard <br />
+              30 Impasse de la Cane de jeanne <br />
               34980 Saint Gely du Fesc
             </p>
           </div>
